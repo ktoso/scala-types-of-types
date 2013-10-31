@@ -4,39 +4,6 @@ The different types of... Types in Scala
 
 This blog post came into being after a few discussions about Types in Scala after some of JavaOne's parties in 2013. After those discussions I figured that many questions are often repeated by different people, during their learning of Scala. I though that we didn't have a full list of all tricks what we can to with Types in Scala, so I decided to write such a list - giving real life examples why we'd need these types.
 
-Table of Contents
-=================
-
-- [The different types of... Types in Scala](#the-different-types-of-types-in-scala)
-- [The Types. I see them.](#the-types-i-see-them)
-- [Type Annotation](#type-annotation)
-- [Unified Type System - Any, AnyRef, AnyVal](#unified-type-system---any-anyref-anyval)
-- [The Bottom Types - Nothing and Null](#the-bottom-types---nothing-and-null)
-	- [Traits, as in "interfaces with implementation"](#traits-as-in-interfaces-with-implementation)
-	- [Type Linearization vs. The Diamond Problem](#type-linearization-vs-the-diamond-problem)
-- [Type of an `object`](#type-of-an-object)
-- [Type Variance in Scala](#type-variance-in-scala)
-- [Traits (mix-ins)](#traits-mix-ins)
-- [Refined Types (refinements)](#refined-types-refinements)
-- [Type Alias](#type-alias)
-- [Abstract Type Member](#abstract-type-member)
-- [Self-Recursive Type](#self-recursive-type)
-- [Type Class](#type-class)
-- [Type Constructor](#type-constructor)
-- [Self Type Annotation](#self-type-annotation)
-- [Phantom Type](#phantom-type)
-- [Structural Type](#structural-type)
-- [Path Dependent Type](#path-dependent-type)
-- [Type Projection](#type-projection)
-- [Existential Types](#existential-types)
-- [Type Lambda](#type-lambda)
-- [Dynamic Type](#dynamic-type)
-	- [applyDynamic](#applydynamic)
-	- [applyDynamicNamed](#applydynamicnamed)
-	- [selectDynamic](#selectdynamic)
-	- [updateDynamic](#updatedynamic)
-- [Links and Kudos](#links-and-kudos)
-
 Types of Types
 ==============
 
