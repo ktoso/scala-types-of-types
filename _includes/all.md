@@ -7,8 +7,9 @@ This blog post came into being after a few discussions about Types in Scala afte
 
 Type Annotation
 ---------------
-Also known as "just a type" ;-) In case you're a total Scala beginner, let's take a look at how to explicitly say a value
-is of some type:
+Scala has Type Inference, which means that we can skip telling the Type of something each time in the source code,
+and instead we just use `val`s or `def`s without "saying the type explicitly in the source". This being explicit about
+the type of something, is called an Type Annotation.
 
 ```scala
 trait Thing
@@ -37,7 +38,7 @@ more and more interesting.
 Unified Type System - Any, AnyRef, AnyVal
 -----------------------------------------
 
-We refer to a Scala's typesystem as being "unified" (another example of such a typesystem would be C#) because there is a "Top Type", `Any`. **This is different than Java**, which has "special cases" in form of primitive types (`int`, `long`, `float`, `double`, `byte`, `short`, `boolean`), which do not extend Java's "Almost-Top Type" - `java.lang.Object`.
+We refer to a Scala's typesystem as being "unified" because there is a "Top Type", `Any`. **This is different than Java**, which has "special cases" in form of primitive types (`int`, `long`, `float`, `double`, `byte`, `char`, `short`, `boolean`), which do not extend Java's "Almost-Top Type" - `java.lang.Object`.
 
 ![A Unified Type System](http://www.blog.project13.pl/wp-content/uploads/2012/12/skitch-5.png)
 
@@ -84,7 +85,7 @@ check(new Object) // String (AnyRef) -> fails to compile
   
 ```
 
-In the above example I've used a Type Class Checker[T] and a type bound, which will be discussed below. The general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
+In the above example I've used a TypeClass `Checker[T]` and a type bound, which will be discussed below. The general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
 
 The Bottom Types - Nothing and Null
 -----------------------------------
@@ -431,10 +432,14 @@ Self Type Annotation
 **Self Types** are used in order to "require" that, if another class uses this trait,
 it should also provide implementation of whatever it is that you're requireing.
 
-Let's look at an example where a service, requires some Module, which provides other services.
+Let's look at an example where a service requires some Module which provides other services.
 We can state this using the following Self Type Annotation:
 
 ```
+trait Module {
+  lazy val serviceInModule = new ServiceInModule
+}
+
 trait Service {
   this: Module =>
   
@@ -442,7 +447,9 @@ trait Service {
 }
 ```
 
-The second line can be read as "I'm a Module", which of course means that someone will have to give us this Module at instanciation time:
+The second line can be read as "I'm a Module". It might seem yield the exactly same But how does this differ from extending `Module` right away? 
+
+which means that someone will have to give us this Module at instanciation time:
 
 ```
 trait TestingModule extends Module { /*...*/ }
