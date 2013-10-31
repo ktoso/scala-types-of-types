@@ -1,0 +1,907 @@
+The different types of... Types in Scala
+========================================
+
+
+This blog post came into being after a few discussions about Types in Scala after some of JavaOne's parties in 2013. After those discussions I figured that many questions are often repeated by different people, during their learning of Scala. I though that we didn't have a full list of all tricks what we can to with Types in Scala, so I decided to write such a list - giving real life examples why we'd need these types.
+
+Table of Contents
+=================
+
+- [The different types of... Types in Scala](#the-different-types-of-types-in-scala)
+- [The Types. I see them.](#the-types-i-see-them)
+- [Type Annotation](#type-annotation)
+- [Unified Type System - Any, AnyRef, AnyVal](#unified-type-system---any-anyref-anyval)
+- [The Bottom Types - Nothing and Null](#the-bottom-types---nothing-and-null)
+	- [Traits, as in "interfaces with implementation"](#traits-as-in-interfaces-with-implementation)
+	- [Type Linearization vs. The Diamond Problem](#type-linearization-vs-the-diamond-problem)
+- [Type of an `object`](#type-of-an-object)
+- [Type Variance in Scala](#type-variance-in-scala)
+- [Traits (mix-ins)](#traits-mix-ins)
+- [Refined Types (refinements)](#refined-types-refinements)
+- [Type Alias](#type-alias)
+- [Abstract Type Member](#abstract-type-member)
+- [Self-Recursive Type](#self-recursive-type)
+- [Type Class](#type-class)
+- [Type Constructor](#type-constructor)
+- [Self Type Annotation](#self-type-annotation)
+- [Phantom Type](#phantom-type)
+- [Structural Type](#structural-type)
+- [Path Dependent Type](#path-dependent-type)
+- [Type Projection](#type-projection)
+- [Existential Types](#existential-types)
+- [Type Lambda](#type-lambda)
+- [Dynamic Type](#dynamic-type)
+	- [applyDynamic](#applydynamic)
+	- [applyDynamicNamed](#applydynamicnamed)
+	- [selectDynamic](#selectdynamic)
+	- [updateDynamic](#updatedynamic)
+- [Links and Kudos](#links-and-kudos)
+
+Types of Types
+==============
+
+Type Annotation
+---------------
+Also known as "just a type" ;-) In case you're a total Scala beginner, let's take a look at how to explicitly say a value
+is of some type:
+
+```
+trait Thing
+def getThing = new Thing
+
+// without Type Annotation, the type is infered to be `Thing`
+val infered = getThing
+
+// with Type Annotation
+val thing: Thing = getThing
+```
+
+In these situations, leaving out the Type Annotation is OK. Although you may decide to always annotate return types of public methods (*that's very good idea!*) in order to make the code more self-documenting.
+
+In case of doubt you can refer to the bellow hint-questions to wether or not, include a Type Annotation.
+
+* It it a parameter? **Yes**, you have to.
+* Is it a public methods return value? **Yes**, for self-documenting code and control over exported types.
+* Do you need to return a more general interface than the inferencer would find? **Yes**, otherwise you'd expose your implementation details for example.
+* Else... No, don't include a Type Annotation.
+* Related hint: Including Type Annotations speeds up compilation, also it's generally nice to see the return type of a method.
+
+So we put Type Annotations after value names. Having this said, let's jump into the next topics, where these types will become
+more and more interesting.
+
+Unified Type System - Any, AnyRef, AnyVal
+-----------------------------------------
+
+We refer to a Scala's typesystem as being "unified" (another example of such a typesystem would be C#) because there is a "Top Type", `Any`. **This is different than Java**, which has "special cases" in form of primitive types (`int`, `long`, `float`, `double`, `byte`, `short`, `boolean`), which do not extend Java's "Almost-Top Type" - `java.lang.Object`.
+
+![A Unified Type System](http://www.blog.project13.pl/wp-content/uploads/2012/12/skitch-5.png)
+
+Scala takes on the idea of having one common Top Type for all Types by introducing `Any`. `Any` is a supertype of both `AnyRef` and `AnyVal`. 
+
+`AnyRef` is the "object world" of Java (and the JVM), it corresponds to `java.lang.Object`, and is the supertype of all objects.
+
+`AnyVal` represents the "value world" of Java, such as `int` and it's friends. 
+
+Thanks to this hierarchy, we're able to define methods taking `Any` - thus being compatible with both `scala.Int` instances as well as `java.lang.String`:
+
+```
+class Person
+
+val allThings = ArrayBuffer[Any]()
+
+val myInt = 42             // Int, kept as low-level `int` during runtime
+
+allThings += myInt         // Int (extends AnyVal)
+                           // has to be boxed (!) -> becomes java.lang.Integer in the collection (!)
+
+allThings += new Person()  // Person (extends AnyRef), no magic here
+```
+
+For the Typesystem it's transparent, though on the JVM level once we get into `ArrayBuffer[Any]` our Int instances will have to be packed into objects. Let's investigate the above example's by using the Scala REPL and it's `:javap` command (which shows the generated bytecode for our test class):
+
+```
+35: invokevirtual #47  // Method myInt:()I
+38: invokestatic  #53  // Method scala/runtime/BoxesRunTime.boxToInteger:(I)Ljava/lang/Integer;
+41: invokevirtual #57  // Method scala/collection/mutable/ArrayBuffer.$plus$eq:(Ljava/lang/Object;)Lscala/collection/mutable/ArrayBuffer;
+```
+You'll notive that `myInt` is still carrying the value of a `int primitive` (this is visible as `I` at the end of the `myInt:()I` *invokevirtual* call). Then, right before adding it to the ArrayBuffer, scalac inserted a call to `BoxesRunTime.boxToInteger:(I)Ljava/lang/Integer` (a small hint for not frequent bytecode readers, the method it calls is: `public Integer boxToInteger(i: int)`). This way, by having a smart compiler and treating everything as an object in this common hierarchy we're able to get away from the "but primitives are different" edge-cases, at least at the level of our Scala source code - the compiler takes care of it for us. On JVM level, the distinction is still there of course, and scalac will do it's best to keep using primitives wherever possible, as operations on them are faster, and take less memory (objects are obviously bigger than primitives).
+
+
+On the other hand, we can limit a method to only be able to work on "lightweight" Value Types:
+
+```
+def check(in: AnyVal) = ()
+
+check(42)    // Int
+check(13.37) // Double
+
+check(new Object) // String (AnyRef) -> fails to compile
+  
+```
+
+In the above example I've used a Type Class Checker[T] and a type bound, which will be discussed bellow. But the general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
+
+The Bottom Types - Nothing and Null
+-----------------------------------
+In Scala everything has "some" type... but have you ever wondered how the type inferencer can still work, and infer sound types when working with "weird" situations like throwing exceptions? Let's investigate the bellow "if/else throw" example:
+
+```
+val thing: Int = 
+  if (test)
+    42                             // : Int
+  else
+    throw new Exception("Whoops!") // : Nothing
+```
+
+As you can see in the comments, the type of the if block is `Int` (easy), the type of the else block is `Nothing` (interresting). The inferencer was able to infer that the `thing` value, will only ever be of type `Int`. This is because of the **Bottom Type** property of Nothing. You can think of it as if:
+
+"`Nothing extends anything`"
+
+Type inference always looks for the "common type" of both branches in an if stamement, so if the other branch here is a Type that extends everything, the infered type will automatically be the Type from the first branch.
+
+```
+Types visualized:
+
+           [Int] -> ... -> AnyVal -> Any
+Nothing -> [Int] -> ... -> AnyVal -> Any
+```
+
+The same reasoning can be applied to the second Bottom Type in Scala - `Null`.
+
+```
+val thing: String = 
+  if (test)
+    "Yay!"  // : String
+  else 
+  	null    // : Null
+```
+
+The type of `thing` is as expected, String. `Null` follows ALMOST the same rules as Nothing. I'll use this case to take a small detour to talk about inference, and the differences between AnyVals and AnyRefs. 
+
+```
+Types visualized:
+
+        [String] -> AnyRef -> Any
+Null -> [String] -> AnyRef -> Any
+
+infered type: String
+```
+
+Let's think about `Int` and other primitives, which cannot hold null values. To investigate this case let's drop into the REPL and use the `:type` command (which allows to get the type of an expression):
+
+```
+scala> :type if (false) 23 else null
+Any
+```
+
+This is different than the case with a String object in one of the branches. Let's look into the types in detail here, as `Null` is a bit less "extents everything" than `Nothing`. Let's see what `Int` extends in detail, by using `:type` again on it:
+
+```
+scala> :type -v 12
+// Type signature
+Int
+
+// Internal Type structure
+TypeRef(TypeSymbol(final abstract class Int extends AnyVal))
+```
+
+The verbose option adds a bit more information here, now we know that `Int` is an `AnyVal` - this is a special class representing value types - which cannot hold `Null`. If we look into <a href="https://github.com/scala/scala/blob/v2.10.3/src/library/scala/AnyVal.scala">AnyVal's sources</a>, we'll find:
+
+```
+abstract class AnyVal extends Any with NotNull
+```
+
+I'm bringing this up here because the core functionality of AnyVal is so nicely represented using the Types here. *Notice the `NotNull` trait!*
+
+Coming back to the subject why the common Type for our if statement with an `AnyVal` on one code block and a `null` on the other one was Any and not something else. The one sentence way to define it is: `Null extends all AnyRefs` whereas `Nothing extends anything`. As AnyVals (such as numbers), are not in the same tree as AnyRefs, the only common Type between a number and a `null` value is Any - which explains our case.
+
+```
+Types visualized:
+
+Int  -> NotNull -> AnyVal -> [Any]
+Null            -> AnyRef -> [Any]
+
+infered type: Any
+```
+
+Type of an `object`
+-------------------
+
+Scala `object`s are implemented via classes (obviously - as it's the basic building block on the JVM),
+but you'll notice that we cannot get it's type the same way as we would with an simple class... 
+
+I surprisingly often, would get the question on how to pass an object into a method. Just saying `obj: ExampleObj` won't work
+because that's already referring to the instance, so there's a member called `type` which should be used in such cases. 
+
+How it might look like in your code is explained by the bellow example:
+
+```
+object ExampleObj
+
+def takeAnObject(obj: ExampleObj.type) = {}
+
+takeAnObject(ExampleObj)
+```
+
+Type Variance in Scala
+----------------------
+
+In Scala container types are **NOT variant at all by default**!
+
+This means that for a container `List[Fruit]` you cannot insert Apples into it,
+even if an `class Apple extends Fruit`. 
+
+Variance in Scala is defined by using `+` and `-` signs in front of type parameters.
+
+http://www.slideshare.net/dgalichet/demystifying-scala-type-system
+
+| Name              | Description                            | Scala Syntax | 
+| ----------------- | -------------------------------------- | ------------ |
+| **Invariant**     | `C[T']` and `C[T]` are **not** related | `C[T]`       |
+| **Covariant**     | `C[T']` is a subclass of `C[T]`        | `C[+T]`      |
+| **Contravariant** | `C[T]` is a subclass of `C[T']`        | `C[-T]`      |
+
+There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we'll use a `List[A]
+` as our example, and functions. A `List` is defined as `List[+A]` in Scala, so the bellow code is valid:
+
+```
+class Human
+class Coder extends Human
+
+
+```
+
+TODO
+
+
+Traits (mix-ins)
+----------------
+
+Scala has Traits, which you might already know from other languages, under such names as Mix-In or Module (in Ruby's case).
+
+### Traits, as in "interfaces with implementation" ###
+
+First, let's take a look as the simplest thing possible about traits: 
+how we can basically treat a type with multiple traits mixed in, as if it is implementing these "interfaces with implementation",
+as you might be tempted to call them if comming from Java-land:
+
+```
+class Base { def b = "" }
+trait Cool { def c = "" }
+trait Awesome { def a ="" }
+
+class BA extends Base with Awesome
+class BC extends Base with Cool
+
+// as you might expect, you can upcast these instances into any of the traits they've mixed-in
+val ba: BA = new BA
+val bc: Base with Cool = new BC
+
+val b1: Base = ba
+val b2: Base = bc
+
+ba.a
+bc.c
+b1.b
+```
+
+So far this should have been relatively well known to you. Now let's to into the world of the "diamond problem",
+which people who know C++ might have been expecting. Basically "The Diamond Problem" is a situation during multiple inheritance
+where we're not sure to what we want to refer to. The bellow image ilustrates the problem, if you would think of traits as if they were
+directly multiple inheritance:
+
+### Type Linearization vs. The Diamond Problem ###
+
+![diamond-inheritance-problem](http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Diamond_inheritance.svg/220px-Diamond_inheritance.svg.png)
+
+For the "diamond problem" to appear, it's enough if we have one overriding implementation in `B` or/and `C`. This introduces an ambiguity when calling the common method in `D`, did we inherit the version of the method from `C` or from `B`? In Scala's case the case with only one overriding method is very simple - the override wins. But let's work through the more complex case:
+
+* class `A` defines a method `common` returning `a`,
+* trait `B` DOES override `common` to return `b`,
+* trait `C` DOES override `common` to return `c`,
+* class `D` extends both `B` and `C`,
+* which version of the `common` method does class `D` inherit? The overriden impementation from `C`, or theone from `B`?
+
+This amgiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem by so called **Type Linearization**.
+In other words, given a diamond class hierarchy, we are **always** (and **deterministically**) able to determine what will be called when inside D we call `common`.
+Let's put this into code and then talk about linearization:
+
+```
+trait A { def common = "A" }
+
+trait B extends A { override def common = "B" }
+trait C extends A { override def common = "C" }
+
+class D1 extends B with C
+class D2 extends C with B
+```
+
+The results will be as follows:
+
+```
+(new D1).common == "C"
+
+(new D2).common == "B"
+```
+
+The reason for this is that Scala applied the type linearization for us here. The algorithm goes like this:
+
+* start building a list of types, the first element is the type we're linearizing right now,
+* expand each supertype recursively and put all their types into this list (it should be flat, not nested),
+* remove duplicates from the resulting list, by scanning it from the left, and removing a type that you've already "seen"
+* done.
+
+Let's apply this algorithm on our diamond example by hand, to verify why `D1 extends B with C` (and `D2 extends C with B`) yielded the results they did:
+
+
+```
+// start with D1:
+B with C with <D1>
+
+// expand all the types until you rach Any for all of them:
+(Any with AnyRef with A with B) with (Any with AnyRef with A with C) with <D1>
+
+// remove duplicates by removing "already seen" types, when moving left-to-right:
+(Any with AnyRef with A with B) with (                            C) with <D1>
+
+// write the resulting type nicely:
+Any with AnyRef with A with B with C with <D1>
+```
+
+So when calling the `common` method, it's now very simple to decide which version we want to call: we simply look at the linearized type,
+and try to resolve the method by going from the right in the resulting linearized type. In the case of `D1`, the "right most" trait providing an implementation of `common` is `C`, so it's overriding the implementation provided by `B`. The result of calling `common` inside `D1` would be `"c"`.
+
+You can wrap your head around this method by trying it out on the `D2` class - it should linearize with `B` after `C`, thus yielding a `"b"` if you'd run the code.
+Also it's rather easy to resolve the simpler cases of linearization by just thinking "right most wins", but this is quite an simplification, which while helpful, does not give the full picture about the algorithm.
+
+It is worth mentioning that using this technique we also know *"who is my `super`?"*. It's as easy as "looking left" in the linearized type, from wherever class you want to check who your superclass is. So for example in our case (`D1`), the superclass of `C` is `B`.
+
+
+
+Refined Types (refinements)
+---------------------------
+Refinements are very easy to explain as "subclassing without naming the subclass". So in source code it would look like this:
+
+```
+class Entity
+
+trait Persister {
+  def doPersist(e: Entity) = {
+    e.persistForReal()
+  }
+}
+
+// our refined instance (and type):
+val refinedMockPersister = new Persister {
+  override def doPersist(e: Entity) = ()
+}
+```
+
+
+
+Type Alias
+----------
+It's not really another kind of type, but a trick we can use to make our code more readable:
+
+```
+type User = String
+type Age = Int
+
+val data:  ###[User, Age] =  ###.empty
+```
+
+Using this trick the  ### definition now suddenly "makes sense!". If we'd just use a  ### `String => String`, we'd make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc), but **name them** so it makes sense for the future reader of this class.
+
+Abstract Type Member
+--------------------
+
+Let's now go deeper into the use cases of Type Aliases, which we call Abstract Type Members.
+
+With Abstract Type Members we say "I expect someone to tell me about some type - I'll refer to it by the name MyType".
+It's most basic function is allowing us to define generic classes (templates), but instead of using the `class Clazz[A, B]` syntax, we name them inside the class, like this:
+
+```
+trait SimplestContainer {
+  type A      // Abstract Type Member
+  
+  def value: A
+}
+```
+
+Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about *Path-dependent Types*, as well as in the bellow example.
+
+todo; Then, this is how we would implement this trait:
+
+```
+object IntContainer extends SimplestContainer {
+  type A = Int
+  
+  def value = 42
+}
+```
+
+So we "provide the type" using an Type Alias on line 2 here, and now we can implement the value method, as it's type is known.
+
+
+
+Self-Recursive Type
+-------------------
+
+This we brought up with <a href="http://andrzejgrzesik.info">Andrzej Grzesik</a>, while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up <a href="http://andrzejgrzesik.info/2013/09/29/container-types/">on his blog, by explaining how the self-recursive generic type trick works in Java's Enum class</a>. Another nice blog post about this type-trick, is <a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">The dangers of correlating subtype polymorphism with generic polymorphism</a>, where lukaseder points out why/where this pattern may cause you trouble.
+
+```
+class Apple
+```
+
+
+Type Class
+----------
+
+```
+trait Writes[In, Out] {
+  def write(it: In): Out 
+}
+
+implicit val jsonWriter = new Writes[Person, Json] {
+  def writes(p: Person) = Json.toJson(p)
+}
+
+implicit class Writeable[A] {
+  def write(implicit writes: Writes[A])
+}
+```
+
+Type Constructor
+----------------
+Also known as Higher Kind (and a Kind is somewhat like a "Generic" if you're coming from java).
+
+A canonical example would be a List. Let's think of the type, as if it was a function. So List is basically something like this: `A => List[A]`, List takes a Type, ang returns the constructed type, `List[A]`.
+
+```
+```
+
+Self Type Annotation
+--------------------
+
+**Self Types** are used in order to "require" that, if another class uses this trait,
+it should also provide implementation of whatever it is that you're requireing.
+
+Let's look at an example where a service, requires some Module, which provides other services.
+We can state this using the following Self Type Annotation:
+
+```
+trait Service {
+  this: Module =>
+  
+  def doTheThings() = serviceInModule.doTheThings() 
+}
+```
+
+The second line can be read as "I'm a Module", which of course means that someone will have to give us this Module at instanciation time:
+
+```
+trait TestingModule extends Module { /*...*/ }
+
+new Service with TestingModule
+```
+
+If you were to try to instanciate it without mixing in the required trait it would fail like this:
+
+```
+new Service
+
+// class Service cannot be instantiated because it does not conform to its self-type Service with Module
+//              new Service
+//              ^
+```
+
+You should also keep in mind, that it's OK, to specify more than one trait when using the self-type syntax.
+And while we're at it, let's discuss why it is called self-type (except for the "yeah, it makes sense" factor). Turns out a popular style (and possibility) to write it looks like this:
+
+```
+class Service {
+  self: MongoModule with APIModule =>
+  
+  def delegated = self.doTheThings()
+}
+```
+
+In fact, you can use any identifier (not just `this` or `self`) and then refer to it from your class.
+
+Phantom Type
+------------
+Now we're starting to get into the more interesting Types! :-)
+
+Phantom Types are a mean of staticly validating your sources, during compile time. It's used in many libraries, to prevent you from using some API, with an object in "not the right state".
+
+To set the stage for our Phantom Type usage let's first define a `Service` class, and `trait`s to represent the state it is in. We want to prevent users of our API from calling `stop()` on an already `Stopped` instance, as well as prevent them from calling `start()` on an already `Running` instance.
+
+```
+// the traits are expected to be only used with our Service, 
+// which we nicely express using Self Type Annotations.
+trait Stopped { this: Service => }
+trait Running { this: Service => }
+```
+
+Now that we have our Types prepared, let's look at how the implementation will look like:
+
+```
+class ServiceHandle private (id: Id)
+object ServiceHandle { 
+  def create(id: Id) = new ServiceHandle(id) with Stopped 
+}
+```
+
+Here, during instanciation of the class, we mix in the `Stopped` trait right away.
+We've used this trick before in this blog post (series), but now it's finally time to explain it in detail.
+
+Turns out that the type of this newly created Service is not only `Service` but... `Service with Stopped`. It may seem underwhelming at first that "that's it", but let's move on to the `start` and `stop` commands to see why this us so nice interesting.
+
+```
+def start(s: ServiceHandle with Stopped) = {
+  s.start()
+  new ServiceHandle(s.id) with Running
+}
+```
+
+And we can do the same for stopping a Service. Other useful methods would be, `Id => Either[ServiceHandle with Stopped, ServiceHandle with Running]` which's implementation you can easily imagine.
+
+```
+def stop(s: ServiceHandle with Running) = {
+  s.stop()
+  new ServiceHandle(s.id) with Stopped
+}
+```
+
+TODO MAKE BETTER EXAMPLES
+
+
+
+Fun Java Fact: A similar end-result - failing during compilation - can also be done in Java, using annotation processors and Annotated types (you should check out Adam Warski's example on this if you're curious).
+
+Structural Type
+---------------
+
+Strucural Types are often compared to "*type-safe duck typing*", which is quite a good comparation if you'd want to get some intuition for it.
+
+So far we've only been thinking about types in terms of "*does it implement interface X?*". With **structural types** we can go a step further and start reasoning 
+about the structure of a given object (hence the name). When using structure to check if something matches such type we have to change our question to: "*does it have a method with this signature?*". 
+
+Let's look at a very popular use-case in action, to see why it is so powerful. Imagine that you have many classes of things that can be *closed*. In Java-land one would usualy implement the `java.io.Closeable` interface in order to make it possible to write some common `Closeables` utility class (in fact, *Google Guava* provides such an utility class). Now imagine that someone also implemented a `MyOwnCloseable` class but didn't extend `java.io.Closeable`. Your `Closeables` library would be stuck - as due to the static typing, you would not be able to pass instances of `MyOwnCloseable` into it. Let's solve this problem via using Structural Typing:
+
+```
+type JavaCloseable = java.io.Closeable 
+// reminder, it's body is: { def close(): Unit }
+
+class MyOwnCloseable {
+  def close(): Unit = ()
+}
+
+
+// method taking a Structural Type
+def closeQuietly(closeable: { def close(): Unit }) = 
+  try {
+    closeable.close()
+  } catch {
+    case ex: Exception => // ignore...
+  }
+
+  
+// takes a java.io.File (implements Closeable):
+closeQuietly(new StringReader("example"))
+
+// takes 
+closeQuietly(new MyOwnCloseable)
+```
+
+The structural type is defined on the method's parameter here. It basically says that the only thing we expect from the type that should be passed in here
+is that it should have this method. It could have more methods - so it's not an exact match but the minimal set of methods a type has to define in order to be valid for us.
+
+Another fact to keep in mind when using **Structural Typing is that it actually has huge (negative) runtime performance implications, as it is actually implemented
+using reflection**. We won't look into the byte code for this case, but remember that it's very easy to investitage the generated bytecode for scala (or java) classes, by using :javap in the Scala REPL, so you can check it out yourself.
+
+Before we move over to the next subject, let's briefly touch on a small but neat stype tip.
+Imagine that your Structural Type is quite big, an example would be - a type representing something that you can open, work on, and then must close.
+By using a Type Alias (described in detail in another section) with the Structural Type, we're able to separate the type definition from the method, where we want to take in such instance:
+
+```
+type OpenerCloser = { 
+  def open(): Unit
+  def close(): Unit 
+}
+
+def on(it: OpenerCloser)(fun: OpenerCloser => Unit) = {
+  it.open()
+  fun(it)
+  it.close()
+}
+```
+
+So using this type alias, we've made the `def` way cleaner - so I'd highly recommend type aliasing bigger structural types. And one last warning, always check
+if you really need to reach for structural typing, and cannot do it in some other way - as it has quite some negative performance impact.
+
+Path Dependent Type
+-----------------------
+
+This Type allows us to type-check on a Type internal to another class. This may seem weird at first, but is very intuitive once you see it:
+
+```
+class Outer {
+  class Inner
+}
+
+val out1 = new Outer
+val out1in = new out1.Inner // concrete instance, created from inside of Outer
+
+val out2 = new Outer
+val out2in = new out2.Inner // another instance of Inner, with the enclosing instance out2
+
+// the path dependent type. The "path" is "inside out1".
+type PathDep1 = out1.Inner
+
+
+// type checks
+
+val typeChecksOk: PathDep1 = out1in
+// OK
+
+val typeCheckFails: PathDep1 = out2in
+// <console>:27: error: type mismatch;
+// found   : out2.Inner
+// required: PathDep1
+//    (which expands to)  out1.Inner
+//       val typeCheckFails: PathDep1 = out2in 
+```
+
+The ey to understand here isthat "each class Outer, has it's own Inner class", so it's a different Type - dependent on which path we use to get there.
+
+Using this kind of typing is useful, we're able to enforce getting the type from inside of a concrete parameter. An example of a signature using this typing would be:
+
+```
+class Parent {
+  class Child
+}
+
+class ChildrenContainer(p: Parent) {
+  type ChildOfThisParent = p.Child
+  
+  def add(c: ChildOfThisParent) = ???
+}
+```
+
+Using the path dependent type we have now encoded in the type system, the logic,
+that this container should only contain children of this parent - and not "any parent".
+
+We'll see how to require the "child of any parent" Type using Type Projectsions in the next section.
+
+
+Type Projection
+---------------
+Type Projections are similar to Path Dependent Types, in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes, splitting them with a `#` sign (hash sign, pound sign). Let's start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):
+
+```
+// our example class structure
+class Outer {
+  class Inner
+}
+
+// Type Projection (and alias) refering to Inner
+type OuterInnerProjection = Outer#Inner
+
+val out1 = new Outer
+val out1in = new out1.Inner
+```
+
+Another nice intuition about path dependent vs. projections is that Type Projections can be used for "type level programming" ;-)
+
+Existential Types
+-----------------
+
+Existential Types are something that deeply relates to Type Erasure, which JVM languages "have to live with".
+
+```
+val thingy: Any = ???
+
+thingy match {
+  case l: List[a] => 
+     // lower case 'a', matches all types... what type is 'a'?!
+}
+```
+
+We don't know the type of `a`, because of runtime type erasure. We know though that List is a type constructor, `* -> *`, so there must have been some type, it could have used to construct a valid `List[T]`. This "some type", is the **existentional type**!
+
+Scala provides a shortcut for it:
+
+```
+List[_]
+ //  ^ some type, no idea which one!
+```
+
+Let's say you're working with some Abstract Type Member, that in our case will be some Monad.
+We want to force users of our class into using only `Cool` instances within this Monad, because for example,
+only for these Types our Monad has any meaning. We can do this via Type Bounds on these *Existential Type T*:
+
+```
+type Monad[T] forSome { type T >: Cool }
+```
+
+http://mikeslinn.blogspot.com/2012/08/scala-existential-types.html
+
+
+Type Lambda
+-----------
+In type lambda's we'll be using *Path Dependent* as well as *Structural Types*, so if you skipped that sections you may want to go back to it.
+
+Before we look at Type Lambdas, let's take a step back and remind ourselfs a bit about functions and currying.
+
+```
+class EitherMonad[A] extends Monad[({type λ[α] = Either[A, α]})#λ] {
+  def point[B](b: B): Either[A, B]
+  def bind[B, C](m: Either[A, B])(f: B => Either[A, C]): Either[A, C]
+}
+```
+
+
+Dynamic Type
+------------
+
+I've had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?
+
+*Scala allows us to have **Dynamic Types**, right inside of a Staticly/Strictly Typed language!* Which is why I was considering to skip it, and leave a separate place for it's description - as it's basically "hacking around" all the descriptions you've seen above ;-) Let's see it in action though, and how it fits into the Scala Type-ecosystem.
+
+Imagine a class `JsonObject` which contains arbitrary JSON data. Let's have methods, matching the keys of this JSON object, which would return an `Option[JValue]`, where a JValue can be another `JObject`, `JArray` or `JString` / `JNumber`. The usage would look like the example bellow. 
+
+*But before that, remember to enable this language feature in the given file (or REPL) via importing it.*
+There are a few features (like the experimental macros for example) that need to be explicitly imported in a file to be enabled. If you want to know more about these features, take a look at the [`scala.language`](http://www.scala-lang.org/api/current/index.html#scala.language$) object or read the Scala Improvement Process 18 document ([SIP-18](https://docs.google.com/document/d/1nlkvpoIRkx7at1qJEZafJwthZ3GeIklTFhqmXMvTX9Q/edit)).
+
+```
+// remember, that we have to enable this language feature by importing it!
+import scala.language.dynamics
+```
+
+```
+// TODO: Has missing implementation
+class Json(s: String) extends Dynamic {
+  ???
+}
+
+val jsonString = """
+  { 
+    "name": "Konrad",
+    "favLangs": ["Scala", "Go", "SML"]
+  }
+"""
+
+val json = new Json(jsonString)
+
+val name: Option[String] = json.name
+// will compile (once we implement)!
+```
+
+So... how do we fit this into an otherwise Statically Typed language? The answer is simple - compiler rewrites and a *special marker trait*: `scala.Dynamic`.
+
+Ok, end of rant and back to the basics. So... How do we use Dynamic? In fact, it's used by implementing a few "magic" methods:
+
+* **applyDynamic**
+* **applyDynamicNamed**
+* **selectDynamic**
+* **updateDynamic**
+
+
+Let's take a look (with examples, at each of them. We'll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn't (back then) compile) and make it work this time ;-)
+
+### applyDynamic ###
+Ok, our first magic method looks like this:
+
+```
+// applyDynamic example
+object OhMy extends Dynamic {
+  def applyDynamic(methodName: String)(args: Any*) {
+    println(s"""|  methodName: $methodName,
+                |args: ${args.mkString(",")}""".stripMargin)
+  }
+}
+
+OhMy.dynamicMethod("with", "some", 1337)
+```
+
+So the signature of **applyDynamic** takes the method name and it's arguments. So obviously we'd have to access them by their order. Very nice for building up some strings etc. Our implementation will only print what we want to know about the method being called. Did it really get the values/method name we would exect? You can try it out (it's copy paste ready) in your Scala 2.10+ REPL - if you don't have one at hand: yeah, the output would be:
+
+
+```
+methodName: dynamicMethod,
+  args: with,some,1337
+```
+  
+
+### applyDynamicNamed ###
+Ok, that was easy. But it didn't give us too much control over the names of the parameters.
+Wouldn't it be nice if we could just write `JSON.node(nickname = "ktoso")`? Well... turns out we can!
+
+```
+// applyDynamicNamed example
+object JSON extends Dynamic {
+  def applyDynamicNamed(name: String)(args: (String, Any)*) {
+    println(s"""Creating a $name, for:\n "${args.head._1}": "${args.head._2}" """)
+  }
+}
+
+JSON.node(nickname = "ktoso")
+```
+
+So this time instead of just a list of values, we also get their names. Thanks to this the response for this example will be:
+
+```
+Creating a node, for:
+"nickname": "ktoso"
+```
+
+I can easily imagine some pretty slick <strong>DLSs</strong> being built around this!
+
+### selectDynamic ###
+Not it's time for the more "unusual" methods. apply methods we're pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the example with applyDynamic here, and try to act like it has a method without ()</strong>:
+
+```
+OhMy.name // compilation error
+```
+
+Hey! Why didn't this work with <strong>applyDynamic</strong>? Yeah, you figured it out already I guess. Such methods (without `()`) are treated *special*, as they would usualy represent fields for example. `applyDynamic` won't trigger on such calls. 
+
+Let's look at our first `selectDynamic` call:
+
+```
+class Json(s: String) extends Dynamic {
+  def selectDynamic(name: String): Option[String] = 
+    parse(s).get(name)
+}
+```
+
+And this time when we execute `HasStuff.bananas` we'll get "I have bananas!" as expected. Notice that here we return a value instead of printing it. It's because it "acts as a field" this time around. But we could also return things (of arbitrary types) from any other method described here (<strong>applyDynamic</strong> <strong>could return the string instead of printing it</strong>).
+
+### updateDynamic ###
+What's left you ask? Ask yourself the following question then: "Since I can act like a `Dynamic` object has some value in some field... What else should I be able to do with it?" My answer to that would be: "set it"! That's what `updateDynamic` is used for. There is one special rule about `updateDynamic` though - it's only valid if you also took care about selectDynamic - that's why in the first example the code generated errors about both - select and update. For example if we'd implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn't compile anyway. It makes sense in terms of plain semantics if you think about it.
+
+When we're done with this example, we can actually make the (wrong) code from the first code snippet work. The bellow snippet will be an implementation of what was shown on the first snippet on that other website, and this time it'll actually work ;-)
+
+```
+object MagicBox extends Dynamic {
+  private var box = mutable.Map[String, Any]()
+
+  def updateDynamic(name: String)(value: Any) { box(name) = value }
+  def selectDynamic(name: String) = box(name)
+}
+```
+
+Using this <strong>Dynamic</strong> "<strong>MagicBox</strong>" we can store items at arbitrary "fields" (well, they do seem like fields, even though they are not ;-)). An example run might look like:
+
+```
+scala> MagicBox.banana = "banana"
+MagicBox.banana: Any = banana
+
+scala> MagicBox.banana
+res7: Any = banana
+
+scala> MagicBox.unknown
+java.util.NoSuchElementException: key not found: unknown
+```
+
+By the way... are you curious how Dynamic <a href="https://github.com/scala/scala/blob/master/src/library/scala/Dynamic.scala">[source code]</a> is implemented? The fun part here is that the trait Dynamic, does absolutely nothing by itself - it's "empty", just a marker interface. Obviously all the heavylifting (*call-site-rewriting*) is done by the compiler here.
+
+
+
+
+Links and Kudos
+---------------
+
+Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I've found helpful (and you might too).
+
+* Twitter's Scala School: http://twitter.github.io/scala_school quite a bit of Scala concepts. Which helped me a lot in nicely explaining Variance (nicest explanation I found, since "ever").
+* Very old, but still valid explanation of Universal Types: http://www.scala-lang.org/old/node/128
+* Existential Types by D.R. MacIver: http://www.drmaciver.com/2008/03/existential-types-in-scala/
+* Scala Doc: http://www.scala-lang.org/api/current/index.html
+* Wikipedia on the Diamond Problem: http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem
+* Safari Books online about Type Linearization: http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/
+* One of the first blogs about Phantom Types in Scala: http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html
+* Rogue (where I occasionally PullRequest too) is a great example of using Phantom Types: http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/
+* Great StackOverflow answer by **Kriss Nuttycombe** about Type Lambdas: http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits
+
