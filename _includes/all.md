@@ -4,15 +4,13 @@ The different types of... Types in Scala
 
 This blog post came into being after a few discussions about Types in Scala after some of JavaOne's parties in 2013. After those discussions I figured that many questions are often repeated by different people, during their learning of Scala. I though that we didn't have a full list of all tricks what we can to with Types in Scala, so I decided to write such a list - giving real life examples why we'd need these types.
 
-Types of Types
-==============
 
 Type Annotation
 ---------------
 Also known as "just a type" ;-) In case you're a total Scala beginner, let's take a look at how to explicitly say a value
 is of some type:
 
-```
+```scala
 trait Thing
 def getThing = new Thing
 
@@ -51,7 +49,7 @@ Scala takes on the idea of having one common Top Type for all Types by introduci
 
 Thanks to this hierarchy, we're able to define methods taking `Any` - thus being compatible with both `scala.Int` instances as well as `java.lang.String`:
 
-```
+```scala
 class Person
 
 val allThings = ArrayBuffer[Any]()
