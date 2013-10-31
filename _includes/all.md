@@ -23,7 +23,7 @@ val thing: Thing = getThing
 
 In these situations, leaving out the Type Annotation is OK. Although you may decide to always annotate return types of public methods (*that's very good idea!*) in order to make the code more self-documenting.
 
-In case of doubt you can refer to the bellow hint-questions to wether or not, include a Type Annotation.
+In case of doubt you can refer to the below hint-questions to wether or not, include a Type Annotation.
 
 * It it a parameter? **Yes**, you have to.
 * Is it a public methods return value? **Yes**, for self-documenting code and control over exported types.
@@ -84,11 +84,11 @@ check(new Object) // String (AnyRef) -> fails to compile
   
 ```
 
-In the above example I've used a Type Class Checker[T] and a type bound, which will be discussed bellow. But the general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
+In the above example I've used a Type Class Checker[T] and a type bound, which will be discussed below. The general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
 
 The Bottom Types - Nothing and Null
 -----------------------------------
-In Scala everything has "some" type... but have you ever wondered how the type inferencer can still work, and infer sound types when working with "weird" situations like throwing exceptions? Let's investigate the bellow "if/else throw" example:
+In Scala everything has "some" type... but have you ever wondered how the type inferencer can still work, and infer sound types when working with "weird" situations like throwing exceptions? Let's investigate the below "if/else throw" example:
 
 ```
 val thing: Int = 
@@ -107,7 +107,7 @@ Type inference always looks for the "common type" of both branches in an if stam
 ```
 Types visualized:
 
-           [Int] -> ... -> AnyVal -> Any
+           [Int] -> ... -> AnyVal -> Anything
 Nothing -> [Int] -> ... -> AnyVal -> Any
 ```
 
@@ -139,7 +139,7 @@ scala> :type if (false) 23 else null
 Any
 ```
 
-This is different than the case with a String object in one of the branches. Let's look into the types in detail here, as `Null` is a bit less "extents everything" than `Nothing`. Let's see what `Int` extends in detail, by using `:type` again on it:
+This is different than the case with a String object in one of the branches. Let's look into the types in detail here, as `Null` is a bit less "extends everything" than `Nothing`. Let's see what `Int` extends in detail, by using `:type` again on it:
 
 ```
 scala> :type -v 12
@@ -178,7 +178,7 @@ but you'll notice that we cannot get it's type the same way as we would with an 
 I surprisingly often, would get the question on how to pass an object into a method. Just saying `obj: ExampleObj` won't work
 because that's already referring to the instance, so there's a member called `type` which should be used in such cases. 
 
-How it might look like in your code is explained by the bellow example:
+How it might look like in your code is explained by the below example:
 
 ```
 object ExampleObj
@@ -207,7 +207,7 @@ http://www.slideshare.net/dgalichet/demystifying-scala-type-system
 | **Contravariant** | `C[T]` is a subclass of `C[T']`        | `C[-T]`      |
 
 There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we'll use a `List[A]
-` as our example, and functions. A `List` is defined as `List[+A]` in Scala, so the bellow code is valid:
+` as our example, and functions. A `List` is defined as `List[+A]` in Scala, so the below code is valid:
 
 ```
 class Human
@@ -252,7 +252,7 @@ b1.b
 
 So far this should have been relatively well known to you. Now let's to into the world of the "diamond problem",
 which people who know C++ might have been expecting. Basically "The Diamond Problem" is a situation during multiple inheritance
-where we're not sure to what we want to refer to. The bellow image ilustrates the problem, if you would think of traits as if they were
+where we're not sure to what we want to refer to. The below image ilustrates the problem, if you would think of traits as if they were
 directly multiple inheritance:
 
 ### Type Linearization vs. The Diamond Problem ###
@@ -314,10 +314,10 @@ Any with AnyRef with A with B with C with <D1>
 ```
 
 So when calling the `common` method, it's now very simple to decide which version we want to call: we simply look at the linearized type,
-and try to resolve the method by going from the right in the resulting linearized type. In the case of `D1`, the "right most" trait providing an implementation of `common` is `C`, so it's overriding the implementation provided by `B`. The result of calling `common` inside `D1` would be `"c"`.
+and try to resolve the method by going from the right in the resulting linearized type. In the case of `D1`, the "rightmost" trait providing an implementation of `common` is `C`, so it's overriding the implementation provided by `B`. The result of calling `common` inside `D1` would be `"c"`.
 
 You can wrap your head around this method by trying it out on the `D2` class - it should linearize with `B` after `C`, thus yielding a `"b"` if you'd run the code.
-Also it's rather easy to resolve the simpler cases of linearization by just thinking "right most wins", but this is quite an simplification, which while helpful, does not give the full picture about the algorithm.
+Also it's rather easy to resolve the simpler cases of linearization by just thinking "rightmost wins", but this is quite an simplification, which while helpful, does not give the full picture about the algorithm.
 
 It is worth mentioning that using this technique we also know *"who is my `super`?"*. It's as easy as "looking left" in the linearized type, from wherever class you want to check who your superclass is. So for example in our case (`D1`), the superclass of `C` is `B`.
 
@@ -373,7 +373,7 @@ trait SimplestContainer {
 }
 ```
 
-Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about *Path-dependent Types*, as well as in the bellow example.
+Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about *Path-dependent Types*, as well as in the below example.
 
 todo; Then, this is how we would implement this trait:
 
@@ -385,7 +385,7 @@ object IntContainer extends SimplestContainer {
 }
 ```
 
-So we "provide the type" using an Type Alias on line 2 here, and now we can implement the value method, as it's type is known.
+So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as it's type is known.
 
 
 
@@ -714,7 +714,7 @@ I've had a hard time trying to decide if I should put this type into this vademe
 
 *Scala allows us to have **Dynamic Types**, right inside of a Staticly/Strictly Typed language!* Which is why I was considering to skip it, and leave a separate place for it's description - as it's basically "hacking around" all the descriptions you've seen above ;-) Let's see it in action though, and how it fits into the Scala Type-ecosystem.
 
-Imagine a class `JsonObject` which contains arbitrary JSON data. Let's have methods, matching the keys of this JSON object, which would return an `Option[JValue]`, where a JValue can be another `JObject`, `JArray` or `JString` / `JNumber`. The usage would look like the example bellow. 
+Imagine a class `JsonObject` which contains arbitrary JSON data. Let's have methods, matching the keys of this JSON object, which would return an `Option[JValue]`, where a JValue can be another `JObject`, `JArray` or `JString` / `JNumber`. The usage would look like the example below. 
 
 *But before that, remember to enable this language feature in the given file (or REPL) via importing it.*
 There are a few features (like the experimental macros for example) that need to be explicitly imported in a file to be enabled. If you want to know more about these features, take a look at the [`scala.language`](http://www.scala-lang.org/api/current/index.html#scala.language$) object or read the Scala Improvement Process 18 document ([SIP-18](https://docs.google.com/document/d/1nlkvpoIRkx7at1qJEZafJwthZ3GeIklTFhqmXMvTX9Q/edit)).
@@ -770,7 +770,7 @@ object OhMy extends Dynamic {
 OhMy.dynamicMethod("with", "some", 1337)
 ```
 
-So the signature of **applyDynamic** takes the method name and it's arguments. So obviously we'd have to access them by their order. Very nice for building up some strings etc. Our implementation will only print what we want to know about the method being called. Did it really get the values/method name we would exect? You can try it out (it's copy paste ready) in your Scala 2.10+ REPL - if you don't have one at hand: yeah, the output would be:
+So the signature of **applyDynamic** takes the method name and it's arguments. So obviously we'd have to access them by their order. Very nice for building up some strings etc. Our implementation will only print what we want to know about the method being called. Did it really get the values/method name we would exect? The output would be:
 
 
 ```
@@ -826,7 +826,7 @@ And this time when we execute `HasStuff.bananas` we'll get "I have bananas!" as 
 ### updateDynamic ###
 What's left you ask? Ask yourself the following question then: "Since I can act like a `Dynamic` object has some value in some field... What else should I be able to do with it?" My answer to that would be: "set it"! That's what `updateDynamic` is used for. There is one special rule about `updateDynamic` though - it's only valid if you also took care about selectDynamic - that's why in the first example the code generated errors about both - select and update. For example if we'd implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn't compile anyway. It makes sense in terms of plain semantics if you think about it.
 
-When we're done with this example, we can actually make the (wrong) code from the first code snippet work. The bellow snippet will be an implementation of what was shown on the first snippet on that other website, and this time it'll actually work ;-)
+When we're done with this example, we can actually make the (wrong) code from the first code snippet work. The below snippet will be an implementation of what was shown on the first snippet on that other website, and this time it'll actually work ;-)
 
 ```
 object MagicBox extends Dynamic {
@@ -854,18 +854,3 @@ By the way... are you curious how Dynamic <a href="https://github.com/scala/scal
 
 
 
-
-Links and Kudos
----------------
-
-Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I've found helpful (and you might too).
-
-* Twitter's Scala School: http://twitter.github.io/scala_school quite a bit of Scala concepts. Which helped me a lot in nicely explaining Variance (nicest explanation I found, since "ever").
-* Very old, but still valid explanation of Universal Types: http://www.scala-lang.org/old/node/128
-* Existential Types by D.R. MacIver: http://www.drmaciver.com/2008/03/existential-types-in-scala/
-* Scala Doc: http://www.scala-lang.org/api/current/index.html
-* Wikipedia on the Diamond Problem: http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem
-* Safari Books online about Type Linearization: http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/
-* One of the first blogs about Phantom Types in Scala: http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html
-* Rogue (where I occasionally PullRequest too) is a great example of using Phantom Types: http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/
-* Great StackOverflow answer by **Kriss Nuttycombe** about Type Lambdas: http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits
