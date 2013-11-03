@@ -1,0 +1,157 @@
+<a name="dynamictype"></a>
+
+1.20\. Dynamic Type
+------------
+
+I've had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?
+
+*Scala allows us to have **Dynamic Types**, right inside of a Staticly/Strictly Typed language!* Which is why I was considering to skip it, and leave a separate place for it's description - as it's basically "hacking around" all the descriptions you've seen above ;-) Let's see it in action though, and how it fits into the Scala Type-ecosystem.
+
+Imagine a class `JsonObject` which contains arbitrary JSON data. Let's have methods, matching the keys of this JSON object, which would return an `Option[JValue]`, where a JValue can be another `JObject`, `JArray` or `JString` / `JNumber`. The usage would look like the example below.
+
+*But before that, remember to enable this language feature in the given file (or REPL) via importing it.*
+There are a few features (like the experimental macros for example) that need to be explicitly imported in a file to be enabled. If you want to know more about these features, take a look at the [`scala.language`](http://www.scala-lang.org/api/current/index.html#scala.language$) object or read the Scala Improvement Process 18 document ([SIP-18](https://docs.google.com/document/d/1nlkvpoIRkx7at1qJEZafJwthZ3GeIklTFhqmXMvTX9Q/edit)).
+
+```scala
+// remember, that we have to enable this language feature by importing it!
+import scala.language.dynamics
+```
+
+```scala
+// TODO: Has missing implementation
+class Json(s: String) extends Dynamic {
+  ???
+}
+
+val jsonString = """
+  {
+    "name": "Konrad",
+    "favLangs": ["Scala", "Go", "SML"]
+  }
+"""
+
+val json = new Json(jsonString)
+
+val name: Option[String] = json.name
+// will compile (once we implement)!
+```
+
+So... how do we fit this into an otherwise Statically Typed language? The answer is simple - compiler rewrites and a *special marker trait*: `scala.Dynamic`.
+
+Ok, end of rant and back to the basics. So... How do we use Dynamic? In fact, it's used by implementing a few "magic" methods:
+
+* **applyDynamic**
+* **applyDynamicNamed**
+* **selectDynamic**
+* **updateDynamic**
+
+
+Let's take a look (with examples, at each of them. We'll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn't (back then) compile) and make it work this time ;-)
+
+<a name="applydynamic###"></a>
+
+### 1.20.1\. applyDynamic ###
+Ok, our first magic method looks like this:
+
+```scala
+// applyDynamic example
+object OhMy extends Dynamic {
+  def applyDynamic(methodName: String)(args: Any*) {
+    println(s"""|  methodName: $methodName,
+                |args: ${args.mkString(",")}""".stripMargin)
+  }
+}
+
+OhMy.dynamicMethod("with", "some", 1337)
+```
+
+So the signature of **applyDynamic** takes the method name and it's arguments. So obviously we'd have to access them by their order. Very nice for building up some strings etc. Our implementation will only print what we want to know about the method being called. Did it really get the values/method name we would exect? The output would be:
+
+
+```scala
+methodName: dynamicMethod,
+  args: with,some,1337
+```
+
+
+<a name="applydynamicnamed###"></a>
+
+### 1.20.2\. applyDynamicNamed ###
+Ok, that was easy. But it didn't give us too much control over the names of the parameters.
+Wouldn't it be nice if we could just write `JSON.node(nickname = "ktoso")`? Well... turns out we can!
+
+```scala
+// applyDynamicNamed example
+object JSON extends Dynamic {
+  def applyDynamicNamed(name: String)(args: (String, Any)*) {
+    println(s"""Creating a $name, for:\n "${args.head._1}": "${args.head._2}" """)
+  }
+}
+
+JSON.node(nickname = "ktoso")
+```
+
+So this time instead of just a list of values, we also get their names. Thanks to this the response for this example will be:
+
+```scala
+Creating a node, for:
+"nickname": "ktoso"
+```
+
+I can easily imagine some pretty slick <strong>DLSs</strong> being built around this!
+
+<a name="selectdynamic###"></a>
+
+### 1.20.3\. selectDynamic ###
+Not it's time for the more "unusual" methods. apply methods we're pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the example with applyDynamic here, and try to act like it has a method without ()</strong>:
+
+```scala
+OhMy.name // compilation error
+```
+
+Hey! Why didn't this work with <strong>applyDynamic</strong>? Yeah, you figured it out already I guess. Such methods (without `()`) are treated *special*, as they would usualy represent fields for example. `applyDynamic` won't trigger on such calls.
+
+Let's look at our first `selectDynamic` call:
+
+```scala
+class Json(s: String) extends Dynamic {
+  def selectDynamic(name: String): Option[String] =
+    parse(s).get(name)
+}
+```
+
+And this time when we execute `HasStuff.bananas` we'll get "I have bananas!" as expected. Notice that here we return a value instead of printing it. It's because it "acts as a field" this time around. But we could also return things (of arbitrary types) from any other method described here (<strong>applyDynamic</strong> <strong>could return the string instead of printing it</strong>).
+
+<a name="updatedynamic###"></a>
+
+### 1.20.4\. updateDynamic ###
+What's left you ask? Ask yourself the following question then: "Since I can act like a `Dynamic` object has some value in some field... What else should I be able to do with it?" My answer to that would be: "set it"! That's what `updateDynamic` is used for. There is one special rule about `updateDynamic` though - it's only valid if you also took care about selectDynamic - that's why in the first example the code generated errors about both - select and update. For example if we'd implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn't compile anyway. It makes sense in terms of plain semantics if you think about it.
+
+When we're done with this example, we can actually make the (wrong) code from the first code snippet work. The below snippet will be an implementation of what was shown on the first snippet on that other website, and this time it'll actually work ;-)
+
+```scala
+object MagicBox extends Dynamic {
+  private var box = mutable.Map[String, Any]()
+
+  def updateDynamic(name: String)(value: Any) { box(name) = value }
+  def selectDynamic(name: String) = box(name)
+}
+```
+
+Using this <strong>Dynamic</strong> "<strong>MagicBox</strong>" we can store items at arbitrary "fields" (well, they do seem like fields, even though they are not ;-)). An example run might look like:
+
+```scala
+scala> MagicBox.banana = "banana"
+MagicBox.banana: Any = banana
+
+scala> MagicBox.banana
+res7: Any = banana
+
+scala> MagicBox.unknown
+java.util.NoSuchElementException: key not found: unknown
+```
+
+By the way... are you curious how Dynamic <a href="https://github.com/scala/scala/blob/master/src/library/scala/Dynamic.scala">[source code]</a> is implemented? The fun part here is that the trait Dynamic, does absolutely nothing by itself - it's "empty", just a marker interface. Obviously all the heavylifting (*call-site-rewriting*) is done by the compiler here.
+
+
+

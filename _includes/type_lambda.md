@@ -1,0 +1,14 @@
+<a name="typelambda"></a>
+
+1.19\. Type Lambda
+-----------
+In type lambda's we'll be using *Path Dependent* as well as *Structural Types*, so if you skipped that sections you may want to go back to it.
+
+Before we look at Type Lambdas, let's take a step back and remind ourselfs a bit about functions and currying.
+
+```scala
+class EitherMonad[A] extends Monad[({type λ[α] = Either[A, α]})#λ] {
+  def point[B](b: B): Either[A, B]
+  def bind[B, C](m: Either[A, B])(f: B => Either[A, C]): Either[A, C]
+}
+```
