@@ -1,15 +1,16 @@
-<a name="thedifferenttypesof...typesinscala"></a>
+Table of Contents
+-----------------
 
-1\. The different types of... Types in Scala
+!TOC
+
+The different types of... Types in Scala
 ========================================
 
 
 This blog post came into being after a few discussions about Types in Scala after some of JavaOne's parties in 2013. After those discussions I figured that many questions are often repeated by different people, during their learning of Scala. I though that we didn't have a full list of all tricks what we can to with Types in Scala, so I decided to write such a list - giving real life examples why we'd need these types.
 
 
-<a name="typeannotation"></a>
-
-1.1\. Type Annotation
+Type Annotation
 ---------------
 Scala has Type Inference, which means that we can skip telling the Type of something each time in the source code,
 and instead we just use `val`s or `def`s without "saying the type explicitly in the source". This being explicit about
@@ -39,9 +40,7 @@ In case of doubt you can refer to the below hint-questions to wether or not, inc
 So we put Type Annotations after value names. Having this said, let's jump into the next topics, where these types will become
 more and more interesting.
 
-<a name="unifiedtypesystem-anyanyrefanyval"></a>
-
-1.2\. Unified Type System - Any, AnyRef, AnyVal
+Unified Type System - Any, AnyRef, AnyVal
 -----------------------------------------
 
 We refer to a Scala's typesystem as being "unified" because there is a "Top Type", `Any`. **This is different than Java**, which has "special cases" in form of primitive types (`int`, `long`, `float`, `double`, `byte`, `char`, `short`, `boolean`), which do not extend Java's "Almost-Top Type" - `java.lang.Object`.
@@ -76,13 +75,12 @@ For the Typesystem it's transparent, though on the JVM level once we get into `A
 38: invokestatic  #53  // Method scala/runtime/BoxesRunTime.boxToInteger:(I)Ljava/lang/Integer;
 41: invokevirtual #57  // Method scala/collection/mutable/ArrayBuffer.$plus$eq:(Ljava/lang/Object;)Lscala/collection/mutable/ArrayBuffer;
 ```
-
 You'll notive that `myInt` is still carrying the value of a `int primitive` (this is visible as `I` at the end of the `myInt:()I` *invokevirtual* call). Then, right before adding it to the ArrayBuffer, scalac inserted a call to `BoxesRunTime.boxToInteger:(I)Ljava/lang/Integer` (a small hint for not frequent bytecode readers, the method it calls is: `public Integer boxToInteger(i: int)`). This way, by having a smart compiler and treating everything as an object in this common hierarchy we're able to get away from the "but primitives are different" edge-cases, at least at the level of our Scala source code - the compiler takes care of it for us. On JVM level, the distinction is still there of course, and scalac will do it's best to keep using primitives wherever possible, as operations on them are faster, and take less memory (objects are obviously bigger than primitives).
 
 
 On the other hand, we can limit a method to only be able to work on "lightweight" Value Types:
 
-```scala
+```
 def check(in: AnyVal) = ()
 
 check(42)    // Int -> AnyVal
@@ -94,9 +92,7 @@ check(new Object) // -> AnyRef = fails to compile
 
 In the above example I've used a TypeClass `Checker[T]` and a type bound, which will be discussed below. The general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
 
-<a name="thebottomtypes-nothingandnull"></a>
-
-1.3\. The Bottom Types - Nothing and Null
+The Bottom Types - Nothing and Null
 -----------------------------------
 In Scala everything has "some" type... but have you ever wondered how the type inferencer can still work, and infer sound types when working with "weird" situations like throwing exceptions? Let's investigate the below "if/else throw" example:
 
@@ -179,9 +175,7 @@ Null            -> AnyRef -> [Any]
 infered type: Any
 ```
 
-<a name="typeofan`object`"></a>
-
-1.4\. Type of an `object`
+Type of an `object`
 -------------------
 
 Scala `object`s are implemented via classes (obviously - as it's the basic building block on the JVM),
@@ -200,9 +194,7 @@ def takeAnObject(obj: ExampleObj.type) = {}
 takeAnObject(ExampleObj)
 ```
 
-<a name="typevarianceinscala"></a>
-
-1.5\. Type Variance in Scala
+Type Variance in Scala
 ----------------------
 
 In Scala container types are **NOT variant at all by default**!
@@ -277,16 +269,12 @@ class Coder extends Human
 TODO
 
 
-<a name="traitsmix-ins"></a>
-
-1.6\. Traits (mix-ins)
+Traits (mix-ins)
 ----------------
 
 Scala has Traits, which you might already know from other languages, under such names as Mix-In or Module (in Ruby's case).
 
-<a name="traitsasin"interfaceswithimplementation"###"></a>
-
-### 1.6.1\. Traits, as in "interfaces with implementation" ###
+### Traits, as in "interfaces with implementation" ###
 
 First, let's take a look as the simplest thing possible about traits: 
 how we can basically treat a type with multiple traits mixed in, as if it is implementing these "interfaces with implementation",
@@ -317,9 +305,7 @@ which people who know C++ might have been expecting. Basically "The Diamond Prob
 where we're not sure to what we want to refer to. The below image ilustrates the problem, if you would think of traits as if they were
 directly multiple inheritance:
 
-<a name="typelinearizationvs.thediamondproblem###"></a>
-
-### 1.6.2\. Type Linearization vs. The Diamond Problem ###
+### Type Linearization vs. The Diamond Problem ###
 
 ![diamond-inheritance-problem](http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Diamond_inheritance.svg/220px-Diamond_inheritance.svg.png)
 
@@ -387,9 +373,7 @@ It is worth mentioning that using this technique we also know *"who is my `super
 
 
 
-<a name="refinedtypesrefinements"></a>
-
-1.7\. Refined Types (refinements)
+Refined Types (refinements)
 ---------------------------
 Refinements are very easy to explain as "subclassing without naming the subclass". So in source code it would look like this:
 
@@ -410,9 +394,7 @@ val refinedMockPersister = new Persister {
 
 
 
-<a name="typealias"></a>
-
-1.8\. Type Alias
+Type Alias
 ----------
 It's not really another kind of type, but a trick we can use to make our code more readable:
 
@@ -425,9 +407,7 @@ val data:  ###[User, Age] =  ###.empty
 
 Using this trick the  ### definition now suddenly "makes sense!". If we'd just use a  ### `String => String`, we'd make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc), but **name them** so it makes sense for the future reader of this class.
 
-<a name="abstracttypemember"></a>
-
-1.9\. Abstract Type Member
+Abstract Type Member
 --------------------
 
 Let's now go deeper into the use cases of Type Aliases, which we call Abstract Type Members.
@@ -459,9 +439,7 @@ So we "provide the type" using a Type Alias on line 2 here, and now we can imple
 
 
 
-<a name="self-recursivetype"></a>
-
-1.10\. Self-Recursive Type
+Self-Recursive Type
 -------------------
 
 This we brought up with <a href="http://andrzejgrzesik.info">Andrzej Grzesik</a>, while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up <a href="http://andrzejgrzesik.info/2013/09/29/container-types/">on his blog, by explaining how the self-recursive generic type trick works in Java's Enum class</a>. Another nice blog post about this type-trick, is <a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">The dangers of correlating subtype polymorphism with generic polymorphism</a>, where lukaseder points out why/where this pattern may cause you trouble.
@@ -471,9 +449,7 @@ class Apple
 ```
 
 
-<a name="typeclass"></a>
-
-1.11\. Type Class
+Type Class
 ----------
 
 ```
@@ -490,9 +466,7 @@ implicit class Writeable[A] {
 }
 ```
 
-<a name="typeconstructor"></a>
-
-1.12\. Type Constructor
+Type Constructor
 ----------------
 Also known as *Higher Kinds*, Type Constructors act pretty much like functions, but on the type level.
 That is, if in normal programming you can have a function that takes a value `a` and returns a value `b` based on the previous one, then in type-level programming you'd think of a `List[A]` being a type constructor, that is:
@@ -538,9 +512,7 @@ And a small bonus for the curious, the kind of a concrete type is simply A (no p
 // java.lang.String's kind is A
 ```
 
-<a name="selftypeannotation"></a>
-
-1.13\. Self Type Annotation
+Self Type Annotation
 --------------------
 
 **Self Types** are used in order to "require" that, if another class uses this trait,
@@ -594,9 +566,7 @@ class Service {
 
 In fact, you can use any identifier (not just `this` or `self`) and then refer to it from your class.
 
-<a name="phantomtype"></a>
-
-1.14\. Phantom Type
+Phantom Type
 ------------
 Now we're starting to get into the more interesting Types! :-)
 
@@ -647,9 +617,7 @@ TODO MAKE BETTER EXAMPLES
 
 Fun Java Fact: A similar end-result - failing during compilation - can also be done in Java, using annotation processors and Annotated types (you should check out Adam Warski's example on this if you're curious).
 
-<a name="structuraltype"></a>
-
-1.15\. Structural Type
+Structural Type
 ---------------
 
 Strucural Types are often compared to "*type-safe duck typing*", which is quite a good comparation if you'd want to get some intuition for it.
@@ -710,9 +678,7 @@ def on(it: OpenerCloser)(fun: OpenerCloser => Unit) = {
 So using this type alias, we've made the `def` way cleaner - so I'd highly recommend type aliasing bigger structural types. And one last warning, always check
 if you really need to reach for structural typing, and cannot do it in some other way - as it has quite some negative performance impact.
 
-<a name="pathdependenttype"></a>
-
-1.16\. Path Dependent Type
+Path Dependent Type
 -----------------------
 
 This Type allows us to type-check on a Type internal to another class. This may seem weird at first, but is very intuitive once you see it:
@@ -767,9 +733,7 @@ that this container should only contain children of this parent - and not "any p
 We'll see how to require the "child of any parent" Type using Type Projectsions in the next section.
 
 
-<a name="typeprojection"></a>
-
-1.17\. Type Projection
+Type Projection
 ---------------
 Type Projections are similar to Path Dependent Types, in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes, splitting them with a `#` sign (hash sign, pound sign). Let's start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):
 
@@ -788,9 +752,7 @@ val out1in = new out1.Inner
 
 Another nice intuition about path dependent vs. projections is that Type Projections can be used for "type level programming" ;-)
 
-<a name="existentialtypes"></a>
-
-1.18\. Existential Types
+Existential Types
 -----------------
 
 Existential Types are something that deeply relates to Type Erasure, which JVM languages "have to live with".
@@ -824,9 +786,7 @@ type Monad[T] forSome { type T >: Cool }
 http://mikeslinn.blogspot.com/2012/08/scala-existential-types.html
 
 
-<a name="typelambda"></a>
-
-1.19\. Type Lambda
+Type Lambda
 -----------
 In type lambda's we'll be using *Path Dependent* as well as *Structural Types*, so if you skipped that sections you may want to go back to it.
 
@@ -840,9 +800,7 @@ class EitherMonad[A] extends Monad[({type λ[α] = Either[A, α]})#λ] {
 ```
 
 
-<a name="dynamictype"></a>
-
-1.20\. Dynamic Type
+Dynamic Type
 ------------
 
 I've had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?
@@ -890,9 +848,7 @@ Ok, end of rant and back to the basics. So... How do we use Dynamic? In fact, it
 
 Let's take a look (with examples, at each of them. We'll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn't (back then) compile) and make it work this time ;-)
 
-<a name="applydynamic###"></a>
-
-### 1.20.1\. applyDynamic ###
+### applyDynamic ###
 Ok, our first magic method looks like this:
 
 ```
@@ -916,9 +872,7 @@ methodName: dynamicMethod,
 ```
   
 
-<a name="applydynamicnamed###"></a>
-
-### 1.20.2\. applyDynamicNamed ###
+### applyDynamicNamed ###
 Ok, that was easy. But it didn't give us too much control over the names of the parameters.
 Wouldn't it be nice if we could just write `JSON.node(nickname = "ktoso")`? Well... turns out we can!
 
@@ -942,9 +896,7 @@ Creating a node, for:
 
 I can easily imagine some pretty slick <strong>DLSs</strong> being built around this!
 
-<a name="selectdynamic###"></a>
-
-### 1.20.3\. selectDynamic ###
+### selectDynamic ###
 Not it's time for the more "unusual" methods. apply methods we're pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the example with applyDynamic here, and try to act like it has a method without ()</strong>:
 
 ```
@@ -964,9 +916,7 @@ class Json(s: String) extends Dynamic {
 
 And this time when we execute `HasStuff.bananas` we'll get "I have bananas!" as expected. Notice that here we return a value instead of printing it. It's because it "acts as a field" this time around. But we could also return things (of arbitrary types) from any other method described here (<strong>applyDynamic</strong> <strong>could return the string instead of printing it</strong>).
 
-<a name="updatedynamic###"></a>
-
-### 1.20.4\. updateDynamic ###
+### updateDynamic ###
 What's left you ask? Ask yourself the following question then: "Since I can act like a `Dynamic` object has some value in some field... What else should I be able to do with it?" My answer to that would be: "set it"! That's what `updateDynamic` is used for. There is one special rule about `updateDynamic` though - it's only valid if you also took care about selectDynamic - that's why in the first example the code generated errors about both - select and update. For example if we'd implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn't compile anyway. It makes sense in terms of plain semantics if you think about it.
 
 When we're done with this example, we can actually make the (wrong) code from the first code snippet work. The below snippet will be an implementation of what was shown on the first snippet on that other website, and this time it'll actually work ;-)

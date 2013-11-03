@@ -19,7 +19,6 @@ Maybe an example of a different domain?
  - "Related hint: Including Type Annotations speeds up compilation, also it's generally nice to see the return type of a method." -> I would personally put these two ideas in the next paragraph, saying something like "Best practices are ... for ... reasons"
 
 Page 3
- - Is it important to say that C# has an unified type system? If so, I would rewrite these phrases, as it is at the moment I feel as if the parenthesis cuts the rythm of the initial phrase.
  - "typesystem" or "type system"?
  - Java primitive list is missing char
 
@@ -28,7 +27,6 @@ Page 4
  - "This way, by having a smart compiler and treating everything as an object in this common hierarchy we're able to get away from the "but primitives are different" edge-cases, at least at the level of our Scala source code - the compiler takes care of it for us." -> I think this is too hard to read due to length, consider breaking it down. Also, I would say "but primitives are different" sounds a bit whiny, I would remove the "but".
 
 Page 5
- - "... But the general idea is that this method" -> "... The general idea is that this method"
  - "(interresting)." -> "(interesting)."
 
 Page 6
