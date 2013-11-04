@@ -492,7 +492,7 @@ That is, if in normal programming you can have a function that takes a value `a`
 * by itself it's not a valid type, you need to fill in the A somehow - construct the type,
 * by fillinf it in with `Int` you'd get `List[Int]` which is a concrete type.
 
-Using this example, you can see how similar it is to normal constructors - with the only difference that here we worn on types, and not instances of objects. It's worth reminding here that in Scala it is not valid to say something is of type `List`, *unlike in Java* where javac would put the `List<Object>` for you. Scala is more strict here, and won't allow us to use `just a List` in the place of a type, as it's expecting a real type - not a type constructor.
+Using this example, you can see how similar it is to normal constructors - with the only difference that here we work on types, and not instances of objects. It's worth reminding here that in Scala it is not valid to say something is of type `List`, *unlike in Java* where javac would put the `List<Object>` for you. Scala is more strict here, and won't allow us to use `just a List` in the place of a type, as it's expecting a real type - not a type constructor.
 
 Related to this subject is that with **Scala 2.11.x** we're getting a new power user command in the REPL - the `:kind` command. It allows you to check if a type is higher kind or not. Let's check it our on a simple type constructor, such as `List[+A]` first:
 
