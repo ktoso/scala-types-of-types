@@ -411,10 +411,12 @@ It's not really another kind of type, but a trick we can use to make our code mo
 type User = String
 type Age = Int
 
-val data:  ###[User, Age] =  ###.empty
+val data:  Map[User, Age] =  Map.empty
 ```
 
-Using this trick the  ### definition now suddenly "makes sense!". If we'd just use a  ### `String => String`, we'd make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc), but **name them** so it makes sense for the future reader of this class.
+Using this trick the Map definition now suddenly "makes sense!". If we'd just use a  ### `String => Int`,
+we'd make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc),
+but **name them** so it makes sense for the future reader of this class.
 
 <a name="abstracttypemember"></a>
 
@@ -592,15 +594,18 @@ In fact, you can use any identifier (not just `this` or `self`) and then refer t
 ------------
 Now we're starting to get into the more interesting Types! :-)
 
-Phantom Types are a mean of staticly validating your sources, during compile time. It's used in many libraries, to prevent you from using some API, with an object in "not the right state".
+Phantom Types are a mean of staticly validating your sources, during compile time.
+It's used in many libraries, to prevent you from using some API, with an object in "not the right state".
 
-To set the stage for our Phantom Type usage let's first define a `Service` class, and `trait`s to represent the state it is in. We want to prevent users of our API from calling `stop()` on an already `Stopped` instance, as well as prevent them from calling `start()` on an already `Running` instance.
+To set the stage for our Phantom Type usage let's first define a `ServiceHandle` class,
+and `trait`s to represent the state it is in. We want to prevent users of our API from calling `stop()` on an already
+`Stopped` instance, as well as prevent them from calling `start()` on an already `Running` instance.
 
 ```scala
-// the traits are expected to be only used with our Service,
+// the traits are expected to be only used with our ServiceHandle,
 // which we nicely express using Self Type Annotations.
-trait Stopped { this: Service => }
-trait Running { this: Service => }
+trait Stopped { this: ServiceHandle => }
+trait Running { this: ServiceHandle => }
 ```
 
 Now that we have our Types prepared, let's look at how the implementation will look like:
@@ -615,7 +620,9 @@ object ServiceHandle {
 Here, during instanciation of the class, we mix in the `Stopped` trait right away.
 We've used this trick before in this blog post (series), but now it's finally time to explain it in detail.
 
-Turns out that the type of this newly created Service is not only `Service` but... `Service with Stopped`. It may seem underwhelming at first that "that's it", but let's move on to the `start` and `stop` commands to see why this us so nice interesting.
+Turns out that the type of this newly created ServiceHandle is not only `ServiceHandle` but...
+`ServiceHandle with Stopped`. It may seem underwhelming at first that "that's it",
+but let's move on to the `start` and `stop` commands to see why this us so nice interesting.
 
 ```scala
 def start(s: ServiceHandle with Stopped) = {
@@ -624,7 +631,8 @@ def start(s: ServiceHandle with Stopped) = {
 }
 ```
 
-And we can do the same for stopping a Service. Other useful methods would be, `Id => Either[ServiceHandle with Stopped, ServiceHandle with Running]` which's implementation you can easily imagine.
+And we can do the same for stopping a Service. Other useful methods would be,
+`Id => Either[ServiceHandle with Stopped, ServiceHandle with Running]` which's implementation you can easily imagine.
 
 ```scala
 def stop(s: ServiceHandle with Running) = {
