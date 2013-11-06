@@ -108,7 +108,7 @@ val thing: Int =
     throw new Exception("Whoops!") // : Nothing
 ```
 
-As you can see in the comments, the type of the if block is `Int` (easy), the type of the else block is `Nothing` (interresting). The inferencer was able to infer that the `thing` value, will only ever be of type `Int`. This is because of the **Bottom Type** property of Nothing. You can think of it as if:
+As you can see in the comments, the type of the if block is `Int` (easy), the type of the else block is `Nothing` (interesting). The inferencer was able to infer that the `thing` value, will only ever be of type `Int`. This is because of the **Bottom Type** property of Nothing. You can think of it as if:
 
 "`Nothing extends anything`"
 
@@ -474,7 +474,7 @@ trait Writes[In, Out] {
   def write(it: In): Out
 }
 
-implicit val jsonWriter = new Writes[Person, Json] {
+implicit val jsonWr`iter = new Writes[Person, Json] {
   def writes(p: Person) = Json.toJson(p)
 }
 
