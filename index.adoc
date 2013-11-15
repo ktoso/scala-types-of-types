@@ -1,0 +1,26 @@
+= Scala's Types of Types
+Konrad 'ktoso' Malawski <konrad.malawski@java.pl>
+:awestruct-layout: base
+ifdef::awestruct[]
+:toc:
+:toc-placement: preamble
+endif::awestruct[]
+ifndef::awestruct[]
+:toc: right
+:icons: font
+:idprefix:
+:idseparator: -
+:sectanchors:
+:source-highlighter: pygments
+endif::awestruct[]
+:experimental:
+:mdash: &#8212;
+:language: asciidoc
+
+include::sections/all.adoc[]
+
+include::sections/dynamic.adoc[]
+
+include::sections/type_lambda.adoc[]
+
+include::sections/kudos.adoc[]

@@ -1,7 +1,4 @@
-<a name="dynamictype"></a>
-
-1.20\. Dynamic Type
-------------
+== Dynamic Type
 
 I've had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?
 
@@ -48,9 +45,7 @@ Ok, end of rant and back to the basics. So... How do we use Dynamic? In fact, it
 
 Let's take a look (with examples, at each of them. We'll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn't (back then) compile) and make it work this time ;-)
 
-<a name="applydynamic###"></a>
-
-### 1.20.1\. applyDynamic ###
+=== applyDynamic
 Ok, our first magic method looks like this:
 
 ```scala
@@ -74,9 +69,7 @@ methodName: dynamicMethod,
 ```
 
 
-<a name="applydynamicnamed###"></a>
-
-### 1.20.2\. applyDynamicNamed ###
+=== applyDynamicNamed
 Ok, that was easy. But it didn't give us too much control over the names of the parameters.
 Wouldn't it be nice if we could just write `JSON.node(nickname = "ktoso")`? Well... turns out we can!
 
@@ -100,9 +93,7 @@ Creating a node, for:
 
 I can easily imagine some pretty slick <strong>DLSs</strong> being built around this!
 
-<a name="selectdynamic###"></a>
-
-### 1.20.3\. selectDynamic ###
+=== selectDynamic
 Not it's time for the more "unusual" methods. apply methods we're pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the example with applyDynamic here, and try to act like it has a method without ()</strong>:
 
 ```scala
@@ -122,9 +113,7 @@ class Json(s: String) extends Dynamic {
 
 And this time when we execute `HasStuff.bananas` we'll get "I have bananas!" as expected. Notice that here we return a value instead of printing it. It's because it "acts as a field" this time around. But we could also return things (of arbitrary types) from any other method described here (<strong>applyDynamic</strong> <strong>could return the string instead of printing it</strong>).
 
-<a name="updatedynamic###"></a>
-
-### 1.20.4\. updateDynamic ###
+=== updateDynamic
 What's left you ask? Ask yourself the following question then: "Since I can act like a `Dynamic` object has some value in some field... What else should I be able to do with it?" My answer to that would be: "set it"! That's what `updateDynamic` is used for. There is one special rule about `updateDynamic` though - it's only valid if you also took care about selectDynamic - that's why in the first example the code generated errors about both - select and update. For example if we'd implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn't compile anyway. It makes sense in terms of plain semantics if you think about it.
 
 When we're done with this example, we can actually make the (wrong) code from the first code snippet work. The below snippet will be an implementation of what was shown on the first snippet on that other website, and this time it'll actually work ;-)
