@@ -709,7 +709,7 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 <body class="article toc2 toc-right">
 <div id="header">
 <h1>Scala&#8217;s Types of Types</h1>
-<span id="author" class="author">Konrad 'ktoso' Malawski</span><br>
+<span id="author" class="author">Konrad 'ktoso' Malawski &lt;konrad.malawski@java.pl&gt;</span><br>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -746,6 +746,8 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 <li><a href="#updatedynamic">updateDynamic</a></li>
 </ul>
 </li>
+<li><a href="#type-lambda">Type Lambda</a></li>
+<li><a href="#links-and-kudos">Links and Kudos</a></li>
 </ul>
 </div>
 </div>
@@ -1976,57 +1978,97 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 <div class="paragraph">
 <p>By the way&#8230; are you curious how Dynamic &lt;a href="https://github.com/scala/scala/blob/master/src/library/scala/Dynamic.scala"&gt;[source code]&lt;/a&gt; is implemented? The fun part here is that the trait Dynamic, does absolutely nothing by itself - it&#8217;s "empty", just a marker interface. Obviously all the heavylifting (<strong>call-site-rewriting</strong>) is done by the compiler here.</p>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="type-lambda"><a class="anchor" href="#type-lambda"></a>Type Lambda</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>&lt;a name="typelambda"&gt;&lt;/a&gt;</p>
+<p>In type lambda&#8217;s we&#8217;ll be using <strong>Path Dependent</strong> as well as <strong>Structural Types</strong>, so if you skipped that sections you may want to go back to it.</p>
 </div>
 <div class="paragraph">
-<p>1.19\. Type Lambda</p>
+<p>Before we look at Type Lambdas, let&#8217;s take a step back and remind ourselfs a bit about functions and currying.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>In type lambda's we'll be using *Path Dependent* as well as *Structural Types*, so if you skipped that sections you may want to go back to it.
-
-Before we look at Type Lambdas, let's take a step back and remind ourselfs a bit about functions and currying.
-
-```scala
-class EitherMonad[A] extends Monad[({type λ[α] = Either[A, α]})#λ] {
-  def point[B](b: B): Either[A, B]
-  def bind[B, C](m: Either[A, B])(f: B =&gt; Either[A, C]): Either[A, C]
-}
-```
-
-Links and Kudos
----------------
-
-Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I've found helpful (and you might too).
-
-* Twitter's Scala School: http://twitter.github.io/scala_school quite a bit of Scala concepts. Which helped me a lot in nicely explaining Variance (nicest explanation I found, since "ever").
-* Very old, but still valid explanation of Universal Types: http://www.scala-lang.org/old/node/128
-* Existential Types by D.R. MacIver: http://www.drmaciver.com/2008/03/existential-types-in-scala/
-* Scala Doc: http://www.scala-lang.org/api/current/index.html
-* Wikipedia on the Diamond Problem: http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem
-* Safari Books online about Type Linearization: http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/
-* One of the first blogs about Phantom Types in Scala: http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html
-* Rogue (where I occasionally PullRequest too) is a great example of using Phantom Types: http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/
-* Great StackOverflow answer by **Kriss Nuttycombe** about Type Lambdas: http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits
-
-I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times:
-
-* Sergio ....
-* Andrzej
-* Josh of Typesafe (?)
-* The awesome guys from Softwaremill
-* The awesome guys from VirtusLab
-* TODO TODO</pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">EitherMonad</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">]</span> <span class="tok-nc">extends</span> <span class="tok-nc">Monad</span><span class="tok-o">[({</span><span class="tok-k">type</span> <span class="tok-kt">λ</span><span class="tok-o">[</span><span class="tok-kt">α</span><span class="tok-o">]</span> <span class="tok-kt">=</span> <span class="tok-kt">Either</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">α</span><span class="tok-o">]})</span><span class="tok-k">#</span><span class="tok-kt">λ</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">point</span><span class="tok-o">[</span><span class="tok-kt">B</span><span class="tok-o">](</span><span class="tok-n">b</span><span class="tok-k">:</span> <span class="tok-kt">B</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Either</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">B</span><span class="tok-o">]</span>
+  <span class="tok-k">def</span> <span class="tok-n">bind</span><span class="tok-o">[</span><span class="tok-kt">B</span>, <span class="tok-kt">C</span><span class="tok-o">](</span><span class="tok-n">m</span><span class="tok-k">:</span> <span class="tok-kt">Either</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">B</span><span class="tok-o">])(</span><span class="tok-n">f</span><span class="tok-k">:</span> <span class="tok-kt">B</span> <span class="tok-o">=&gt;</span> <span class="tok-nc">Either</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">C</span><span class="tok-o">])</span><span class="tok-k">:</span> <span class="tok-kt">Either</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">C</span><span class="tok-o">]</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>Links and Kudos</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I&#8217;ve found helpful (and you might too).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Twitter&#8217;s Scala School: <a href="http://twitter.github.io/scala_school">http://twitter.github.io/scala_school</a> quite a bit of Scala concepts. Which helped me a lot in nicely explaining Variance (nicest explanation I found, since "ever").</p>
+</li>
+<li>
+<p>Very old, but still valid explanation of Universal Types: <a href="http://www.scala-lang.org/old/node/128">http://www.scala-lang.org/old/node/128</a></p>
+</li>
+<li>
+<p>Existential Types by D.R. MacIver: <a href="http://www.drmaciver.com/2008/03/existential-types-in-scala/">http://www.drmaciver.com/2008/03/existential-types-in-scala/</a></p>
+</li>
+<li>
+<p>Scala Doc: <a href="http://www.scala-lang.org/api/current/index.html">http://www.scala-lang.org/api/current/index.html</a></p>
+</li>
+<li>
+<p>Wikipedia on the Diamond Problem: <a href="http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem">http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem</a></p>
+</li>
+<li>
+<p>Safari Books online about Type Linearization: <a href="http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/">http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/</a></p>
+</li>
+<li>
+<p>One of the first blogs about Phantom Types in Scala: <a href="http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html">http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html</a></p>
+</li>
+<li>
+<p>Rogue (where I occasionally PullRequest too) is a great example of using Phantom Types: <a href="http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/">http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/</a></p>
+</li>
+<li>
+<p>Great StackOverflow answer by <strong>Kriss Nuttycombe</strong> about Type Lambdas: <a href="http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits">http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Sergio &#8230;.</p>
+</li>
+<li>
+<p>Andrzej</p>
+</li>
+<li>
+<p>Josh of Typesafe (?)</p>
+</li>
+<li>
+<p>The awesome guys from Softwaremill</p>
+</li>
+<li>
+<p>The awesome guys from VirtusLab</p>
+</li>
+<li>
+<p>TODO TODO</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-11-15 19:43:38 GMT
+Last updated 2013-11-15 19:52:52 GMT
 </div>
 </div>
 </body>

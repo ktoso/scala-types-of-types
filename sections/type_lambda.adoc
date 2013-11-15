@@ -1,7 +1,5 @@
-<a name="typelambda"></a>
+== Type Lambda
 
-1.19\. Type Lambda
------------
 In type lambda's we'll be using *Path Dependent* as well as *Structural Types*, so if you skipped that sections you may want to go back to it.
 
 Before we look at Type Lambdas, let's take a step back and remind ourselfs a bit about functions and currying.
