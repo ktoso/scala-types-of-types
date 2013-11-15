@@ -1,5 +1,5 @@
 = Scala's Types of Types
-Konrad 'ktoso' Malawski
+Konrad 'ktoso' Malawski <konrad.malawski@java.pl>
 :awestruct-layout: base
 ifdef::awestruct[]
 :toc:
