@@ -2,9 +2,15 @@ GEM
   remote: https://rubygems.org/
   specs:
     asciidoctor (0.1.4)
+    posix-spawn (0.3.6)
+    pygments.rb (0.5.2)
+      posix-spawn (~> 0.3.6)
+      yajl-ruby (~> 1.1.0)
+    yajl-ruby (1.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   asciidoctor
+  pygments.rb

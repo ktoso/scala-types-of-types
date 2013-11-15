@@ -642,9 +642,69 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 .conum:not([data-value]):empty { display: none; }
 </style>
 <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css">
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/default.min.css">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad()</script>
+<style>
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #ffffff; }
+.highlight .tok-c { color: #888888 } /* Comment */
+.highlight .tok-err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .tok-k { color: #008800; font-weight: bold } /* Keyword */
+.highlight .tok-cm { color: #888888 } /* Comment.Multiline */
+.highlight .tok-cp { color: #cc0000; font-weight: bold } /* Comment.Preproc */
+.highlight .tok-c1 { color: #888888 } /* Comment.Single */
+.highlight .tok-cs { color: #cc0000; font-weight: bold; background-color: #fff0f0 } /* Comment.Special */
+.highlight .tok-gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .tok-ge { font-style: italic } /* Generic.Emph */
+.highlight .tok-gr { color: #aa0000 } /* Generic.Error */
+.highlight .tok-gh { color: #333333 } /* Generic.Heading */
+.highlight .tok-gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .tok-go { color: #888888 } /* Generic.Output */
+.highlight .tok-gp { color: #555555 } /* Generic.Prompt */
+.highlight .tok-gs { font-weight: bold } /* Generic.Strong */
+.highlight .tok-gu { color: #666666 } /* Generic.Subheading */
+.highlight .tok-gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .tok-kc { color: #008800; font-weight: bold } /* Keyword.Constant */
+.highlight .tok-kd { color: #008800; font-weight: bold } /* Keyword.Declaration */
+.highlight .tok-kn { color: #008800; font-weight: bold } /* Keyword.Namespace */
+.highlight .tok-kp { color: #008800 } /* Keyword.Pseudo */
+.highlight .tok-kr { color: #008800; font-weight: bold } /* Keyword.Reserved */
+.highlight .tok-kt { color: #888888; font-weight: bold } /* Keyword.Type */
+.highlight .tok-m { color: #0000DD; font-weight: bold } /* Literal.Number */
+.highlight .tok-s { color: #dd2200; background-color: #fff0f0 } /* Literal.String */
+.highlight .tok-na { color: #336699 } /* Name.Attribute */
+.highlight .tok-nb { color: #003388 } /* Name.Builtin */
+.highlight .tok-nc { color: #bb0066; font-weight: bold } /* Name.Class */
+.highlight .tok-no { color: #003366; font-weight: bold } /* Name.Constant */
+.highlight .tok-nd { color: #555555 } /* Name.Decorator */
+.highlight .tok-ne { color: #bb0066; font-weight: bold } /* Name.Exception */
+.highlight .tok-nf { color: #0066bb; font-weight: bold } /* Name.Function */
+.highlight .tok-nl { color: #336699; font-style: italic } /* Name.Label */
+.highlight .tok-nn { color: #bb0066; font-weight: bold } /* Name.Namespace */
+.highlight .tok-py { color: #336699; font-weight: bold } /* Name.Property */
+.highlight .tok-nt { color: #bb0066; font-weight: bold } /* Name.Tag */
+.highlight .tok-nv { color: #336699 } /* Name.Variable */
+.highlight .tok-ow { color: #008800 } /* Operator.Word */
+.highlight .tok-w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .tok-mf { color: #0000DD; font-weight: bold } /* Literal.Number.Float */
+.highlight .tok-mh { color: #0000DD; font-weight: bold } /* Literal.Number.Hex */
+.highlight .tok-mi { color: #0000DD; font-weight: bold } /* Literal.Number.Integer */
+.highlight .tok-mo { color: #0000DD; font-weight: bold } /* Literal.Number.Oct */
+.highlight .tok-sb { color: #dd2200; background-color: #fff0f0 } /* Literal.String.Backtick */
+.highlight .tok-sc { color: #dd2200; background-color: #fff0f0 } /* Literal.String.Char */
+.highlight .tok-sd { color: #dd2200; background-color: #fff0f0 } /* Literal.String.Doc */
+.highlight .tok-s2 { color: #dd2200; background-color: #fff0f0 } /* Literal.String.Double */
+.highlight .tok-se { color: #0044dd; background-color: #fff0f0 } /* Literal.String.Escape */
+.highlight .tok-sh { color: #dd2200; background-color: #fff0f0 } /* Literal.String.Heredoc */
+.highlight .tok-si { color: #3333bb; background-color: #fff0f0 } /* Literal.String.Interpol */
+.highlight .tok-sx { color: #22bb22; background-color: #f0fff0 } /* Literal.String.Other */
+.highlight .tok-sr { color: #008800; background-color: #fff0ff } /* Literal.String.Regex */
+.highlight .tok-s1 { color: #dd2200; background-color: #fff0f0 } /* Literal.String.Single */
+.highlight .tok-ss { color: #aa6600; background-color: #fff0f0 } /* Literal.String.Symbol */
+.highlight .tok-bp { color: #003388 } /* Name.Builtin.Pseudo */
+.highlight .tok-vc { color: #336699 } /* Name.Variable.Class */
+.highlight .tok-vg { color: #dd7700 } /* Name.Variable.Global */
+.highlight .tok-vi { color: #3333bb } /* Name.Variable.Instance */
+.highlight .tok-il { color: #0000DD; font-weight: bold } /* Literal.Number.Integer.Long */
+</style>
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
@@ -653,7 +713,6 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#all-the-stuff">All the stuff</a></li>
 <li><a href="#the-different-types-of-types-in-scala">The different types of&#8230; Types in Scala</a></li>
 <li><a href="#type-annotation">Type Annotation</a></li>
 <li><a href="#unified-type-system-any-anyref-anyval">Unified Type System - Any, AnyRef, AnyVal</a></li>
@@ -687,17 +746,10 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 <li><a href="#updatedynamic">updateDynamic</a></li>
 </ul>
 </li>
-<li><a href="#links-and-kudos">Links and Kudos</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="all-the-stuff"><a class="anchor" href="#all-the-stuff"></a>All the stuff</h2>
-<div class="sectionbody">
-
-</div>
-</div>
 <div class="sect1">
 <h2 id="the-different-types-of-types-in-scala"><a class="anchor" href="#the-different-types-of-types-in-scala"></a>The different types of&#8230; Types in Scala</h2>
 <div class="sectionbody">
@@ -716,14 +768,15 @@ the type of something, is called an Type Annotation.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">trait Thing
-def getThing = new Thing
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Thing</span>
+<span class="tok-k">def</span> <span class="tok-n">getThing</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Thing</span>
 
-// without Type Annotation, the type is infered to be `Thing`
-val infered = getThing
+<span class="tok-c1">// without Type Annotation, the type is infered to be `Thing`</span>
+<span class="tok-k">val</span> <span class="tok-n">infered</span> <span class="tok-k">=</span> <span class="tok-n">getThing</span>
 
-// with Type Annotation
-val thing: Thing = getThing</code></pre>
+<span class="tok-c1">// with Type Annotation</span>
+<span class="tok-k">val</span> <span class="tok-n">thing</span><span class="tok-k">:</span> <span class="tok-kt">Thing</span> <span class="tok-o">=</span> <span class="tok-n">getThing</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -780,16 +833,17 @@ more and more interesting.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class Person
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Person</span>
 
-val allThings = ArrayBuffer[Any]()
+<span class="tok-k">val</span> <span class="tok-n">allThings</span> <span class="tok-k">=</span> <span class="tok-nc">ArrayBuffer</span><span class="tok-o">[</span><span class="tok-kt">Any</span><span class="tok-o">]()</span>
 
-val myInt = 42             // Int, kept as low-level `int` during runtime
+<span class="tok-k">val</span> <span class="tok-n">myInt</span> <span class="tok-k">=</span> <span class="tok-mi">42</span>             <span class="tok-c1">// Int, kept as low-level `int` during runtime</span>
 
-allThings += myInt         // Int (extends AnyVal)
-                           // has to be boxed (!) -&gt; becomes java.lang.Integer in the collection (!)
+<span class="tok-n">allThings</span> <span class="tok-o">+=</span> <span class="tok-n">myInt</span>         <span class="tok-c1">// Int (extends AnyVal)</span>
+                           <span class="tok-c1">// has to be boxed (!) -&gt; becomes java.lang.Integer in the collection (!)</span>
 
-allThings += new Person()  // Person (extends AnyRef), no magic here</code></pre>
+<span class="tok-n">allThings</span> <span class="tok-o">+=</span> <span class="tok-k">new</span> <span class="tok-nc">Person</span><span class="tok-o">()</span>  <span class="tok-c1">// Person (extends AnyRef), no magic here</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -797,7 +851,7 @@ allThings += new Person()  // Person (extends AnyRef), no magic here</code></pre
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">35: invokevirtual #47  // Method myInt:()I
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">35: invokevirtual #47  // Method myInt:()I
 38: invokestatic  #53  // Method scala/runtime/BoxesRunTime.boxToInteger:(I)Ljava/lang/Integer;
 41: invokevirtual #57  // Method scala/collection/mutable/ArrayBuffer.$plus$eq:(Ljava/lang/Object;)Lscala/collection/mutable/ArrayBuffer;</code></pre>
 </div>
@@ -810,12 +864,12 @@ allThings += new Person()  // Person (extends AnyRef), no magic here</code></pre
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">def check(in: AnyVal) = ()
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">def</span> <span class="tok-n">check</span><span class="tok-o">(</span><span class="tok-n">in</span><span class="tok-k">:</span> <span class="tok-kt">AnyVal</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">()</span>
 
-check(42)    // Int -&gt; AnyVal
-check(13.37) // Double -&gt; AnyVal
+<span class="tok-n">check</span><span class="tok-o">(</span><span class="tok-mi">42</span><span class="tok-o">)</span>    <span class="tok-c1">// Int -&gt; AnyVal</span>
+<span class="tok-n">check</span><span class="tok-o">(</span><span class="tok-mf">13.37</span><span class="tok-o">)</span> <span class="tok-c1">// Double -&gt; AnyVal</span>
 
-check(new Object) // -&gt; AnyRef = fails to compile
+<span class="tok-n">check</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-nc">Object</span><span class="tok-o">)</span> <span class="tok-c1">// -&gt; AnyRef = fails to compile</span>
 </code></pre>
 </div>
 </div>
@@ -832,7 +886,7 @@ check(new Object) // -&gt; AnyRef = fails to compile
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">val thing: Int =
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">val thing: Int =
   if (test)
     42                             // : Int
   else
@@ -850,10 +904,10 @@ check(new Object) // -&gt; AnyRef = fails to compile
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">Types visualized:
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">Types visualized:
 
-           [Int] -&gt; ... -&gt; AnyVal -&gt; Anything
-Nothing -&gt; [Int] -&gt; ... -&gt; AnyVal -&gt; Any</code></pre>
+           [Int] -> ... -> AnyVal -> Anything
+Nothing -> [Int] -> ... -> AnyVal -> Any</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -861,7 +915,7 @@ Nothing -&gt; [Int] -&gt; ... -&gt; AnyVal -&gt; Any</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">val thing: String =
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">val thing: String =
   if (test)
     "Yay!"  // : String
   else
@@ -873,10 +927,10 @@ Nothing -&gt; [Int] -&gt; ... -&gt; AnyVal -&gt; Any</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">Types visualized:
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">Types visualized:
 
-        [String] -&gt; AnyRef -&gt; Any
-Null -&gt; [String] -&gt; AnyRef -&gt; Any
+        [String] -> AnyRef -> Any
+Null -> [String] -> AnyRef -> Any
 
 infered type: String</code></pre>
 </div>
@@ -886,7 +940,7 @@ infered type: String</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">scala&gt; :type if (false) 23 else null
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">scala> :type if (false) 23 else null
 Any</code></pre>
 </div>
 </div>
@@ -895,7 +949,7 @@ Any</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">scala&gt; :type -v 12
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">scala> :type -v 12
 // Type signature
 Int
 
@@ -908,7 +962,7 @@ TypeRef(TypeSymbol(final abstract class Int extends AnyVal))</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">abstract class AnyVal extends Any with NotNull</code></pre>
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">abstract class AnyVal extends Any with NotNull</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -919,10 +973,10 @@ TypeRef(TypeSymbol(final abstract class Int extends AnyVal))</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">Types visualized:
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">Types visualized:
 
-Int  -&gt; NotNull -&gt; AnyVal -&gt; [Any]
-Null            -&gt; AnyRef -&gt; [Any]
+Int  -> NotNull -> AnyVal -> [Any]
+Null            -> AnyRef -> [Any]
 
 infered type: Any</code></pre>
 </div>
@@ -945,7 +999,7 @@ because that&#8217;s already referring to the instance, so there&#8217;s a membe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">object ExampleObj
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">object ExampleObj
 
 def takeAnObject(obj: ExampleObj.type) = {}
 
@@ -1016,7 +1070,7 @@ even if an <code>class Apple extends Fruit</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="asciidoc language-asciidoc">class Human
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">class Human
 class Coder extends Human
 
 </code></pre>
@@ -1034,23 +1088,24 @@ as you might be tempted to call them if comming from Java-land:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class Base { def b = "" }
-trait Cool { def c = "" }
-trait Awesome { def a ="" }
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Base</span> <span class="tok-o">{</span> <span class="tok-k">def</span> <span class="tok-n">b</span> <span class="tok-k">=</span> <span class="tok-s">&quot;&quot;</span> <span class="tok-o">}</span>
+<span class="tok-k">trait</span> <span class="tok-nc">Cool</span> <span class="tok-o">{</span> <span class="tok-k">def</span> <span class="tok-n">c</span> <span class="tok-k">=</span> <span class="tok-s">&quot;&quot;</span> <span class="tok-o">}</span>
+<span class="tok-k">trait</span> <span class="tok-nc">Awesome</span> <span class="tok-o">{</span> <span class="tok-k">def</span> <span class="tok-n">a</span> <span class="tok-o">=</span><span class="tok-s">&quot;&quot;</span> <span class="tok-o">}</span>
 
-class BA extends Base with Awesome
-class BC extends Base with Cool
+<span class="tok-k">class</span> <span class="tok-nc">BA</span> <span class="tok-k">extends</span> <span class="tok-nc">Base</span> <span class="tok-k">with</span> <span class="tok-nc">Awesome</span>
+<span class="tok-k">class</span> <span class="tok-nc">BC</span> <span class="tok-k">extends</span> <span class="tok-nc">Base</span> <span class="tok-k">with</span> <span class="tok-nc">Cool</span>
 
-// as you might expect, you can upcast these instances into any of the traits they've mixed-in
-val ba: BA = new BA
-val bc: Base with Cool = new BC
+<span class="tok-c1">// as you might expect, you can upcast these instances into any of the traits they&#39;ve mixed-in</span>
+<span class="tok-k">val</span> <span class="tok-n">ba</span><span class="tok-k">:</span> <span class="tok-kt">BA</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-nc">BA</span>
+<span class="tok-k">val</span> <span class="tok-n">bc</span><span class="tok-k">:</span> <span class="tok-kt">Base</span> <span class="tok-kt">with</span> <span class="tok-kt">Cool</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-nc">BC</span>
 
-val b1: Base = ba
-val b2: Base = bc
+<span class="tok-k">val</span> <span class="tok-n">b1</span><span class="tok-k">:</span> <span class="tok-kt">Base</span> <span class="tok-o">=</span> <span class="tok-n">ba</span>
+<span class="tok-k">val</span> <span class="tok-n">b2</span><span class="tok-k">:</span> <span class="tok-kt">Base</span> <span class="tok-o">=</span> <span class="tok-n">bc</span>
 
-ba.a
-bc.c
-b1.b</code></pre>
+<span class="tok-n">ba</span><span class="tok-o">.</span><span class="tok-n">a</span>
+<span class="tok-n">bc</span><span class="tok-o">.</span><span class="tok-n">c</span>
+<span class="tok-n">b1</span><span class="tok-o">.</span><span class="tok-n">b</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1094,13 +1149,14 @@ Let&#8217;s put this into code and then talk about linearization:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">trait A { def common = "A" }
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">A</span> <span class="tok-o">{</span> <span class="tok-k">def</span> <span class="tok-n">common</span> <span class="tok-k">=</span> <span class="tok-s">&quot;A&quot;</span> <span class="tok-o">}</span>
 
-trait B extends A { override def common = "B" }
-trait C extends A { override def common = "C" }
+<span class="tok-k">trait</span> <span class="tok-nc">B</span> <span class="tok-k">extends</span> <span class="tok-n">A</span> <span class="tok-o">{</span> <span class="tok-k">override</span> <span class="tok-k">def</span> <span class="tok-n">common</span> <span class="tok-k">=</span> <span class="tok-s">&quot;B&quot;</span> <span class="tok-o">}</span>
+<span class="tok-k">trait</span> <span class="tok-nc">C</span> <span class="tok-k">extends</span> <span class="tok-n">A</span> <span class="tok-o">{</span> <span class="tok-k">override</span> <span class="tok-k">def</span> <span class="tok-n">common</span> <span class="tok-k">=</span> <span class="tok-s">&quot;C&quot;</span> <span class="tok-o">}</span>
 
-class D1 extends B with C
-class D2 extends C with B</code></pre>
+<span class="tok-k">class</span> <span class="tok-nc">D1</span> <span class="tok-k">extends</span> <span class="tok-n">B</span> <span class="tok-k">with</span> <span class="tok-n">C</span>
+<span class="tok-k">class</span> <span class="tok-nc">D2</span> <span class="tok-k">extends</span> <span class="tok-n">C</span> <span class="tok-k">with</span> <span class="tok-n">B</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1108,9 +1164,10 @@ class D2 extends C with B</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">(new D1).common == "C"
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-n">D1</span><span class="tok-o">).</span><span class="tok-n">common</span> <span class="tok-o">==</span> <span class="tok-s">&quot;C&quot;</span>
 
-(new D2).common == "B"</code></pre>
+<span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-n">D2</span><span class="tok-o">).</span><span class="tok-n">common</span> <span class="tok-o">==</span> <span class="tok-s">&quot;B&quot;</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1137,17 +1194,18 @@ class D2 extends C with B</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">// start with D1:
-B with C with &lt;D1&gt;
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// start with D1:</span>
+<span class="tok-n">B</span> <span class="tok-k">with</span> <span class="tok-n">C</span> <span class="tok-k">with</span> <span class="tok-o">&lt;</span><span class="tok-n">D1</span><span class="tok-o">&gt;</span>
 
-// expand all the types until you rach Any for all of them:
-(Any with AnyRef with A with B) with (Any with AnyRef with A with C) with &lt;D1&gt;
+<span class="tok-c1">// expand all the types until you rach Any for all of them:</span>
+<span class="tok-o">(</span><span class="tok-nc">Any</span> <span class="tok-k">with</span> <span class="tok-nc">AnyRef</span> <span class="tok-k">with</span> <span class="tok-n">A</span> <span class="tok-k">with</span> <span class="tok-n">B</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-o">(</span><span class="tok-nc">Any</span> <span class="tok-k">with</span> <span class="tok-nc">AnyRef</span> <span class="tok-k">with</span> <span class="tok-n">A</span> <span class="tok-k">with</span> <span class="tok-n">C</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-o">&lt;</span><span class="tok-n">D1</span><span class="tok-o">&gt;</span>
 
-// remove duplicates by removing "already seen" types, when moving left-to-right:
-(Any with AnyRef with A with B) with (                            C) with &lt;D1&gt;
+<span class="tok-c1">// remove duplicates by removing &quot;already seen&quot; types, when moving left-to-right:</span>
+<span class="tok-o">(</span><span class="tok-nc">Any</span> <span class="tok-k">with</span> <span class="tok-nc">AnyRef</span> <span class="tok-k">with</span> <span class="tok-n">A</span> <span class="tok-k">with</span> <span class="tok-n">B</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-o">(</span>                            <span class="tok-n">C</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-o">&lt;</span><span class="tok-n">D1</span><span class="tok-o">&gt;</span>
 
-// write the resulting type nicely:
-Any with AnyRef with A with B with C with &lt;D1&gt;</code></pre>
+<span class="tok-c1">// write the resulting type nicely:</span>
+<span class="tok-nc">Any</span> <span class="tok-k">with</span> <span class="tok-nc">AnyRef</span> <span class="tok-k">with</span> <span class="tok-n">A</span> <span class="tok-k">with</span> <span class="tok-n">B</span> <span class="tok-k">with</span> <span class="tok-n">C</span> <span class="tok-k">with</span> <span class="tok-o">&lt;</span><span class="tok-n">D1</span><span class="tok-o">&gt;</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1172,18 +1230,19 @@ Also it&#8217;s rather easy to resolve the simpler cases of linearization by jus
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class Entity
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Entity</span>
 
-trait Persister {
-  def doPersist(e: Entity) = {
-    e.persistForReal()
-  }
-}
+<span class="tok-k">trait</span> <span class="tok-nc">Persister</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">doPersist</span><span class="tok-o">(</span><span class="tok-n">e</span><span class="tok-k">:</span> <span class="tok-kt">Entity</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">{</span>
+    <span class="tok-n">e</span><span class="tok-o">.</span><span class="tok-n">persistForReal</span><span class="tok-o">()</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span>
 
-// our refined instance (and type):
-val refinedMockPersister = new Persister {
-  override def doPersist(e: Entity) = ()
-}</code></pre>
+<span class="tok-c1">// our refined instance (and type):</span>
+<span class="tok-k">val</span> <span class="tok-n">refinedMockPersister</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Persister</span> <span class="tok-o">{</span>
+  <span class="tok-k">override</span> <span class="tok-k">def</span> <span class="tok-n">doPersist</span><span class="tok-o">(</span><span class="tok-n">e</span><span class="tok-k">:</span> <span class="tok-kt">Entity</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">()</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -1196,10 +1255,11 @@ val refinedMockPersister = new Persister {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">type User = String
-type Age = Int
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">type</span> <span class="tok-kt">User</span> <span class="tok-o">=</span> <span class="tok-nc">String</span>
+<span class="tok-k">type</span> <span class="tok-kt">Age</span> <span class="tok-o">=</span> <span class="tok-nc">Int</span>
 
-val data:  Map[User, Age] =  Map.empty</code></pre>
+<span class="tok-k">val</span> <span class="tok-n">data</span><span class="tok-k">:</span>  <span class="tok-kt">Map</span><span class="tok-o">[</span><span class="tok-kt">User</span>, <span class="tok-kt">Age</span><span class="tok-o">]</span> <span class="tok-k">=</span>  <span class="tok-nc">Map</span><span class="tok-o">.</span><span class="tok-n">empty</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1221,11 +1281,12 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">trait SimplestContainer {
-  type A      // Abstract Type Member
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">SimplestContainer</span> <span class="tok-o">{</span>
+  <span class="tok-k">type</span> <span class="tok-kt">A</span>      <span class="tok-c1">// Abstract Type Member</span>
 
-  def value: A
-}</code></pre>
+  <span class="tok-k">def</span> <span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">A</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1236,11 +1297,12 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">object IntContainer extends SimplestContainer {
-  type A = Int
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">object</span> <span class="tok-nc">IntContainer</span> <span class="tok-k">extends</span> <span class="tok-nc">SimplestContainer</span> <span class="tok-o">{</span>
+  <span class="tok-k">type</span> <span class="tok-kt">A</span> <span class="tok-o">=</span> <span class="tok-nc">Int</span>
 
-  def value = 42
-}</code></pre>
+  <span class="tok-k">def</span> <span class="tok-n">value</span> <span class="tok-k">=</span> <span class="tok-mi">42</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1256,7 +1318,8 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class Apple</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Apple</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -1266,17 +1329,18 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">trait Writes[In, Out] {
-  def write(it: In): Out
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Writes</span><span class="tok-o">[</span><span class="tok-kt">In</span>, <span class="tok-kt">Out</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-n">it</span><span class="tok-k">:</span> <span class="tok-kt">In</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Out</span>
+<span class="tok-o">}</span>
 
-implicit val jsonWriter = new Writes[Person, Json] {
-  def writes(p: Person) = Json.toJson(p)
-}
+<span class="tok-k">implicit</span> <span class="tok-k">val</span> <span class="tok-n">jsonWriter</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Writes</span><span class="tok-o">[</span><span class="tok-kt">Person</span>, <span class="tok-kt">Json</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">writes</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-k">:</span> <span class="tok-kt">Person</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-nc">Json</span><span class="tok-o">.</span><span class="tok-n">toJson</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-o">)</span>
+<span class="tok-o">}</span>
 
-implicit class Writeable[A] {
-  def write(implicit writes: Writes[A])
-}</code></pre>
+<span class="tok-k">implicit</span> <span class="tok-k">class</span> <span class="tok-nc">Writeable</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-k">implicit</span> <span class="tok-n">writes</span><span class="tok-k">:</span> <span class="tok-kt">Writes</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">])</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -1309,16 +1373,17 @@ That is, if in normal programming you can have a function that takes a value <co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">// Welcome to Scala version 2.11.0-M5 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0-ea).
-// Type in expressions to have them evaluated.
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// Welcome to Scala version 2.11.0-M5 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0-ea).</span>
+<span class="tok-c1">// Type in expressions to have them evaluated.</span>
 
-:kind List
-// scala.collection.immutable.List's kind is F[+A]
+<span class="tok-k">:</span><span class="tok-kt">kind</span> <span class="tok-kt">List</span>
+<span class="tok-c1">// scala.collection.immutable.List&#39;s kind is F[+A]</span>
 
-:kind -v List
-// scala.collection.immutable.List's kind is F[+A]
-// * -(+)-&gt; *
-// This is a type constructor: a 1st-order-kinded type.</code></pre>
+<span class="tok-k">:</span><span class="tok-kt">kind</span> <span class="tok-kt">-v</span> <span class="tok-kt">List</span>
+<span class="tok-c1">// scala.collection.immutable.List&#39;s kind is F[+A]</span>
+<span class="tok-c1">// * -(+)-&gt; *</span>
+<span class="tok-c1">// This is a type constructor: a 1st-order-kinded type.</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1329,10 +1394,11 @@ That is, if in normal programming you can have a function that takes a value <co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">:kind -v Either
-// scala.util.Either's kind is F[+A1,+A2]
-// * -(+)-&gt; * -(+)-&gt; *
-// This is a type constructor: a 1st-order-kinded type.</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">:</span><span class="tok-kt">kind</span> <span class="tok-kt">-v</span> <span class="tok-kt">Either</span>
+<span class="tok-c1">// scala.util.Either&#39;s kind is F[+A1,+A2]</span>
+<span class="tok-c1">// * -(+)-&gt; * -(+)-&gt; *</span>
+<span class="tok-c1">// This is a type constructor: a 1st-order-kinded type.</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1344,8 +1410,9 @@ This idea opens up the way to (Type Lambdas)[#type-lambda] which have a full cha
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">:kind String
-// java.lang.String's kind is A</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">:</span><span class="tok-kt">kind</span> <span class="tok-kt">String</span>
+<span class="tok-c1">// java.lang.String&#39;s kind is A</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -1363,15 +1430,16 @@ We can state this using the following Self Type Annotation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">trait Module {
-  lazy val serviceInModule = new ServiceInModule
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Module</span> <span class="tok-o">{</span>
+  <span class="tok-k">lazy</span> <span class="tok-k">val</span> <span class="tok-n">serviceInModule</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">ServiceInModule</span>
+<span class="tok-o">}</span>
 
-trait Service {
-  this: Module =&gt;
+<span class="tok-k">trait</span> <span class="tok-nc">Service</span> <span class="tok-o">{</span>
+  <span class="tok-k">this:</span> <span class="tok-kt">Module</span> <span class="tok-o">=&gt;</span>
 
-  def doTheThings() = serviceInModule.doTheThings()
-}</code></pre>
+  <span class="tok-k">def</span> <span class="tok-n">doTheThings</span><span class="tok-o">()</span> <span class="tok-k">=</span> <span class="tok-n">serviceInModule</span><span class="tok-o">.</span><span class="tok-n">doTheThings</span><span class="tok-o">()</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1382,9 +1450,10 @@ trait Service {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">trait TestingModule extends Module { /*...*/ }
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">TestingModule</span> <span class="tok-k">extends</span> <span class="tok-nc">Module</span> <span class="tok-o">{</span> <span class="tok-cm">/*...*/</span> <span class="tok-o">}</span>
 
-new Service with TestingModule</code></pre>
+<span class="tok-k">new</span> <span class="tok-nc">Service</span> <span class="tok-k">with</span> <span class="tok-nc">TestingModule</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1392,11 +1461,12 @@ new Service with TestingModule</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">new Service
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">new</span> <span class="tok-nc">Service</span>
 
-// class Service cannot be instantiated because it does not conform to its self-type Service with Module
-//              new Service
-//              ^</code></pre>
+<span class="tok-c1">// class Service cannot be instantiated because it does not conform to its self-type Service with Module</span>
+<span class="tok-c1">//              new Service</span>
+<span class="tok-c1">//              ^</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1405,11 +1475,12 @@ And while we&#8217;re at it, let&#8217;s discuss why it is called self-type (exc
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class Service {
-  self: MongoModule with APIModule =&gt;
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Service</span> <span class="tok-o">{</span>
+  <span class="tok-n">self</span><span class="tok-k">:</span> <span class="tok-kt">MongoModule</span> <span class="tok-kt">with</span> <span class="tok-kt">APIModule</span> <span class="tok-o">=&gt;</span>
 
-  def delegated = self.doTheThings()
-}</code></pre>
+  <span class="tok-k">def</span> <span class="tok-n">delegated</span> <span class="tok-k">=</span> <span class="tok-n">self</span><span class="tok-o">.</span><span class="tok-n">doTheThings</span><span class="tok-o">()</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1434,10 +1505,11 @@ and <code>trait`s to represent the state it is in. We want to prevent users of o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">// the traits are expected to be only used with our ServiceHandle,
-// which we nicely express using Self Type Annotations.
-trait Stopped { this: ServiceHandle =&gt; }
-trait Running { this: ServiceHandle =&gt; }</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// the traits are expected to be only used with our ServiceHandle,</span>
+<span class="tok-c1">// which we nicely express using Self Type Annotations.</span>
+<span class="tok-k">trait</span> <span class="tok-nc">Stopped</span> <span class="tok-o">{</span> <span class="tok-k">this:</span> <span class="tok-kt">ServiceHandle</span> <span class="tok-o">=&gt;</span> <span class="tok-o">}</span>
+<span class="tok-k">trait</span> <span class="tok-nc">Running</span> <span class="tok-o">{</span> <span class="tok-k">this:</span> <span class="tok-kt">ServiceHandle</span> <span class="tok-o">=&gt;</span> <span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1445,10 +1517,11 @@ trait Running { this: ServiceHandle =&gt; }</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class ServiceHandle private (id: Id)
-object ServiceHandle {
-  def create(id: Id) = new ServiceHandle(id) with Stopped
-}</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">ServiceHandle</span> <span class="tok-k">private</span> <span class="tok-o">(</span><span class="tok-n">id</span><span class="tok-k">:</span> <span class="tok-kt">Id</span><span class="tok-o">)</span>
+<span class="tok-k">object</span> <span class="tok-nc">ServiceHandle</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">create</span><span class="tok-o">(</span><span class="tok-n">id</span><span class="tok-k">:</span> <span class="tok-kt">Id</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">ServiceHandle</span><span class="tok-o">(</span><span class="tok-n">id</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-nc">Stopped</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1462,10 +1535,11 @@ but let&#8217;s move on to the <code>start</code> and <code>stop</code> commands
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">def start(s: ServiceHandle with Stopped) = {
-  s.start()
-  new ServiceHandle(s.id) with Running
-}</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">def</span> <span class="tok-n">start</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-k">:</span> <span class="tok-kt">ServiceHandle</span> <span class="tok-kt">with</span> <span class="tok-kt">Stopped</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">{</span>
+  <span class="tok-n">s</span><span class="tok-o">.</span><span class="tok-n">start</span><span class="tok-o">()</span>
+  <span class="tok-k">new</span> <span class="tok-nc">ServiceHandle</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-o">.</span><span class="tok-n">id</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-nc">Running</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1474,10 +1548,11 @@ but let&#8217;s move on to the <code>start</code> and <code>stop</code> commands
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">def stop(s: ServiceHandle with Running) = {
-  s.stop()
-  new ServiceHandle(s.id) with Stopped
-}</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">def</span> <span class="tok-n">stop</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-k">:</span> <span class="tok-kt">ServiceHandle</span> <span class="tok-kt">with</span> <span class="tok-kt">Running</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">{</span>
+  <span class="tok-n">s</span><span class="tok-o">.</span><span class="tok-n">stop</span><span class="tok-o">()</span>
+  <span class="tok-k">new</span> <span class="tok-nc">ServiceHandle</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-o">.</span><span class="tok-n">id</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-nc">Stopped</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1503,28 +1578,29 @@ about the structure of a given object (hence the name). When using structure to 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">type JavaCloseable = java.io.Closeable
-// reminder, it's body is: { def close(): Unit }
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">type</span> <span class="tok-kt">JavaCloseable</span> <span class="tok-o">=</span> <span class="tok-n">java</span><span class="tok-o">.</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-nc">Closeable</span>
+<span class="tok-c1">// reminder, it&#39;s body is: { def close(): Unit }</span>
 
-class MyOwnCloseable {
-  def close(): Unit = ()
-}
-
-
-// method taking a Structural Type
-def closeQuietly(closeable: { def close(): Unit }) =
-  try {
-    closeable.close()
-  } catch {
-    case ex: Exception =&gt; // ignore...
-  }
+<span class="tok-k">class</span> <span class="tok-nc">MyOwnCloseable</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">close</span><span class="tok-o">()</span><span class="tok-k">:</span> <span class="tok-kt">Unit</span> <span class="tok-o">=</span> <span class="tok-o">()</span>
+<span class="tok-o">}</span>
 
 
-// takes a java.io.File (implements Closeable):
-closeQuietly(new StringReader("example"))
+<span class="tok-c1">// method taking a Structural Type</span>
+<span class="tok-k">def</span> <span class="tok-n">closeQuietly</span><span class="tok-o">(</span><span class="tok-n">closeable</span><span class="tok-k">:</span> <span class="tok-o">{</span> <span class="tok-kt">def</span> <span class="tok-kt">close</span><span class="tok-o">()</span><span class="tok-kt">:</span> <span class="tok-kt">Unit</span> <span class="tok-o">})</span> <span class="tok-k">=</span>
+  <span class="tok-k">try</span> <span class="tok-o">{</span>
+    <span class="tok-n">closeable</span><span class="tok-o">.</span><span class="tok-n">close</span><span class="tok-o">()</span>
+  <span class="tok-o">}</span> <span class="tok-k">catch</span> <span class="tok-o">{</span>
+    <span class="tok-k">case</span> <span class="tok-n">ex</span><span class="tok-k">:</span> <span class="tok-kt">Exception</span> <span class="tok-o">=&gt;</span> <span class="tok-c1">// ignore...</span>
+  <span class="tok-o">}</span>
 
-// takes
-closeQuietly(new MyOwnCloseable)</code></pre>
+
+<span class="tok-c1">// takes a java.io.File (implements Closeable):</span>
+<span class="tok-n">closeQuietly</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-nc">StringReader</span><span class="tok-o">(</span><span class="tok-s">&quot;example&quot;</span><span class="tok-o">))</span>
+
+<span class="tok-c1">// takes</span>
+<span class="tok-n">closeQuietly</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-nc">MyOwnCloseable</span><span class="tok-o">)</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1542,16 +1618,17 @@ By using a Type Alias (described in detail in another section) with the Structur
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">type OpenerCloser = {
-  def open(): Unit
-  def close(): Unit
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">type</span> <span class="tok-kt">OpenerCloser</span> <span class="tok-o">=</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">open</span><span class="tok-o">()</span><span class="tok-k">:</span> <span class="tok-kt">Unit</span>
+  <span class="tok-k">def</span> <span class="tok-n">close</span><span class="tok-o">()</span><span class="tok-k">:</span> <span class="tok-kt">Unit</span>
+<span class="tok-o">}</span>
 
-def on(it: OpenerCloser)(fun: OpenerCloser =&gt; Unit) = {
-  it.open()
-  fun(it)
-  it.close()
-}</code></pre>
+<span class="tok-k">def</span> <span class="tok-n">on</span><span class="tok-o">(</span><span class="tok-n">it</span><span class="tok-k">:</span> <span class="tok-kt">OpenerCloser</span><span class="tok-o">)(</span><span class="tok-n">fun</span><span class="tok-k">:</span> <span class="tok-kt">OpenerCloser</span> <span class="tok-o">=&gt;</span> <span class="tok-nc">Unit</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">{</span>
+  <span class="tok-n">it</span><span class="tok-o">.</span><span class="tok-n">open</span><span class="tok-o">()</span>
+  <span class="tok-n">fun</span><span class="tok-o">(</span><span class="tok-n">it</span><span class="tok-o">)</span>
+  <span class="tok-n">it</span><span class="tok-o">.</span><span class="tok-n">close</span><span class="tok-o">()</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1568,31 +1645,32 @@ if you really need to reach for structural typing, and cannot do it in some othe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class Outer {
-  class Inner
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Outer</span> <span class="tok-o">{</span>
+  <span class="tok-k">class</span> <span class="tok-nc">Inner</span>
+<span class="tok-o">}</span>
 
-val out1 = new Outer
-val out1in = new out1.Inner // concrete instance, created from inside of Outer
+<span class="tok-k">val</span> <span class="tok-n">out1</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Outer</span>
+<span class="tok-k">val</span> <span class="tok-n">out1in</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-n">out1</span><span class="tok-o">.</span><span class="tok-nc">Inner</span> <span class="tok-c1">// concrete instance, created from inside of Outer</span>
 
-val out2 = new Outer
-val out2in = new out2.Inner // another instance of Inner, with the enclosing instance out2
+<span class="tok-k">val</span> <span class="tok-n">out2</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Outer</span>
+<span class="tok-k">val</span> <span class="tok-n">out2in</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-n">out2</span><span class="tok-o">.</span><span class="tok-nc">Inner</span> <span class="tok-c1">// another instance of Inner, with the enclosing instance out2</span>
 
-// the path dependent type. The "path" is "inside out1".
-type PathDep1 = out1.Inner
+<span class="tok-c1">// the path dependent type. The &quot;path&quot; is &quot;inside out1&quot;.</span>
+<span class="tok-k">type</span> <span class="tok-kt">PathDep1</span> <span class="tok-o">=</span> <span class="tok-n">out1</span><span class="tok-o">.</span><span class="tok-nc">Inner</span>
 
 
-// type checks
+<span class="tok-c1">// type checks</span>
 
-val typeChecksOk: PathDep1 = out1in
-// OK
+<span class="tok-k">val</span> <span class="tok-n">typeChecksOk</span><span class="tok-k">:</span> <span class="tok-kt">PathDep1</span> <span class="tok-o">=</span> <span class="tok-n">out1in</span>
+<span class="tok-c1">// OK</span>
 
-val typeCheckFails: PathDep1 = out2in
-// &lt;console&gt;:27: error: type mismatch;
-// found   : out2.Inner
-// required: PathDep1
-//    (which expands to)  out1.Inner
-//       val typeCheckFails: PathDep1 = out2in</code></pre>
+<span class="tok-k">val</span> <span class="tok-n">typeCheckFails</span><span class="tok-k">:</span> <span class="tok-kt">PathDep1</span> <span class="tok-o">=</span> <span class="tok-n">out2in</span>
+<span class="tok-c1">// &lt;console&gt;:27: error: type mismatch;</span>
+<span class="tok-c1">// found   : out2.Inner</span>
+<span class="tok-c1">// required: PathDep1</span>
+<span class="tok-c1">//    (which expands to)  out1.Inner</span>
+<span class="tok-c1">//       val typeCheckFails: PathDep1 = out2in</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1603,15 +1681,16 @@ val typeCheckFails: PathDep1 = out2in
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class Parent {
-  class Child
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Parent</span> <span class="tok-o">{</span>
+  <span class="tok-k">class</span> <span class="tok-nc">Child</span>
+<span class="tok-o">}</span>
 
-class ChildrenContainer(p: Parent) {
-  type ChildOfThisParent = p.Child
+<span class="tok-k">class</span> <span class="tok-nc">ChildrenContainer</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-k">:</span> <span class="tok-kt">Parent</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">type</span> <span class="tok-kt">ChildOfThisParent</span> <span class="tok-o">=</span> <span class="tok-n">p</span><span class="tok-o">.</span><span class="tok-nc">Child</span>
 
-  def add(c: ChildOfThisParent) = ???
-}</code></pre>
+  <span class="tok-k">def</span> <span class="tok-n">add</span><span class="tok-o">(</span><span class="tok-n">c</span><span class="tok-k">:</span> <span class="tok-kt">ChildOfThisParent</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">???</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1631,16 +1710,17 @@ that this container should only contain children of this parent - and not "any p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">// our example class structure
-class Outer {
-  class Inner
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// our example class structure</span>
+<span class="tok-k">class</span> <span class="tok-nc">Outer</span> <span class="tok-o">{</span>
+  <span class="tok-k">class</span> <span class="tok-nc">Inner</span>
+<span class="tok-o">}</span>
 
-// Type Projection (and alias) refering to Inner
-type OuterInnerProjection = Outer#Inner
+<span class="tok-c1">// Type Projection (and alias) refering to Inner</span>
+<span class="tok-k">type</span> <span class="tok-kt">OuterInnerProjection</span> <span class="tok-o">=</span> <span class="tok-nc">Outer</span><span class="tok-k">#</span><span class="tok-nc">Inner</span>
 
-val out1 = new Outer
-val out1in = new out1.Inner</code></pre>
+<span class="tok-k">val</span> <span class="tok-n">out1</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Outer</span>
+<span class="tok-k">val</span> <span class="tok-n">out1in</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-n">out1</span><span class="tok-o">.</span><span class="tok-nc">Inner</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1656,12 +1736,13 @@ val out1in = new out1.Inner</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">val thingy: Any = ???
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">val</span> <span class="tok-n">thingy</span><span class="tok-k">:</span> <span class="tok-kt">Any</span> <span class="tok-o">=</span> <span class="tok-o">???</span>
 
-thingy match {
-  case l: List[a] =&gt;
-     // lower case 'a', matches all types... what type is 'a'?!
-}</code></pre>
+<span class="tok-n">thingy</span> <span class="tok-k">match</span> <span class="tok-o">{</span>
+  <span class="tok-k">case</span> <span class="tok-n">l</span><span class="tok-k">:</span> <span class="tok-kt">List</span><span class="tok-o">[</span><span class="tok-kt">a</span><span class="tok-o">]</span> <span class="tok-k">=&gt;</span>
+     <span class="tok-c1">// lower case &#39;a&#39;, matches all types... what type is &#39;a&#39;?!</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1672,8 +1753,9 @@ thingy match {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">List[_]
- //  ^ some type, no idea which one!</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-nc">List</span><span class="tok-o">[</span><span class="tok-k">_</span><span class="tok-o">]</span>
+ <span class="tok-c1">//  ^ some type, no idea which one!</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1683,7 +1765,8 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">type Monad[T] forSome { type T &gt;: Cool }</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">type</span> <span class="tok-kt">Monad</span><span class="tok-o">[</span><span class="tok-kt">T</span><span class="tok-o">]</span> <span class="tok-k">forSome</span> <span class="tok-o">{</span> <span class="tok-k">type</span> <span class="tok-kt">T</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">Cool</span> <span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1709,28 +1792,30 @@ There are a few features (like the experimental macros for example) that need to
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">// remember, that we have to enable this language feature by importing it!
-import scala.language.dynamics</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// remember, that we have to enable this language feature by importing it!</span>
+<span class="tok-k">import</span> <span class="tok-nn">scala.language.dynamics</span>
+</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">// TODO: Has missing implementation
-class Json(s: String) extends Dynamic {
-  ???
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// TODO: Has missing implementation</span>
+<span class="tok-k">class</span> <span class="tok-nc">Json</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-k">:</span> <span class="tok-kt">String</span><span class="tok-o">)</span> <span class="tok-k">extends</span> <span class="tok-nc">Dynamic</span> <span class="tok-o">{</span>
+  <span class="tok-o">???</span>
+<span class="tok-o">}</span>
 
-val jsonString = """
-  {
-    "name": "Konrad",
-    "favLangs": ["Scala", "Go", "SML"]
-  }
-"""
+<span class="tok-k">val</span> <span class="tok-n">jsonString</span> <span class="tok-k">=</span> <span class="tok-s">&quot;&quot;&quot;</span>
+<span class="tok-s">  {</span>
+<span class="tok-s">    &quot;name&quot;: &quot;Konrad&quot;,</span>
+<span class="tok-s">    &quot;favLangs&quot;: [&quot;Scala&quot;, &quot;Go&quot;, &quot;SML&quot;]</span>
+<span class="tok-s">  }</span>
+<span class="tok-s">&quot;&quot;&quot;</span>
 
-val json = new Json(jsonString)
+<span class="tok-k">val</span> <span class="tok-n">json</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Json</span><span class="tok-o">(</span><span class="tok-n">jsonString</span><span class="tok-o">)</span>
 
-val name: Option[String] = json.name
-// will compile (once we implement)!</code></pre>
+<span class="tok-k">val</span> <span class="tok-n">name</span><span class="tok-k">:</span> <span class="tok-kt">Option</span><span class="tok-o">[</span><span class="tok-kt">String</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-n">json</span><span class="tok-o">.</span><span class="tok-n">name</span>
+<span class="tok-c1">// will compile (once we implement)!</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1765,15 +1850,16 @@ val name: Option[String] = json.name
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">// applyDynamic example
-object OhMy extends Dynamic {
-  def applyDynamic(methodName: String)(args: Any*) {
-    println(s"""|  methodName: $methodName,
-                |args: ${args.mkString(",")}""".stripMargin)
-  }
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// applyDynamic example</span>
+<span class="tok-k">object</span> <span class="tok-nc">OhMy</span> <span class="tok-k">extends</span> <span class="tok-nc">Dynamic</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">applyDynamic</span><span class="tok-o">(</span><span class="tok-n">methodName</span><span class="tok-k">:</span> <span class="tok-kt">String</span><span class="tok-o">)(</span><span class="tok-n">args</span><span class="tok-k">:</span> <span class="tok-kt">Any*</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-s">&quot;&quot;&quot;|  methodName: $methodName,</span>
+<span class="tok-s">                |args: ${args.mkString(&quot;,&quot;)}&quot;&quot;&quot;</span><span class="tok-o">.</span><span class="tok-n">stripMargin</span><span class="tok-o">)</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span>
 
-OhMy.dynamicMethod("with", "some", 1337)</code></pre>
+<span class="tok-nc">OhMy</span><span class="tok-o">.</span><span class="tok-n">dynamicMethod</span><span class="tok-o">(</span><span class="tok-s">&quot;with&quot;</span><span class="tok-o">,</span> <span class="tok-s">&quot;some&quot;</span><span class="tok-o">,</span> <span class="tok-mi">1337</span><span class="tok-o">)</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1781,8 +1867,9 @@ OhMy.dynamicMethod("with", "some", 1337)</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">methodName: dynamicMethod,
-  args: with,some,1337</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-n">methodName</span><span class="tok-k">:</span> <span class="tok-kt">dynamicMethod</span><span class="tok-o">,</span>
+  <span class="tok-n">args</span><span class="tok-k">:</span> <span class="tok-kt">with</span><span class="tok-o">,</span><span class="tok-n">some</span><span class="tok-o">,</span><span class="tok-mi">1337</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -1794,14 +1881,15 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">// applyDynamicNamed example
-object JSON extends Dynamic {
-  def applyDynamicNamed(name: String)(args: (String, Any)*) {
-    println(s"""Creating a $name, for:\n "${args.head._1}": "${args.head._2}" """)
-  }
-}
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// applyDynamicNamed example</span>
+<span class="tok-k">object</span> <span class="tok-nc">JSON</span> <span class="tok-k">extends</span> <span class="tok-nc">Dynamic</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">applyDynamicNamed</span><span class="tok-o">(</span><span class="tok-n">name</span><span class="tok-k">:</span> <span class="tok-kt">String</span><span class="tok-o">)(</span><span class="tok-n">args</span><span class="tok-k">:</span> <span class="tok-o">(</span><span class="tok-kt">String</span><span class="tok-o">,</span> <span class="tok-kt">Any</span><span class="tok-o">)*)</span> <span class="tok-o">{</span>
+    <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-s">&quot;&quot;&quot;Creating a $name, for:\n &quot;${args.head._1}&quot;: &quot;${args.head._2}&quot; &quot;&quot;&quot;</span><span class="tok-o">)</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span>
 
-JSON.node(nickname = "ktoso")</code></pre>
+<span class="tok-nc">JSON</span><span class="tok-o">.</span><span class="tok-n">node</span><span class="tok-o">(</span><span class="tok-n">nickname</span> <span class="tok-k">=</span> <span class="tok-s">&quot;ktoso&quot;</span><span class="tok-o">)</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1809,8 +1897,9 @@ JSON.node(nickname = "ktoso")</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">Creating a node, for:
-"nickname": "ktoso"</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-nc">Creating</span> <span class="tok-n">a</span> <span class="tok-n">node</span><span class="tok-o">,</span> <span class="tok-k">for:</span>
+<span class="tok-err">&quot;</span><span class="tok-kt">nickname</span><span class="tok-err">&quot;</span><span class="tok-kt">:</span> <span class="tok-err">&quot;</span><span class="tok-kt">ktoso</span><span class="tok-err">&quot;</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1824,7 +1913,8 @@ JSON.node(nickname = "ktoso")</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">OhMy.name // compilation error</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-nc">OhMy</span><span class="tok-o">.</span><span class="tok-n">name</span> <span class="tok-c1">// compilation error</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1835,10 +1925,11 @@ JSON.node(nickname = "ktoso")</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">class Json(s: String) extends Dynamic {
-  def selectDynamic(name: String): Option[String] =
-    parse(s).get(name)
-}</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Json</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-k">:</span> <span class="tok-kt">String</span><span class="tok-o">)</span> <span class="tok-k">extends</span> <span class="tok-nc">Dynamic</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">selectDynamic</span><span class="tok-o">(</span><span class="tok-n">name</span><span class="tok-k">:</span> <span class="tok-kt">String</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Option</span><span class="tok-o">[</span><span class="tok-kt">String</span><span class="tok-o">]</span> <span class="tok-k">=</span>
+    <span class="tok-n">parse</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-o">).</span><span class="tok-n">get</span><span class="tok-o">(</span><span class="tok-n">name</span><span class="tok-o">)</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1855,12 +1946,13 @@ JSON.node(nickname = "ktoso")</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">object MagicBox extends Dynamic {
-  private var box = mutable.Map[String, Any]()
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">object</span> <span class="tok-nc">MagicBox</span> <span class="tok-k">extends</span> <span class="tok-nc">Dynamic</span> <span class="tok-o">{</span>
+  <span class="tok-k">private</span> <span class="tok-k">var</span> <span class="tok-n">box</span> <span class="tok-k">=</span> <span class="tok-n">mutable</span><span class="tok-o">.</span><span class="tok-nc">Map</span><span class="tok-o">[</span><span class="tok-kt">String</span>, <span class="tok-kt">Any</span><span class="tok-o">]()</span>
 
-  def updateDynamic(name: String)(value: Any) { box(name) = value }
-  def selectDynamic(name: String) = box(name)
-}</code></pre>
+  <span class="tok-k">def</span> <span class="tok-n">updateDynamic</span><span class="tok-o">(</span><span class="tok-n">name</span><span class="tok-k">:</span> <span class="tok-kt">String</span><span class="tok-o">)(</span><span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">Any</span><span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-n">box</span><span class="tok-o">(</span><span class="tok-n">name</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-n">value</span> <span class="tok-o">}</span>
+  <span class="tok-k">def</span> <span class="tok-n">selectDynamic</span><span class="tok-o">(</span><span class="tok-n">name</span><span class="tok-k">:</span> <span class="tok-kt">String</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-n">box</span><span class="tok-o">(</span><span class="tok-n">name</span><span class="tok-o">)</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1868,83 +1960,19 @@ JSON.node(nickname = "ktoso")</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="scala language-scala">scala&gt; MagicBox.banana = "banana"
-MagicBox.banana: Any = banana
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-nc">MagicBox</span><span class="tok-o">.</span><span class="tok-n">banana</span> <span class="tok-k">=</span> <span class="tok-s">&quot;banana&quot;</span>
+<span class="tok-nc">MagicBox</span><span class="tok-o">.</span><span class="tok-n">banana</span><span class="tok-k">:</span> <span class="tok-kt">Any</span> <span class="tok-o">=</span> <span class="tok-n">banana</span>
 
-scala&gt; MagicBox.banana
-res7: Any = banana
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-nc">MagicBox</span><span class="tok-o">.</span><span class="tok-n">banana</span>
+<span class="tok-n">res7</span><span class="tok-k">:</span> <span class="tok-kt">Any</span> <span class="tok-o">=</span> <span class="tok-n">banana</span>
 
-scala&gt; MagicBox.unknown
-java.util.NoSuchElementException: key not found: unknown</code></pre>
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-nc">MagicBox</span><span class="tok-o">.</span><span class="tok-n">unknown</span>
+<span class="tok-n">java</span><span class="tok-o">.</span><span class="tok-n">util</span><span class="tok-o">.</span><span class="tok-nc">NoSuchElementException</span><span class="tok-k">:</span> <span class="tok-kt">key</span> <span class="tok-kt">not</span> <span class="tok-kt">found:</span> <span class="tok-kt">unknown</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>By the way&#8230; are you curious how Dynamic &lt;a href="https://github.com/scala/scala/blob/master/src/library/scala/Dynamic.scala"&gt;[source code]&lt;/a&gt; is implemented? The fun part here is that the trait Dynamic, does absolutely nothing by itself - it&#8217;s "empty", just a marker interface. Obviously all the heavylifting (<strong>call-site-rewriting</strong>) is done by the compiler here.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>Links and Kudos</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I&#8217;ve found helpful (and you might too).</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Twitter&#8217;s Scala School: <a href="http://twitter.github.io/scala_school">http://twitter.github.io/scala_school</a> quite a bit of Scala concepts. Which helped me a lot in nicely explaining Variance (nicest explanation I found, since "ever").</p>
-</li>
-<li>
-<p>Very old, but still valid explanation of Universal Types: <a href="http://www.scala-lang.org/old/node/128">http://www.scala-lang.org/old/node/128</a></p>
-</li>
-<li>
-<p>Existential Types by D.R. MacIver: <a href="http://www.drmaciver.com/2008/03/existential-types-in-scala/">http://www.drmaciver.com/2008/03/existential-types-in-scala/</a></p>
-</li>
-<li>
-<p>Scala Doc: <a href="http://www.scala-lang.org/api/current/index.html">http://www.scala-lang.org/api/current/index.html</a></p>
-</li>
-<li>
-<p>Wikipedia on the Diamond Problem: <a href="http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem">http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem</a></p>
-</li>
-<li>
-<p>Safari Books online about Type Linearization: <a href="http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/">http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/</a></p>
-</li>
-<li>
-<p>One of the first blogs about Phantom Types in Scala: <a href="http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html">http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html</a></p>
-</li>
-<li>
-<p>Rogue (where I occasionally PullRequest too) is a great example of using Phantom Types: <a href="http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/">http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/</a></p>
-</li>
-<li>
-<p>Great StackOverflow answer by <strong>Kriss Nuttycombe</strong> about Type Lambdas: <a href="http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits">http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits</a></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Sergio &#8230;.</p>
-</li>
-<li>
-<p>Andrzej</p>
-</li>
-<li>
-<p>Josh of Typesafe (?)</p>
-</li>
-<li>
-<p>The awesome guys from Softwaremill</p>
-</li>
-<li>
-<p>The awesome guys from VirtusLab</p>
-</li>
-<li>
-<p>TODO TODO</p>
-</li>
-</ul>
 </div>
 <div class="paragraph">
 <p>&lt;a name="typelambda"&gt;&lt;/a&gt;</p>
@@ -1965,14 +1993,30 @@ class EitherMonad[A] extends Monad[({type λ[α] = Either[A, α]})#λ] {
 }
 ```
 
-== ``It's just text, mate.''
+Links and Kudos
+---------------
 
-[source,scala]
-----
-case class Person(name: String) {
-  def show = name
-}
-----</pre>
+Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I've found helpful (and you might too).
+
+* Twitter's Scala School: http://twitter.github.io/scala_school quite a bit of Scala concepts. Which helped me a lot in nicely explaining Variance (nicest explanation I found, since "ever").
+* Very old, but still valid explanation of Universal Types: http://www.scala-lang.org/old/node/128
+* Existential Types by D.R. MacIver: http://www.drmaciver.com/2008/03/existential-types-in-scala/
+* Scala Doc: http://www.scala-lang.org/api/current/index.html
+* Wikipedia on the Diamond Problem: http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem
+* Safari Books online about Type Linearization: http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/
+* One of the first blogs about Phantom Types in Scala: http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html
+* Rogue (where I occasionally PullRequest too) is a great example of using Phantom Types: http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/
+* Great StackOverflow answer by **Kriss Nuttycombe** about Type Lambdas: http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits
+
+I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times:
+
+* Sergio ....
+* Andrzej
+* Josh of Typesafe (?)
+* The awesome guys from Softwaremill
+* The awesome guys from VirtusLab
+* TODO TODO</pre>
+</div>
 </div>
 </div>
 </div>
@@ -1980,7 +2024,7 @@ case class Person(name: String) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-11-13 13:51:46 GMT
+Last updated 2013-11-15 19:43:38 GMT
 </div>
 </div>
 </body>

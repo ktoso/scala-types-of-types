@@ -11,27 +11,16 @@ ifndef::awestruct[]
 :idprefix:
 :idseparator: -
 :sectanchors:
-:source-highlighter: highlight.js
+:source-highlighter: pygments
 endif::awestruct[]
 :experimental:
 :mdash: &#8212;
 :language: asciidoc
 
-== All the stuff
+include::sections/all.adoc[]
 
-include::_includes/all.md[]
+include::sections/dynamic.adoc[]
 
-include::_includes/dynamic.md[]
+include::sections/type_lambda.adoc[]
 
-include::_includes/kudos.md[]
-
-include::_includes/type_lambda.md[]
-
-== ``It's just text, mate.''
-
-[source,scala]
-----
-case class Person(name: String) {
-  def show = name
-}
-----
+include::sections/kudos.adoc[]
