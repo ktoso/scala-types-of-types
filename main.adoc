@@ -1,0 +1,37 @@
+= Scala's Types of Types
+Konrad 'ktoso' Malawski
+:awestruct-layout: base
+ifdef::awestruct[]
+:toc:
+:toc-placement: preamble
+endif::awestruct[]
+ifndef::awestruct[]
+:toc: right
+:icons: font
+:idprefix:
+:idseparator: -
+:sectanchors:
+:source-highlighter: highlight.js
+endif::awestruct[]
+:experimental:
+:mdash: &#8212;
+:language: asciidoc
+
+== All the stuff
+
+include::_includes/all.md[]
+
+include::_includes/dynamic.md[]
+
+include::_includes/kudos.md[]
+
+include::_includes/type_lambda.md[]
+
+== ``It's just text, mate.''
+
+[source,scala]
+----
+case class Person(name: String) {
+  def show = name
+}
+----

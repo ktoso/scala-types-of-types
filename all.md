@@ -1,11 +1,16 @@
-== The different types of... Types in Scala
+<a name="thedifferenttypesof...typesinscala"></a>
+
+1\. The different types of... Types in Scala
+========================================
 
 
 This blog post came into being after a few discussions about Types in Scala after some of JavaOne's parties in 2013. After those discussions I figured that many questions are often repeated by different people, during their learning of Scala. I though that we didn't have a full list of all tricks what we can to with Types in Scala, so I decided to write such a list - giving real life examples why we'd need these types.
 
 
-== Type Annotation
+<a name="typeannotation"></a>
 
+1.1\. Type Annotation
+---------------
 Scala has Type Inference, which means that we can skip telling the Type of something each time in the source code,
 and instead we just use `val`s or `def`s without "saying the type explicitly in the source". This being explicit about
 the type of something, is called an Type Annotation.
@@ -34,7 +39,10 @@ In case of doubt you can refer to the below hint-questions to wether or not, inc
 So we put Type Annotations after value names. Having this said, let's jump into the next topics, where these types will become
 more and more interesting.
 
-== Unified Type System - Any, AnyRef, AnyVal
+<a name="unifiedtypesystem-anyanyrefanyval"></a>
+
+1.2\. Unified Type System - Any, AnyRef, AnyVal
+-----------------------------------------
 
 We refer to a Scala's typesystem as being "unified" because there is a "Top Type", `Any`. **This is different than Java**, which has "special cases" in form of primitive types (`int`, `long`, `float`, `double`, `byte`, `char`, `short`, `boolean`), which do not extend Java's "Almost-Top Type" - `java.lang.Object`.
 
@@ -86,8 +94,10 @@ check(new Object) // -> AnyRef = fails to compile
 
 In the above example I've used a TypeClass `Checker[T]` and a type bound, which will be discussed below. The general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
 
-== The Bottom Types - Nothing and Null
+<a name="thebottomtypes-nothingandnull"></a>
 
+1.3\. The Bottom Types - Nothing and Null
+-----------------------------------
 In Scala everything has "some" type... but have you ever wondered how the type inferencer can still work, and infer sound types when working with "weird" situations like throwing exceptions? Let's investigate the below "if/else throw" example:
 
 ```
@@ -169,7 +179,10 @@ Null            -> AnyRef -> [Any]
 infered type: Any
 ```
 
-== Type of an `object`
+<a name="typeofan`object`"></a>
+
+1.4\. Type of an `object`
+-------------------
 
 Scala `object`s are implemented via classes (obviously - as it's the basic building block on the JVM),
 but you'll notice that we cannot get it's type the same way as we would with an simple class...
@@ -187,7 +200,10 @@ def takeAnObject(obj: ExampleObj.type) = {}
 takeAnObject(ExampleObj)
 ```
 
-== Type Variance in Scala
+<a name="typevarianceinscala"></a>
+
+1.5\. Type Variance in Scala
+----------------------
 
 In Scala container types are **NOT variant at all by default**!
 
@@ -252,7 +268,16 @@ class Coder extends Human
 TODO
 
 
-=== Traits, as in "interfaces with implementation"
+<a name="traitsmix-ins"></a>
+
+1.6\. Traits (mix-ins)
+----------------
+
+Scala has Traits, which you might already know from other languages, under such names as Mix-In or Module (in Ruby's case).
+
+<a name="traitsasin"interfaceswithimplementation"###"></a>
+
+### 1.6.1\. Traits, as in "interfaces with implementation" ###
 
 First, let's take a look as the simplest thing possible about traits:
 how we can basically treat a type with multiple traits mixed in, as if it is implementing these "interfaces with implementation",
@@ -283,7 +308,9 @@ which people who know C++ might have been expecting. Basically "The Diamond Prob
 where we're not sure to what we want to refer to. The below image ilustrates the problem, if you would think of traits as if they were
 directly multiple inheritance:
 
-=== Type Linearization vs. The Diamond Problem
+<a name="typelinearizationvs.thediamondproblem###"></a>
+
+### 1.6.2\. Type Linearization vs. The Diamond Problem ###
 
 ![diamond-inheritance-problem](http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Diamond_inheritance.svg/220px-Diamond_inheritance.svg.png)
 
@@ -350,8 +377,11 @@ Also it's rather easy to resolve the simpler cases of linearization by just thin
 It is worth mentioning that using this technique we also know *"who is my `super`?"*. It's as easy as "looking left" in the linearized type, from wherever class you want to check who your superclass is. So for example in our case (`D1`), the superclass of `C` is `B`.
 
 
-== Refined Types (refinements)
 
+<a name="refinedtypesrefinements"></a>
+
+1.7\. Refined Types (refinements)
+---------------------------
 Refinements are very easy to explain as "subclassing without naming the subclass". So in source code it would look like this:
 
 ```scala
@@ -370,8 +400,11 @@ val refinedMockPersister = new Persister {
 ```
 
 
-== Type Alias
 
+<a name="typealias"></a>
+
+1.8\. Type Alias
+----------
 It's not really another kind of type, but a trick we can use to make our code more readable:
 
 ```scala
@@ -381,11 +414,14 @@ type Age = Int
 val data:  Map[User, Age] =  Map.empty
 ```
 
-Using this trick the Map definition now suddenly "makes sense!". If we'd just use a  `String => Int` map,
+Using this trick the Map definition now suddenly "makes sense!". If we'd just use a  ### `String => Int`,
 we'd make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc),
 but **name them** so it makes sense for the future reader of this class.
 
-== Abstract Type Member
+<a name="abstracttypemember"></a>
+
+1.9\. Abstract Type Member
+--------------------
 
 Let's now go deeper into the use cases of Type Aliases, which we call Abstract Type Members.
 
@@ -415,7 +451,11 @@ object IntContainer extends SimplestContainer {
 So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as it's type is known.
 
 
-== Self-Recursive Type
+
+<a name="self-recursivetype"></a>
+
+1.10\. Self-Recursive Type
+-------------------
 
 This we brought up with <a href="http://andrzejgrzesik.info">Andrzej Grzesik</a>, while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up <a href="http://andrzejgrzesik.info/2013/09/29/container-types/">on his blog, by explaining how the self-recursive generic type trick works in Java's Enum class</a>. Another nice blog post about this type-trick, is <a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">The dangers of correlating subtype polymorphism with generic polymorphism</a>, where lukaseder points out why/where this pattern may cause you trouble.
 
@@ -424,7 +464,10 @@ class Apple
 ```
 
 
-== Type Class
+<a name="typeclass"></a>
+
+1.11\. Type Class
+----------
 
 ```scala
 trait Writes[In, Out] {
@@ -440,8 +483,10 @@ implicit class Writeable[A] {
 }
 ```
 
-== Type Constructor
+<a name="typeconstructor"></a>
 
+1.12\. Type Constructor
+----------------
 Also known as *Higher Kinds*, Type Constructors act pretty much like functions, but on the type level.
 That is, if in normal programming you can have a function that takes a value `a` and returns a value `b` based on the previous one, then in type-level programming you'd think of a `List[A]` being a type constructor, that is:
 
@@ -487,7 +532,10 @@ And a small bonus for the curious, the kind of a concrete type is simply A (no p
 // java.lang.String's kind is A
 ```
 
-== Self Type Annotation
+<a name="selftypeannotation"></a>
+
+1.13\. Self Type Annotation
+--------------------
 
 **Self Types** are used in order to "require" that, if another class uses this trait,
 it should also provide implementation of whatever it is that you're requireing.
@@ -540,8 +588,10 @@ class Service {
 
 In fact, you can use any identifier (not just `this` or `self`) and then refer to it from your class.
 
-== Phantom Type
+<a name="phantomtype"></a>
 
+1.14\. Phantom Type
+------------
 Now we're starting to get into the more interesting Types! :-)
 
 Phantom Types are a mean of staticly validating your sources, during compile time.
@@ -597,7 +647,10 @@ TODO MAKE BETTER EXAMPLES
 
 Fun Java Fact: A similar end-result - failing during compilation - can also be done in Java, using annotation processors and Annotated types (you should check out Adam Warski's example on this if you're curious).
 
-== Structural Type
+<a name="structuraltype"></a>
+
+1.15\. Structural Type
+---------------
 
 Strucural Types are often compared to "*type-safe duck typing*", which is quite a good comparation if you'd want to get some intuition for it.
 
@@ -657,7 +710,10 @@ def on(it: OpenerCloser)(fun: OpenerCloser => Unit) = {
 So using this type alias, we've made the `def` way cleaner - so I'd highly recommend type aliasing bigger structural types. And one last warning, always check
 if you really need to reach for structural typing, and cannot do it in some other way - as it has quite some negative performance impact.
 
-== Path Dependent Type
+<a name="pathdependenttype"></a>
+
+1.16\. Path Dependent Type
+-----------------------
 
 This Type allows us to type-check on a Type internal to another class. This may seem weird at first, but is very intuitive once you see it:
 
@@ -711,8 +767,10 @@ that this container should only contain children of this parent - and not "any p
 We'll see how to require the "child of any parent" Type using Type Projectsions in the next section.
 
 
-== Type Projection
+<a name="typeprojection"></a>
 
+1.17\. Type Projection
+---------------
 Type Projections are similar to Path Dependent Types, in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes, splitting them with a `#` sign (hash sign, pound sign). Let's start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):
 
 ```scala
@@ -730,7 +788,10 @@ val out1in = new out1.Inner
 
 Another nice intuition about path dependent vs. projections is that Type Projections can be used for "type level programming" ;-)
 
-== Existential Types
+<a name="existentialtypes"></a>
+
+1.18\. Existential Types
+-----------------
 
 Existential Types are something that deeply relates to Type Erasure, which JVM languages "have to live with".
 
