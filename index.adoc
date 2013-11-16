@@ -13,6 +13,7 @@ ifndef::awestruct[]
 :idseparator: -
 :sectanchors:
 :source-highlighter: pygments
+:pygments-style: tango
 endif::awestruct[]
 :experimental:
 :mdash: &#8212;

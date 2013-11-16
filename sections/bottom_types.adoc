@@ -2,7 +2,7 @@
 
 In Scala everything has "some" type... but have you ever wondered how the type inferencer can still work, and infer sound types when working with "weird" situations like throwing exceptions? Let's investigate the below "if/else throw" example:
 
-```
+```scala
 val thing: Int =
   if (test)
     42                             // : Int
@@ -10,13 +10,13 @@ val thing: Int =
     throw new Exception("Whoops!") // : Nothing
 ```
 
-As you can see in the comments, the type of the if block is `Int` (easy), the type of the else block is `Nothing` (interresting). The inferencer was able to infer that the `thing` value, will only ever be of type `Int`. This is because of the **Bottom Type** property of Nothing. You can think of it as if:
+As you can see in the comments, the type of the if block is `Int` (easy), the type of the else block is `Nothing` (interresting). The inferencer was able to infer that the `thing` value, will only ever be of type `Int`. This is because of the **Bottom Type** property of Nothing.
 
-"`Nothing extends anything`"
+NOTE:  A very nice intuition about how bottom types work is: _"Nothing extends anything."_
 
 Type inference always looks for the "common type" of both branches in an if stamement, so if the other branch here is a Type that extends everything, the infered type will automatically be the Type from the first branch.
 
-```
+```scala
 Types visualized:
 
            [Int] -> ... -> AnyVal -> Anything
@@ -25,7 +25,7 @@ Nothing -> [Int] -> ... -> AnyVal -> Any
 
 The same reasoning can be applied to the second Bottom Type in Scala - `Null`.
 
-```
+```scala
 val thing: String =
   if (test)
     "Yay!"  // : String
@@ -46,14 +46,14 @@ infered type: String
 
 Let's think about `Int` and other primitives, which cannot hold null values. To investigate this case let's drop into the REPL and use the `:type` command (which allows to get the type of an expression):
 
-```
+```scala-repl
 scala> :type if (false) 23 else null
 Any
 ```
 
 This is different than the case with a String object in one of the branches. Let's look into the types in detail here, as `Null` is a bit less "extends everything" than `Nothing`. Let's see what `Int` extends in detail, by using `:type` again on it:
 
-```
+```scala-repl
 scala> :type -v 12
 // Type signature
 Int
@@ -64,7 +64,7 @@ TypeRef(TypeSymbol(final abstract class Int extends AnyVal))
 
 The verbose option adds a bit more information here, now we know that `Int` is an `AnyVal` - this is a special class representing value types - which cannot hold `Null`. If we look into <a href="https://github.com/scala/scala/blob/v2.10.3/src/library/scala/AnyVal.scala">AnyVal's sources</a>, we'll find:
 
-```
+```scala
 abstract class AnyVal extends Any with NotNull
 ```
 
@@ -72,7 +72,7 @@ I'm bringing this up here because the core functionality of AnyVal is so nicely 
 
 Coming back to the subject why the common Type for our if statement with an `AnyVal` on one code block and a `null` on the other one was Any and not something else. The one sentence way to define it is: `Null extends all AnyRefs` whereas `Nothing extends anything`. As AnyVals (such as numbers), are not in the same tree as AnyRefs, the only common Type between a number and a `null` value is Any - which explains our case.
 
-```
+```scala
 Types visualized:
 
 Int  -> NotNull -> AnyVal -> [Any]

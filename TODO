@@ -141,3 +141,13 @@ structurals need more of an intro
 ----------- END OF DAN -------------
 
 
+------------- JOSH SECTION --------------
+a higher kind is not exactly a type constructor. A type constructor enables higher kinds - in methods for example.
+
+show how List[_] gets desugared into forSome, show also that we can abstract over that value
+
+`type of object` section can be made longer - it's actually how the compiler looks up all the types.
+On the object of java.lang#String it looks for String. // projection or path dependent here? actually
+
+Expand section on type level - include >: and <: and those.
+------------- END OF JOSH SECTION --------------

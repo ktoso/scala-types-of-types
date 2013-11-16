@@ -403,6 +403,7 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-si
 .listingblock:hover code.groovy:before { content: "groovy"; }
 .listingblock:hover code.html:before { content: "html"; }
 .listingblock:hover code.java:before { content: "java"; }
+.listingblock:hover code.scala:before { content: "scala"; }
 .listingblock:hover code.javascript:before { content: "javascript"; }
 .listingblock:hover code.python:before { content: "python"; }
 .listingblock:hover code.ruby:before { content: "ruby"; }

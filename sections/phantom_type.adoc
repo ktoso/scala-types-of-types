@@ -3,7 +3,6 @@
 **TODO MORE EXAMPLES HERE**
 
 ```scala
-val a = ()
 trait Started
 trait Stopped
 trait StartStopState

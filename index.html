@@ -192,28 +192,39 @@ more and more interesting.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">val thing: Int =
-  if (test)
-    42                             // : Int
-  else
-    throw new Exception("Whoops!") // : Nothing</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">val</span> <span class="tok-n">thing</span><span class="tok-k">:</span> <span class="tok-kt">Int</span> <span class="tok-o">=</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-n">test</span><span class="tok-o">)</span>
+    <span class="tok-mi">42</span>                             <span class="tok-c1">// : Int</span>
+  <span class="tok-k">else</span>
+    <span class="tok-k">throw</span> <span class="tok-k">new</span> <span class="tok-nc">Exception</span><span class="tok-o">(</span><span class="tok-s">&quot;Whoops!&quot;</span><span class="tok-o">)</span> <span class="tok-c1">// : Nothing</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>As you can see in the comments, the type of the if block is <code>Int</code> (easy), the type of the else block is <code>Nothing</code> (interresting). The inferencer was able to infer that the <code>thing</code> value, will only ever be of type <code>Int</code>. This is because of the <strong>Bottom Type</strong> property of Nothing. You can think of it as if:</p>
+<p>As you can see in the comments, the type of the if block is <code>Int</code> (easy), the type of the else block is <code>Nothing</code> (interresting). The inferencer was able to infer that the <code>thing</code> value, will only ever be of type <code>Int</code>. This is because of the <strong>Bottom Type</strong> property of Nothing.</p>
 </div>
-<div class="paragraph">
-<p>"<code>Nothing extends anything</code>"</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-note" title="Note"></i>
+</td>
+<td class="content">
+A very nice intuition about how bottom types work is: <em>"Nothing extends anything."</em>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Type inference always looks for the "common type" of both branches in an if stamement, so if the other branch here is a Type that extends everything, the infered type will automatically be the Type from the first branch.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">Types visualized:
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-nc">Types</span> <span class="tok-n">visualized</span><span class="tok-k">:</span>
 
-           [Int] -> ... -> AnyVal -> Anything
-Nothing -> [Int] -> ... -> AnyVal -> Any</code></pre>
+           <span class="tok-err">[</span><span class="tok-kt">Int</span><span class="tok-err">]</span> <span class="tok-kt">-&gt;</span> <span class="tok-kt">...</span> <span class="tok-kt">-&gt;</span> <span class="tok-kt">AnyVal</span> <span class="tok-kt">-&gt;</span> <span class="tok-kt">Anything</span>
+<span class="tok-nc">Nothing</span> <span class="tok-o">-&gt;</span> <span class="tok-o">[</span><span class="tok-kt">Int</span><span class="tok-o">]</span> <span class="tok-o">-&gt;</span> <span class="tok-o">...</span> <span class="tok-o">-&gt;</span> <span class="tok-nc">AnyVal</span> <span class="tok-o">-&gt;</span> <span class="tok-nc">Any</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -221,11 +232,12 @@ Nothing -> [Int] -> ... -> AnyVal -> Any</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">val thing: String =
-  if (test)
-    "Yay!"  // : String
-  else
-  	null    // : Null</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">val</span> <span class="tok-n">thing</span><span class="tok-k">:</span> <span class="tok-kt">String</span> <span class="tok-o">=</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-n">test</span><span class="tok-o">)</span>
+    <span class="tok-s">&quot;Yay!&quot;</span>  <span class="tok-c1">// : String</span>
+  <span class="tok-k">else</span>
+  	<span class="tok-kc">null</span>    <span class="tok-c1">// : Null</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -246,7 +258,7 @@ infered type: String</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">scala> :type if (false) 23 else null
+<pre class="pygments highlight"><code class="scala-repl language-scala-repl">scala> :type if (false) 23 else null
 Any</code></pre>
 </div>
 </div>
@@ -255,7 +267,7 @@ Any</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">scala> :type -v 12
+<pre class="pygments highlight"><code class="scala-repl language-scala-repl">scala> :type -v 12
 // Type signature
 Int
 
@@ -268,7 +280,8 @@ TypeRef(TypeSymbol(final abstract class Int extends AnyVal))</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">abstract class AnyVal extends Any with NotNull</code></pre>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">abstract</span> <span class="tok-k">class</span> <span class="tok-nc">AnyVal</span> <span class="tok-k">extends</span> <span class="tok-nc">Any</span> <span class="tok-k">with</span> <span class="tok-nc">NotNull</span>
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -279,12 +292,13 @@ TypeRef(TypeSymbol(final abstract class Int extends AnyVal))</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">Types visualized:
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-nc">Types</span> <span class="tok-n">visualized</span><span class="tok-k">:</span>
 
-Int  -> NotNull -> AnyVal -> [Any]
-Null            -> AnyRef -> [Any]
+<span class="tok-kt">Int</span>  <span class="tok-kt">-&gt;</span> <span class="tok-kt">NotNull</span> <span class="tok-kt">-&gt;</span> <span class="tok-kt">AnyVal</span> <span class="tok-kt">-&gt;</span> <span class="tok-o">[</span><span class="tok-kt">Any</span><span class="tok-o">]</span>
+<span class="tok-nc">Null</span>            <span class="tok-o">-&gt;</span> <span class="tok-nc">AnyRef</span> <span class="tok-o">-&gt;</span> <span class="tok-o">[</span><span class="tok-kt">Any</span><span class="tok-o">]</span>
 
-infered type: Any</code></pre>
+<span class="tok-n">infered</span> <span class="tok-n">type</span><span class="tok-k">:</span> <span class="tok-kt">Any</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -773,8 +787,7 @@ And while we&#8217;re at it, let&#8217;s discuss why it is called self-type (exc
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">val</span> <span class="tok-n">a</span> <span class="tok-k">=</span> <span class="tok-o">()</span>
-<span class="tok-k">trait</span> <span class="tok-nc">Started</span>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Started</span>
 <span class="tok-k">trait</span> <span class="tok-nc">Stopped</span>
 <span class="tok-k">trait</span> <span class="tok-nc">StartStopState</span>
 <span class="tok-k">trait</span> <span class="tok-nc">Started</span> <span class="tok-k">extends</span> <span class="tok-nc">StartStopState</span>
@@ -1363,7 +1376,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-11-16 15:37:13 GMT
+Last updated 2013-11-16 18:00:36 GMT
 </div>
 </div>
 </body>
