@@ -1,0 +1,17 @@
+== Type Class
+
+```scala
+trait Writes[In, Out] {
+  def write(it: In): Out
+}
+
+implicit val jsonWriter = new Writes[Person, Json] {
+  def writes(p: Person) = Json.toJson(p)
+}
+
+implicit class Writeable[A] {
+  def write(implicit writes: Writes[A])
+}
+```
+
+TODO TODO

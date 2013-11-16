@@ -1,0 +1,34 @@
+== Existential Types
+
+Existential Types are something that deeply relates to Type Erasure, which JVM languages "have to live with".
+
+```scala
+val thingy: Any = ???
+
+thingy match {
+  case l: List[a] =>
+     // lower case 'a', matches all types... what type is 'a'?!
+}
+```
+
+We don't know the type of `a`, because of runtime type erasure. We know though that List is a type constructor, `* -> *`, so there must have been some type, it could have used to construct a valid `List[T]`. This "some type", is the **existentional type**!
+
+Scala provides a shortcut for it:
+
+```scala
+List[_]
+ //  ^ some type, no idea which one!
+```
+
+Let's say you're working with some Abstract Type Member, that in our case will be some Monad.
+We want to force users of our class into using only `Cool` instances within this Monad, because for example,
+only for these Types our Monad has any meaning. We can do this via Type Bounds on these *Existential Type T*:
+
+```scala
+type Monad[T] forSome { type T >: Cool }
+```
+
+http://mikeslinn.blogspot.com/2012/08/scala-existential-types.html
+
+
+

@@ -1,0 +1,19 @@
+== Type Projection
+
+Type Projections are similar to Path Dependent Types, in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes, splitting them with a `#` sign (hash sign, pound sign). Let's start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):
+
+```scala
+// our example class structure
+class Outer {
+  class Inner
+}
+
+// Type Projection (and alias) refering to Inner
+type OuterInnerProjection = Outer#Inner
+
+val out1 = new Outer
+val out1in = new out1.Inner
+```
+
+Another nice intuition about path dependent vs. projections is that Type Projections can be used for "type level programming" ;-)
+

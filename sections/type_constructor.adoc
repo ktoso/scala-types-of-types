@@ -1,0 +1,32 @@
+== Type Constructor
+
+**TODO THIS IS NOT THE SAME THING AS TYPE CONSTRUCTOR**
+
+Also known as *Higher Kinds*, Type Constructors act pretty much like functions, but on the type level.
+That is, if in normal programming you can have a function that takes a value `a` and returns a value `b` based on the previous one, then in type-level programming you'd think of a `List[A]` being a type constructor, that is:
+
+* `List[A]` takes a type parameter (`A`),
+* by itself it's not a valid type, you need to fill in the A somehow - construct the type,
+* by fillinf it in with `Int` you'd get `List[Int]` which is a concrete type.
+
+Using this example, you can see how similar it is to normal constructors - with the only difference that here we work on types, and not instances of objects. It's worth reminding here that in Scala it is not valid to say something is of type `List`, *unlike in Java* where javac would put the `List<Object>` for you. Scala is more strict here, and won't allow us to use `just a List` in the place of a type, as it's expecting a real type - not a type constructor.
+
+Related to this subject is that with **Scala 2.11.x** we're getting a new power user command in the REPL - the `:kind` command. It allows you to check if a type is higher kind or not. Let's check it our on a simple type constructor, such as `List[+A]` first:
+
+```scala
+// Welcome to Scala version 2.11.0-M5 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0-ea).
+// Type in expressions to have them evaluated.
+
+:kind List
+// scala.collection.immutable.List's kind is F[+A]
+
+:kind -v List
+// scala.collection.immutable.List's kind is F[+A]
+// * -(+)-> *
+// This is a type constructor: a 1st-order-kinded type.
+```
+
+Here we see that scalac is able to tell us that `List`, in fact, is a type constructor (it's way more talkative when used with the `-v`erbose option). Let's investigate the syntax right above this information: `* -> *`. This syntax is widely used to represent kinds, and actually I found it quite Haskell inspired - as this is the syntax Haskell uses to print types of functions. The most intuitive way to read it out loud would be "takes one type, returns another type". You might have noticed that we've omitted something from Scala's exact output, the plus sign from the relation (as in:`* -(+)-> *`), this means variance bounds and you can read up in detail about variance in section (TODO LINK TO VARIANCE).
+
+As already mentioned, `List[+A]` (or `Option[+A]`, or `Set[+A]`... or anything that has one type parameter) is the simplest case of a type constructor - these take one parameter. Let's take a look how type constructors with multiple type parameters are represented by investigating Scala's `Either[+A, +B]`:
+

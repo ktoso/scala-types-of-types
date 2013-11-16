@@ -7,6 +7,7 @@ ifdef::awestruct[]
 endif::awestruct[]
 ifndef::awestruct[]
 :toc: right
+:numbered:
 :icons: font
 :idprefix:
 :idseparator: -
@@ -17,10 +18,26 @@ endif::awestruct[]
 :mdash: &#8212;
 :language: asciidoc
 
-include::sections/all.adoc[]
-
-include::sections/dynamic.adoc[]
-
+include::sections/intro.adoc[]
+include::sections/type_annotation.adoc[]
+include::sections/unified_type_system.adoc[]
+include::sections/bottom_types.adoc[]
+include::sections/type_word.adoc[]
+include::sections/variance.adoc[]
+include::sections/traits.adoc[]
+include::sections/refinements.adoc[]
+include::sections/alias.adoc[]
+include::sections/abstract_type_member.adoc[]
+include::sections/self_recursive_type.adoc[]
+include::sections/type_class.adoc[]
+include::sections/type_constructor.adoc[]
+include::sections/self_type.adoc[]
+include::sections/phantom_type.adoc[]
+include::sections/structural_type.adoc[]
+include::sections/path_dependent_type.adoc[]
+include::sections/type_projection.adoc[]
+include::sections/existential_type.adoc[]
 include::sections/type_lambda.adoc[]
+include::sections/dynamic.adoc[]
 
 include::sections/kudos.adoc[]

@@ -1,0 +1,53 @@
+== Self Type Annotation
+
+**Self Types** are used in order to "require" that, if another class uses this trait,
+it should also provide implementation of whatever it is that you're requireing.
+
+Let's look at an example where a service requires some Module which provides other services.
+We can state this using the following Self Type Annotation:
+
+```scala
+trait Module {
+  lazy val serviceInModule = new ServiceInModule
+}
+
+trait Service {
+  this: Module =>
+
+  def doTheThings() = serviceInModule.doTheThings()
+}
+```
+
+The second line can be read as "I'm a Module". It might seem yield the exactly same But how does this differ from extending `Module` right away?
+
+which means that someone will have to give us this Module at instanciation time:
+
+```scala
+trait TestingModule extends Module { /*...*/ }
+
+new Service with TestingModule
+```
+
+If you were to try to instanciate it without mixing in the required trait it would fail like this:
+
+```scala
+new Service
+
+// class Service cannot be instantiated because it does not conform to its self-type Service with Module
+//              new Service
+//              ^
+```
+
+You should also keep in mind, that it's OK, to specify more than one trait when using the self-type syntax.
+And while we're at it, let's discuss why it is called self-type (except for the "yeah, it makes sense" factor). Turns out a popular style (and possibility) to write it looks like this:
+
+```scala
+class Service {
+  self: MongoModule with APIModule =>
+
+  def delegated = self.doTheThings()
+}
+```
+
+In fact, you can use any identifier (not just `this` or `self`) and then refer to it from your class.
+

@@ -1,0 +1,30 @@
+== Abstract Type Member
+
+Let's now go deeper into the use cases of Type Aliases, which we call Abstract Type Members.
+
+With Abstract Type Members we say "I expect someone to tell me about some type - I'll refer to it by the name MyType".
+It's most basic function is allowing us to define generic classes (templates), but instead of using the `class Clazz[A, B]` syntax, we name them inside the class, like this:
+
+```scala
+trait SimplestContainer {
+  type A      // Abstract Type Member
+
+  def value: A
+}
+```
+
+Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about *Path-dependent Types*, as well as in the below example.
+
+todo; Then, this is how we would implement this trait:
+
+```scala
+object IntContainer extends SimplestContainer {
+  type A = Int
+
+  def value = 42
+}
+```
+
+So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as it's type is known.
+
+

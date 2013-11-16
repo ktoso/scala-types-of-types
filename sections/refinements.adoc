@@ -1,0 +1,20 @@
+== Refined Types (refinements)
+
+Refinements are very easy to explain as "subclassing without naming the subclass". So in source code it would look like this:
+
+```scala
+class Entity
+
+trait Persister {
+  def doPersist(e: Entity) = {
+    e.persistForReal()
+  }
+}
+
+// our refined instance (and type):
+val refinedMockPersister = new Persister {
+  override def doPersist(e: Entity) = ()
+}
+```
+
+

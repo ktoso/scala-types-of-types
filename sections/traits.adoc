@@ -1,0 +1,98 @@
+=== Traits, as in "interfaces with implementation"
+
+First, let's take a look as the simplest thing possible about traits:
+how we can basically treat a type with multiple traits mixed in, as if it is implementing these "interfaces with implementation",
+as you might be tempted to call them if comming from Java-land:
+
+```scala
+class Base { def b = "" }
+trait Cool { def c = "" }
+trait Awesome { def a ="" }
+
+class BA extends Base with Awesome
+class BC extends Base with Cool
+
+// as you might expect, you can upcast these instances into any of the traits they've mixed-in
+val ba: BA = new BA
+val bc: Base with Cool = new BC
+
+val b1: Base = ba
+val b2: Base = bc
+
+ba.a
+bc.c
+b1.b
+```
+
+So far this should have been relatively well known to you. Now let's to into the world of the "diamond problem",
+which people who know C++ might have been expecting. Basically "The Diamond Problem" is a situation during multiple inheritance
+where we're not sure to what we want to refer to. The below image ilustrates the problem, if you would think of traits as if they were
+directly multiple inheritance:
+
+=== Type Linearization vs. The Diamond Problem
+
+![diamond-inheritance-problem](http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Diamond_inheritance.svg/220px-Diamond_inheritance.svg.png)
+
+For the "diamond problem" to appear, it's enough if we have one overriding implementation in `B` or/and `C`. This introduces an ambiguity when calling the common method in `D`, did we inherit the version of the method from `C` or from `B`? In Scala's case the case with only one overriding method is very simple - the override wins. But let's work through the more complex case:
+
+* class `A` defines a method `common` returning `a`,
+* trait `B` DOES override `common` to return `b`,
+* trait `C` DOES override `common` to return `c`,
+* class `D` extends both `B` and `C`,
+* which version of the `common` method does class `D` inherit? The overriden impementation from `C`, or theone from `B`?
+
+This amgiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem by so called **Type Linearization**.
+In other words, given a diamond class hierarchy, we are **always** (and **deterministically**) able to determine what will be called when inside D we call `common`.
+Let's put this into code and then talk about linearization:
+
+```scala
+trait A { def common = "A" }
+
+trait B extends A { override def common = "B" }
+trait C extends A { override def common = "C" }
+
+class D1 extends B with C
+class D2 extends C with B
+```
+
+The results will be as follows:
+
+```scala
+(new D1).common == "C"
+
+(new D2).common == "B"
+```
+
+The reason for this is that Scala applied the type linearization for us here. The algorithm goes like this:
+
+* start building a list of types, the first element is the type we're linearizing right now,
+* expand each supertype recursively and put all their types into this list (it should be flat, not nested),
+* remove duplicates from the resulting list, by scanning it from the left, and removing a type that you've already "seen"
+* done.
+
+Let's apply this algorithm on our diamond example by hand, to verify why `D1 extends B with C` (and `D2 extends C with B`) yielded the results they did:
+
+
+```scala
+// start with D1:
+B with C with <D1>
+
+// expand all the types until you rach Any for all of them:
+(Any with AnyRef with A with B) with (Any with AnyRef with A with C) with <D1>
+
+// remove duplicates by removing "already seen" types, when moving left-to-right:
+(Any with AnyRef with A with B) with (                            C) with <D1>
+
+// write the resulting type nicely:
+Any with AnyRef with A with B with C with <D1>
+```
+
+So when calling the `common` method, it's now very simple to decide which version we want to call: we simply look at the linearized type,
+and try to resolve the method by going from the right in the resulting linearized type. In the case of `D1`, the "rightmost" trait providing an implementation of `common` is `C`, so it's overriding the implementation provided by `B`. The result of calling `common` inside `D1` would be `"c"`.
+
+You can wrap your head around this method by trying it out on the `D2` class - it should linearize with `B` after `C`, thus yielding a `"b"` if you'd run the code.
+Also it's rather easy to resolve the simpler cases of linearization by just thinking "rightmost wins", but this is quite an simplification, which while helpful, does not give the full picture about the algorithm.
+
+It is worth mentioning that using this technique we also know *"who is my `super`?"*. It's as easy as "looking left" in the linearized type, from wherever class you want to check who your superclass is. So for example in our case (`D1`), the superclass of `C` is `B`.
+
+

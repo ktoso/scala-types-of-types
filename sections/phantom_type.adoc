@@ -1,0 +1,76 @@
+== Phantom Type
+
+**TODO MORE EXAMPLES HERE**
+
+```scala
+val a = ()
+trait Started
+trait Stopped
+trait StartStopState
+trait Started extends StartStopState
+trait Stopped extends StartStopState
+
+class Service[State <: StartStopState] {
+  def start[T >: State <: Stopped] = this.asInstanceOf[Service[Started]]
+}
+val x = new Serice[Stopped]()
+val x = new Service[Stopped]()
+x.start
+res1.start
+```
+
+Now we're starting to get into the more interesting Types! :-)
+
+Phantom Types are a mean of staticly validating your sources, during compile time.
+It's used in many libraries, to prevent you from using some API, with an object in "not the right state".
+
+To set the stage for our Phantom Type usage let's first define a `ServiceHandle` class,
+and `trait`s to represent the state it is in. We want to prevent users of our API from calling `stop()` on an already
+`Stopped` instance, as well as prevent them from calling `start()` on an already `Running` instance.
+
+```scala
+// the traits are expected to be only used with our ServiceHandle,
+// which we nicely express using Self Type Annotations.
+trait Stopped { this: ServiceHandle => }
+trait Running { this: ServiceHandle => }
+```
+
+Now that we have our Types prepared, let's look at how the implementation will look like:
+
+```scala
+class ServiceHandle private (id: Id)
+object ServiceHandle {
+  def create(id: Id) = new ServiceHandle(id) with Stopped
+}
+```
+
+Here, during instanciation of the class, we mix in the `Stopped` trait right away.
+We've used this trick before in this blog post (series), but now it's finally time to explain it in detail.
+
+Turns out that the type of this newly created ServiceHandle is not only `ServiceHandle` but...
+`ServiceHandle with Stopped`. It may seem underwhelming at first that "that's it",
+but let's move on to the `start` and `stop` commands to see why this us so nice interesting.
+
+```scala
+def start(s: ServiceHandle with Stopped) = {
+  s.start()
+  new ServiceHandle(s.id) with Running
+}
+```
+
+And we can do the same for stopping a Service. Other useful methods would be,
+`Id => Either[ServiceHandle with Stopped, ServiceHandle with Running]` which's implementation you can easily imagine.
+
+```scala
+def stop(s: ServiceHandle with Running) = {
+  s.stop()
+  new ServiceHandle(s.id) with Stopped
+}
+```
+
+TODO MAKE BETTER EXAMPLES
+
+
+
+Fun Java Fact: A similar end-result - failing during compilation - can also be done in Java, using annotation processors and Annotated types (you should check out Adam Warski's example on this if you're curious).
+

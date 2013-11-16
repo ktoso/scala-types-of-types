@@ -1,0 +1,35 @@
+== Type Variance in Scala
+
+In Scala container types are **NOT variant at all by default**!
+
+This means that for a container `List[Fruit]` you cannot insert Apples into it,
+even if an `class Apple extends Fruit`.
+
+Variance in Scala is defined by using `+` and `-` signs in front of type parameters.
+
+http://www.slideshare.net/dgalichet/demystifying-scala-type-system
+
+
+[options="header"]
+|===
+| Name          | Description                        | Scala Syntax
+| Invariant     | C[T'] and C[T] are **not** related | C[T]
+| Covariant     | C[T'] is a subclass of [T]         | C[+T]
+| Contravariant | C[T] is a subclass of C[T']        | C[-T]
+|===
+
+
+
+There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we'll use a `List[A]
+` as our example, and functions. A `List` is defined as `List[+A]` in Scala, so the below code is valid:
+
+```
+class Human
+class Coder extends Human
+
+
+```
+
+TODO
+
+

@@ -13,11 +13,11 @@ Obvisouly this vademecum required quite a bit of reseach and double-checking, so
 * Rogue (where I occasionally PullRequest too) is a great example of using Phantom Types: http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/
 * Great StackOverflow answer by **Kriss Nuttycombe** about Type Lambdas: http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits
 
-I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times:
+I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):
 
-* Sergio ....
+* Sergio Rodrigez, for the most in depth article review I've ever seen in my life and lots of suggestions,
 * Andrzej
-* Josh of Typesafe (?)
+* Joshua Sureth, for the awesome comments and examples over lunch after devoxx
 * The awesome guys from Softwaremill
 * The awesome guys from VirtusLab
 * TODO TODO
