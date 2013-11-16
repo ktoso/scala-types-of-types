@@ -277,7 +277,7 @@ table thead tr th, table tfoot tr th, table tbody tr td, table tr td, table tfoo
 .clearfix:before, .clearfix:after, .float-group:before, .float-group:after { content: " "; display: table; }
 .clearfix:after, .float-group:after { clear: both; }
 
-*:not(pre) > code { color: black; margin: 0 2px; padding: 0px 5px; border: 1px solid #ddd; background-color: #f8f8f8; border-radius: 3px; font-size: 0.95em; }
+*:not(pre) > code { color: black; margin: 0 2px; padding: 0px 5px; border: 1px solid #ddd; background-color: #f8f8f8; border-radius: 3px; font-size: 0.95em; font-weight: normal; }
 
 pre, pre > code { line-height: 1.4; color: black; font-family: monospace, serif; font-weight: normal; }
 
