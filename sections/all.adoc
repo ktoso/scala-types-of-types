@@ -442,6 +442,8 @@ implicit class Writeable[A] {
 
 == Type Constructor
 
+**TODO THIS IS NOT THE SAME THING AS TYPE CONSTRUCTOR**
+
 Also known as *Higher Kinds*, Type Constructors act pretty much like functions, but on the type level.
 That is, if in normal programming you can have a function that takes a value `a` and returns a value `b` based on the previous one, then in type-level programming you'd think of a `List[A]` being a type constructor, that is:
 
@@ -541,6 +543,25 @@ class Service {
 In fact, you can use any identifier (not just `this` or `self`) and then refer to it from your class.
 
 == Phantom Type
+
+**TODO MORE EXAMPLES HERE**
+
+```scala
+val a = ()
+trait Started
+trait Stopped
+trait StartStopState
+trait Started extends StartStopState
+trait Stopped extends StartStopState
+
+class Service[State <: StartStopState] {
+  def start[T >: State <: Stopped] = this.asInstanceOf[Service[Started]]
+}
+val x = new Serice[Stopped]()
+val x = new Service[Stopped]()
+x.start
+res1.start
+```
 
 Now we're starting to get into the more interesting Types! :-)
 

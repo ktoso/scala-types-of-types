@@ -1,3 +1,3 @@
 #/bin/bash
 
-asciidoctor -a stylesheet=foundation.css -a stylesdir=stylesheets index.adoc
+asciidoctor -a stylesheet=foundation.css,pygments.css -a stylesdir=stylesheets index.adoc
