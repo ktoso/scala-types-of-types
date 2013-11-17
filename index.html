@@ -34,6 +34,11 @@
 <li><a href="#self-recursive-type">10. Self-Recursive Type</a></li>
 <li><a href="#type-class">11. Type Class</a></li>
 <li><a href="#type-constructor">12. Type Constructor</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#higher-kinds">12.1. Higher kinds</a></li>
+</ul>
+</li>
 <li><a href="#self-type-annotation">13. Self Type Annotation</a></li>
 <li><a href="#phantom-type">14. Phantom Type</a></li>
 <li><a href="#structural-type">15. Structural Type</a></li>
@@ -662,16 +667,13 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <h2 id="type-constructor"><a class="anchor" href="#type-constructor"></a>12. Type Constructor</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>TODO THIS IS NOT THE SAME THING AS TYPE CONSTRUCTOR</strong></p>
-</div>
-<div class="paragraph">
-<p>Also known as <strong>Higher Kinds</strong>, Type Constructors act pretty much like functions, but on the type level.
+<p>Type Constructors act pretty much like functions, but on the type level.
 That is, if in normal programming you can have a function that takes a value <code>a</code> and returns a value <code>b</code> based on the previous one, then in type-level programming you&#8217;d think of a <code>List[A]</code> being a type constructor, that is:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>List[A]</code> takes a type parameter (<code>A</code>),</p>
+<p><code>List[+A]</code> takes a type parameter (<code>A</code>),</p>
 </li>
 <li>
 <p>by itself it&#8217;s not a valid type, you need to fill in the A somehow - construct the type,</p>
@@ -707,6 +709,12 @@ That is, if in normal programming you can have a function that takes a value <co
 </div>
 <div class="paragraph">
 <p>As already mentioned, <code>List[+A]</code> (or <code>Option[+A]</code>, or <code>Set[+A]</code>&#8230; or anything that has one type parameter) is the simplest case of a type constructor - these take one parameter. Let&#8217;s take a look how type constructors with multiple type parameters are represented by investigating Scala&#8217;s <code>Either[+A, +B]</code>:</p>
+</div>
+<div class="sect2">
+<h3 id="higher-kinds"><a class="anchor" href="#higher-kinds"></a>12.1. Higher kinds</h3>
+<div class="paragraph">
+<p>TODO nothing here yet, coming soon&#8230;</p>
+</div>
 </div>
 </div>
 </div>
