@@ -1,10 +1,11 @@
 == Type Constructor
 
-Type Constructors act pretty much like functions, but on the type level.
-That is, if in normal programming you can have a function that takes a value `a` and returns a value `b` based on the previous one, then in type-level programming you'd think of a `List[A]` being a type constructor, that is:
+Type Constructors act pretty much like functions, but on the type level. The simplest example would be
+
+That is, if in normal programming you can have a function that takes a value `a` and returns a value `b` based on the previous one, then in type-level programming you'd think of a `List[+A]` being a type constructor, that is:
 
 * `List[+A]` takes a type parameter (`A`),
-* by itself it's not a valid type, you need to fill in the A somehow - construct the type,
+* by itself it's not a valid type, you need to fill in the `A` somehow - "_construct the type_",
 * by fillinf it in with `Int` you'd get `List[Int]` which is a concrete type.
 
 Using this example, you can see how similar it is to normal constructors - with the only difference that here we work on types, and not instances of objects. It's worth reminding here that in Scala it is not valid to say something is of type `List`, *unlike in Java* where javac would put the `List<Object>` for you. Scala is more strict here, and won't allow us to use `just a List` in the place of a type, as it's expecting a real type - not a type constructor.
@@ -26,9 +27,27 @@ Related to this subject is that with **Scala 2.11.x** we're getting a new power 
 
 Here we see that scalac is able to tell us that `List`, in fact, is a type constructor (it's way more talkative when used with the `-v`erbose option). Let's investigate the syntax right above this information: `* -> *`. This syntax is widely used to represent kinds, and actually I found it quite Haskell inspired - as this is the syntax Haskell uses to print types of functions. The most intuitive way to read it out loud would be "takes one type, returns another type". You might have noticed that we've omitted something from Scala's exact output, the plus sign from the relation (as in:`* -(+)-> *`), this means variance bounds and you can read up in detail about variance in section (TODO LINK TO VARIANCE).
 
-As already mentioned, `List[+A]` (or `Option[+A]`, or `Set[+A]`... or anything that has one type parameter) is the simplest case of a type constructor - these take one parameter. Let's take a look how type constructors with multiple type parameters are represented by investigating Scala's `Either[+A, +B]`:
+As already mentioned, `List[+A]` (or `Option[+A]`, or `Set[+A]`... or anything that has one type parameter) is the simplest case of a type constructor - these take *one* parameter.
+We refer to them as *first-order kinds* (`* -> *`). It's also worth mentioning that even a `Pair[+A, +B]` (which we can represent as `* -> * -> *`) is still not a "higher-order kind" - it's still *first-order*. In the next section we'll dissect what exactly higher kinds give us and how to notice one.
 
-=== Higher kinds
+=== Higher-Order Kind
 
 TODO nothing here yet, coming soon...
+
+*Higher Kinds* on the other hand, allow us to abstract over type constructors, just like type constructors allow
+us to abstract over the type they.
+
+A classic example here is a `Monad`:
+
+```scala-repl
+scala> import scalaz._
+import scalaz._
+
+scala> :k Monad // Finds locally imported types.
+Monad's kind is (* -> *) -> *
+This is a type constructor that takes type constructor(s): a higher-kinded type.
+```
+
+
+TODO: http://blogs.atlassian.com/2013/09/scala-types-of-a-higher-kind/
 

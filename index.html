@@ -36,7 +36,7 @@
 <li><a href="#type-constructor">12. Type Constructor</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#higher-kinds">12.1. Higher kinds</a></li>
+<li><a href="#higher-order-kind">12.1. Higher-Order Kind</a></li>
 </ul>
 </li>
 <li><a href="#self-type-annotation">13. Self Type Annotation</a></li>
@@ -667,8 +667,10 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <h2 id="type-constructor"><a class="anchor" href="#type-constructor"></a>12. Type Constructor</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Type Constructors act pretty much like functions, but on the type level.
-That is, if in normal programming you can have a function that takes a value <code>a</code> and returns a value <code>b</code> based on the previous one, then in type-level programming you&#8217;d think of a <code>List[A]</code> being a type constructor, that is:</p>
+<p>Type Constructors act pretty much like functions, but on the type level. The simplest example would be</p>
+</div>
+<div class="paragraph">
+<p>That is, if in normal programming you can have a function that takes a value <code>a</code> and returns a value <code>b</code> based on the previous one, then in type-level programming you&#8217;d think of a <code>List[+A]</code> being a type constructor, that is:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -676,7 +678,7 @@ That is, if in normal programming you can have a function that takes a value <co
 <p><code>List[+A]</code> takes a type parameter (<code>A</code>),</p>
 </li>
 <li>
-<p>by itself it&#8217;s not a valid type, you need to fill in the A somehow - construct the type,</p>
+<p>by itself it&#8217;s not a valid type, you need to fill in the <code>A</code> somehow - "<em>construct the type</em>",</p>
 </li>
 <li>
 <p>by fillinf it in with <code>Int</code> you&#8217;d get <code>List[Int]</code> which is a concrete type.</p>
@@ -708,12 +710,33 @@ That is, if in normal programming you can have a function that takes a value <co
 <p>Here we see that scalac is able to tell us that <code>List</code>, in fact, is a type constructor (it&#8217;s way more talkative when used with the <code>-v`erbose option). Let's investigate the syntax right above this information: `* -&gt; *</code>. This syntax is widely used to represent kinds, and actually I found it quite Haskell inspired - as this is the syntax Haskell uses to print types of functions. The most intuitive way to read it out loud would be "takes one type, returns another type". You might have noticed that we&#8217;ve omitted something from Scala&#8217;s exact output, the plus sign from the relation (as in:<code>* -(+)-&gt; *</code>), this means variance bounds and you can read up in detail about variance in section (TODO LINK TO VARIANCE).</p>
 </div>
 <div class="paragraph">
-<p>As already mentioned, <code>List[+A]</code> (or <code>Option[+A]</code>, or <code>Set[+A]</code>&#8230; or anything that has one type parameter) is the simplest case of a type constructor - these take one parameter. Let&#8217;s take a look how type constructors with multiple type parameters are represented by investigating Scala&#8217;s <code>Either[+A, +B]</code>:</p>
+<p>As already mentioned, <code>List[+A]</code> (or <code>Option[+A]</code>, or <code>Set[+A]</code>&#8230; or anything that has one type parameter) is the simplest case of a type constructor - these take <strong>one</strong> parameter.
+We refer to them as <strong>first-order kinds</strong> (<code>* -&gt; *</code>). It&#8217;s also worth mentioning that even a <code>Pair[+A, +B]</code> (which we can represent as <code>* -&gt; * -&gt; *</code>) is still not a "higher-order kind" - it&#8217;s still <strong>first-order</strong>. In the next section we&#8217;ll dissect what exactly higher kinds give us and how to notice one.</p>
 </div>
 <div class="sect2">
-<h3 id="higher-kinds"><a class="anchor" href="#higher-kinds"></a>12.1. Higher kinds</h3>
+<h3 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>12.1. Higher-Order Kind</h3>
 <div class="paragraph">
 <p>TODO nothing here yet, coming soon&#8230;</p>
+</div>
+<div class="paragraph">
+<p><strong>Higher Kinds</strong> on the other hand, allow us to abstract over type constructors, just like type constructors allow
+us to abstract over the type they.</p>
+</div>
+<div class="paragraph">
+<p>A classic example here is a <code>Monad</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala-repl language-scala-repl">scala> import scalaz._
+import scalaz._
+
+scala> :k Monad // Finds locally imported types.
+Monad's kind is (* -> *) -> *
+This is a type constructor that takes type constructor(s): a higher-kinded type.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>TODO: <a href="http://blogs.atlassian.com/2013/09/scala-types-of-a-higher-kind/">http://blogs.atlassian.com/2013/09/scala-types-of-a-higher-kind/</a></p>
 </div>
 </div>
 </div>
