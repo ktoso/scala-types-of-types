@@ -34,28 +34,24 @@
 <li><a href="#self-recursive-type">10. Self-Recursive Type</a></li>
 <li><a href="#type-class">11. Type Class</a></li>
 <li><a href="#type-constructor">12. Type Constructor</a></li>
+<li><a href="#higher-order-kind">13. Higher-Order Kind</a></li>
+<li><a href="#self-type-annotation">14. Self Type Annotation</a></li>
+<li><a href="#phantom-type">15. Phantom Type</a></li>
+<li><a href="#structural-type">16. Structural Type</a></li>
+<li><a href="#path-dependent-type">17. Path Dependent Type</a></li>
+<li><a href="#type-projection">18. Type Projection</a></li>
+<li><a href="#existential-types">19. Existential Types</a></li>
+<li><a href="#type-lambda">20. Type Lambda</a></li>
+<li><a href="#dynamic-type">21. Dynamic Type</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#higher-order-kind">12.1. Higher-Order Kind</a></li>
+<li><a href="#applydynamic">21.1. applyDynamic</a></li>
+<li><a href="#applydynamicnamed">21.2. applyDynamicNamed</a></li>
+<li><a href="#selectdynamic">21.3. selectDynamic</a></li>
+<li><a href="#updatedynamic">21.4. updateDynamic</a></li>
 </ul>
 </li>
-<li><a href="#self-type-annotation">13. Self Type Annotation</a></li>
-<li><a href="#phantom-type">14. Phantom Type</a></li>
-<li><a href="#structural-type">15. Structural Type</a></li>
-<li><a href="#path-dependent-type">16. Path Dependent Type</a></li>
-<li><a href="#type-projection">17. Type Projection</a></li>
-<li><a href="#existential-types">18. Existential Types</a></li>
-<li><a href="#type-lambda">19. Type Lambda</a></li>
-<li><a href="#dynamic-type">20. Dynamic Type</a></li>
-<li>
-<ul class="sectlevel2">
-<li><a href="#applydynamic">20.1. applyDynamic</a></li>
-<li><a href="#applydynamicnamed">20.2. applyDynamicNamed</a></li>
-<li><a href="#selectdynamic">20.3. selectDynamic</a></li>
-<li><a href="#updatedynamic">20.4. updateDynamic</a></li>
-</ul>
-</li>
-<li><a href="#links-and-kudos">21. Links and Kudos</a></li>
+<li><a href="#links-and-kudos">22. Links and Kudos</a></li>
 </ul>
 </div>
 </div>
@@ -713,8 +709,11 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <p>As already mentioned, <code>List[+A]</code> (or <code>Option[+A]</code>, or <code>Set[+A]</code>&#8230; or anything that has one type parameter) is the simplest case of a type constructor - these take <strong>one</strong> parameter.
 We refer to them as <strong>first-order kinds</strong> (<code>* -&gt; *</code>). It&#8217;s also worth mentioning that even a <code>Pair[+A, +B]</code> (which we can represent as <code>* -&gt; * -&gt; *</code>) is still not a "higher-order kind" - it&#8217;s still <strong>first-order</strong>. In the next section we&#8217;ll dissect what exactly higher kinds give us and how to notice one.</p>
 </div>
-<div class="sect2">
-<h3 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>12.1. Higher-Order Kind</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>13. Higher-Order Kind</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>TODO nothing here yet, coming soon&#8230;</p>
 </div>
@@ -740,9 +739,8 @@ This is a type constructor that takes type constructor(s): a higher-kinded type.
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="self-type-annotation"><a class="anchor" href="#self-type-annotation"></a>13. Self Type Annotation</h2>
+<h2 id="self-type-annotation"><a class="anchor" href="#self-type-annotation"></a>14. Self Type Annotation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Self Types</strong> are used in order to "require" that, if another class uses this trait,
@@ -813,7 +811,7 @@ And while we&#8217;re at it, let&#8217;s discuss why it is called self-type (exc
 </div>
 </div>
 <div class="sect1">
-<h2 id="phantom-type"><a class="anchor" href="#phantom-type"></a>14. Phantom Type</h2>
+<h2 id="phantom-type"><a class="anchor" href="#phantom-type"></a>15. Phantom Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>TODO MORE EXAMPLES HERE</strong></p>
@@ -909,7 +907,7 @@ but let&#8217;s move on to the <code>start</code> and <code>stop</code> commands
 </div>
 </div>
 <div class="sect1">
-<h2 id="structural-type"><a class="anchor" href="#structural-type"></a>15. Structural Type</h2>
+<h2 id="structural-type"><a class="anchor" href="#structural-type"></a>16. Structural Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Strucural Types are often compared to "<strong>type-safe duck typing</strong>", which is quite a good comparation if you&#8217;d want to get some intuition for it.</p>
@@ -983,7 +981,7 @@ if you really need to reach for structural typing, and cannot do it in some othe
 </div>
 </div>
 <div class="sect1">
-<h2 id="path-dependent-type"><a class="anchor" href="#path-dependent-type"></a>16. Path Dependent Type</h2>
+<h2 id="path-dependent-type"><a class="anchor" href="#path-dependent-type"></a>17. Path Dependent Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This Type allows us to type-check on a Type internal to another class. This may seem weird at first, but is very intuitive once you see it:</p>
@@ -1048,7 +1046,7 @@ that this container should only contain children of this parent - and not "any p
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-projection"><a class="anchor" href="#type-projection"></a>17. Type Projection</h2>
+<h2 id="type-projection"><a class="anchor" href="#type-projection"></a>18. Type Projection</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Type Projections are similar to Path Dependent Types, in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes, splitting them with a <code>#</code> sign (hash sign, pound sign). Let&#8217;s start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):</p>
@@ -1074,7 +1072,7 @@ that this container should only contain children of this parent - and not "any p
 </div>
 </div>
 <div class="sect1">
-<h2 id="existential-types"><a class="anchor" href="#existential-types"></a>18. Existential Types</h2>
+<h2 id="existential-types"><a class="anchor" href="#existential-types"></a>19. Existential Types</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Existential Types are something that deeply relates to Type Erasure, which JVM languages "have to live with".</p>
@@ -1120,7 +1118,7 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-lambda"><a class="anchor" href="#type-lambda"></a>19. Type Lambda</h2>
+<h2 id="type-lambda"><a class="anchor" href="#type-lambda"></a>20. Type Lambda</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In type lambda&#8217;s we&#8217;ll be using <strong>Path Dependent</strong> as well as <strong>Structural Types</strong>, so if you skipped that sections you may want to go back to it.</p>
@@ -1140,7 +1138,7 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>20. Dynamic Type</h2>
+<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>21. Dynamic Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>I&#8217;ve had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?</p>
@@ -1209,7 +1207,7 @@ There are a few features (like the experimental macros for example) that need to
 <p>Let&#8217;s take a look (with examples, at each of them. We&#8217;ll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn&#8217;t (back then) compile) and make it work this time ;-)</p>
 </div>
 <div class="sect2">
-<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>20.1. applyDynamic</h3>
+<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>21.1. applyDynamic</h3>
 <div class="paragraph">
 <p>Ok, our first magic method looks like this:</p>
 </div>
@@ -1239,7 +1237,7 @@ There are a few features (like the experimental macros for example) that need to
 </div>
 </div>
 <div class="sect2">
-<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>20.2. applyDynamicNamed</h3>
+<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>21.2. applyDynamicNamed</h3>
 <div class="paragraph">
 <p>Ok, that was easy. But it didn&#8217;t give us too much control over the names of the parameters.
 Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "ktoso")</code>? Well&#8230; turns out we can!</p>
@@ -1272,7 +1270,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>20.3. selectDynamic</h3>
+<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>21.3. selectDynamic</h3>
 <div class="paragraph">
 <p>Not it&#8217;s time for the more "unusual" methods. apply methods we&#8217;re pretty easy to understand. It&#8217;s just a method with some arbitrary name. But hey, isn&#8217;t almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let&#8217;s give it a try! &lt;strong&gt;We&#8217;ll use the example with applyDynamic here, and try to act like it has a method without ()&lt;/strong&gt;:</p>
 </div>
@@ -1302,7 +1300,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>20.4. updateDynamic</h3>
+<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>21.4. updateDynamic</h3>
 <div class="paragraph">
 <p>What&#8217;s left you ask? Ask yourself the following question then: "Since I can act like a <code>Dynamic</code> object has some value in some field&#8230; What else should I be able to do with it?" My answer to that would be: "set it"! That&#8217;s what <code>updateDynamic</code> is used for. There is one special rule about <code>updateDynamic</code> though - it&#8217;s only valid if you also took care about selectDynamic - that&#8217;s why in the first example the code generated errors about both - select and update. For example if we&#8217;d implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn&#8217;t compile anyway. It makes sense in terms of plain semantics if you think about it.</p>
 </div>
@@ -1343,7 +1341,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect1">
-<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>21. Links and Kudos</h2>
+<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>22. Links and Kudos</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I&#8217;ve found helpful (and you might too).</p>

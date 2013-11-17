@@ -30,7 +30,7 @@ Here we see that scalac is able to tell us that `List`, in fact, is a type const
 As already mentioned, `List[+A]` (or `Option[+A]`, or `Set[+A]`... or anything that has one type parameter) is the simplest case of a type constructor - these take *one* parameter.
 We refer to them as *first-order kinds* (`* -> *`). It's also worth mentioning that even a `Pair[+A, +B]` (which we can represent as `* -> * -> *`) is still not a "higher-order kind" - it's still *first-order*. In the next section we'll dissect what exactly higher kinds give us and how to notice one.
 
-=== Higher-Order Kind
+== Higher-Order Kind
 
 TODO nothing here yet, coming soon...
 
