@@ -13,5 +13,3 @@ implicit class Writeable[A] {
   def write(implicit writes: Writes[A])
 }
 ```
-
-TODO TODO
