@@ -1,9 +1,11 @@
 == Type Variance in Scala
 
-In Scala container types are **NOT variant at all by default**!
+Variance, in general, can be explained as "type compatible-ness" between types, forming an `extends` relation.
+The most popular cases where you'll have to deal with this is when working with containers or functions (so... surprisingly often!).
 
-This means that for a container `List[Fruit]` you cannot insert Apples into it,
-even if an `class Apple extends Fruit`.
+A major difference from Java in Scala is, that container types are **not-variant by default**!
+This means that if you have a container defined as `Box[A]`, and then use it with an `Fruit` in place
+of the type parameter `A`, you will not be able to insert an `Apple` (which _IS-A_ `Fruit`) into it.
 
 Variance in Scala is defined by using `+` and `-` signs in front of type parameters.
 
@@ -18,18 +20,36 @@ http://www.slideshare.net/dgalichet/demystifying-scala-type-system
 | Contravariant | C[T] is a subclass of C[T']        | C[-T]
 |===
 
+The above table ilustrates all variance cases we'll have to worry about - in an abstract way.
+In case you're wondering where you'd have to care about this - in fact, you're exposed to this each time 
+you're working with collections you're being faced with the question "is it covariant?".
 
+NOTE: Most __immutable__ collections are __covariant__, and most __mutable__ collections are __invariant__.
 
-There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we'll use a `List[A]
-` as our example, and functions. A `List` is defined as `List[+A]` in Scala, so the below code is valid:
+There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we'll use a `List[+A]` as our example, and functions. When talking about `List` in Scala, we usualy mean `scala.collection.immutable.List[+A]`, which is immutable as well as covariant, let's look how this relates to building lists containing items of different types.
 
+```scala
+class Fruit
+case class Apple() extends Fruit
+case class Orange() extends Fruit
+
+val l1: List[Apple] = Apple() :: Nil
+val l2: List[Fruit] = Orange() :: l1
+
+// and also, it's safe to prepend with "anything",
+// as we're building a new list - not modifying the previous instance
+
+val l3: List[AnyRef] = "" :: l2
 ```
-class Human
-class Coder extends Human
 
+It's worth mentioning that while **having immutable collections co-variant is __safe__**, the same cannot be said about mutable collections. The classic example here is `Array[T]` which is **invariant**. Let's look at what invariance means for us here, and how it saves us from mistakes:
 
+```scala
+// won't compile
+val a: Array[Any] = Array[Int](1, 2, 3)
 ```
 
-TODO
+Such an assigment won't compile, because of Array's invariance. If this assignment would be valid, we'd run into the problem of being able to write such code: `a(0) = "" // ArrayStoreException!` which would fail with the dreaded `ArrayStoreException`.
 
+TIP: We said that "most" immutable collections are covariant in scala. In case you're curious, one example of an immutable collection which stands out from that, and is invariant, it's `Set[A]`.
 

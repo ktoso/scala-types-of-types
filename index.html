@@ -12,7 +12,6 @@
 <body class="article toc2 toc-right">
 <div id="header">
 <h1>Scala&#8217;s Types of Types</h1>
-<span id="author" class="author">Konrad 'ktoso' Malawski &lt;konrad.malawski@java.pl&gt;</span><br>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -332,11 +331,13 @@ takeAnObject(ExampleObj)</code></pre>
 <h2 id="type-variance-in-scala"><a class="anchor" href="#type-variance-in-scala"></a>6. Type Variance in Scala</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In Scala container types are <strong>NOT variant at all by default</strong>!</p>
+<p>Variance, in general, can be explained as "type compatible-ness" between types, forming an <code>extends</code> relation.
+The most popular cases where you&#8217;ll have to deal with this is when working with containers or functions (so&#8230; surprisingly often!).</p>
 </div>
 <div class="paragraph">
-<p>This means that for a container <code>List[Fruit]</code> you cannot insert Apples into it,
-even if an <code>class Apple extends Fruit</code>.</p>
+<p>A major difference from Java in Scala is, that container types are <strong>not-variant by default</strong>!
+This means that if you have a container defined as <code>Box[A]</code>, and then use it with an <code>Fruit</code> in place
+of the type parameter <code>A</code>, you will not be able to insert an <code>Apple</code> (which <em>IS-A</em> <code>Fruit</code>) into it.</p>
 </div>
 <div class="paragraph">
 <p>Variance in Scala is defined by using <code>+</code> and <code>-</code> signs in front of type parameters.</p>
@@ -377,19 +378,65 @@ even if an <code>class Apple extends Fruit</code>.</p>
 </table>
 
 <div class="paragraph">
-<p>There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we&#8217;ll use a <code>List[A]
-` as our example, and functions. A `List</code> is defined as <code>List[+A]</code> in Scala, so the below code is valid:</p>
+<p>The above table ilustrates all variance cases we&#8217;ll have to worry about - in an abstract way.
+In case you&#8217;re wondering where you&#8217;d have to care about this - in fact, you&#8217;re exposed to this each time
+you&#8217;re working with collections you&#8217;re being faced with the question "is it covariant?".</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-note" title="Note"></i>
+</td>
+<td class="content">
+Most <em>immutable</em> collections are <em>covariant</em>, and most <em>mutable</em> collections are <em>invariant</em>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we&#8217;ll use a <code>List[+A]</code> as our example, and functions. When talking about <code>List</code> in Scala, we usualy mean <code>scala.collection.immutable.List[+A]</code>, which is immutable as well as covariant, let&#8217;s look how this relates to building lists containing items of different types.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">class Human
-class Coder extends Human
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Fruit</span>
+<span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Apple</span><span class="tok-o">()</span> <span class="tok-k">extends</span> <span class="tok-nc">Fruit</span>
+<span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Orange</span><span class="tok-o">()</span> <span class="tok-k">extends</span> <span class="tok-nc">Fruit</span>
 
+<span class="tok-k">val</span> <span class="tok-n">l1</span><span class="tok-k">:</span> <span class="tok-kt">List</span><span class="tok-o">[</span><span class="tok-kt">Apple</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-nc">Apple</span><span class="tok-o">()</span> <span class="tok-o">::</span> <span class="tok-nc">Nil</span>
+<span class="tok-k">val</span> <span class="tok-n">l2</span><span class="tok-k">:</span> <span class="tok-kt">List</span><span class="tok-o">[</span><span class="tok-kt">Fruit</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-nc">Orange</span><span class="tok-o">()</span> <span class="tok-o">::</span> <span class="tok-n">l1</span>
+
+<span class="tok-c1">// and also, it&#39;s safe to prepend with &quot;anything&quot;,</span>
+<span class="tok-c1">// as we&#39;re building a new list - not modifying the previous instance</span>
+
+<span class="tok-k">val</span> <span class="tok-n">l3</span><span class="tok-k">:</span> <span class="tok-kt">List</span><span class="tok-o">[</span><span class="tok-kt">AnyRef</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-s">&quot;&quot;</span> <span class="tok-o">::</span> <span class="tok-n">l2</span>
 </code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>TODO</p>
+<p>It&#8217;s worth mentioning that while <strong>having immutable collections co-variant is <em>safe</em></strong>, the same cannot be said about mutable collections. The classic example here is <code>Array[T]</code> which is <strong>invariant</strong>. Let&#8217;s look at what invariance means for us here, and how it saves us from mistakes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// won&#39;t compile</span>
+<span class="tok-k">val</span> <span class="tok-n">a</span><span class="tok-k">:</span> <span class="tok-kt">Array</span><span class="tok-o">[</span><span class="tok-kt">Any</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-nc">Array</span><span class="tok-o">[</span><span class="tok-kt">Int</span><span class="tok-o">](</span><span class="tok-mi">1</span><span class="tok-o">,</span> <span class="tok-mi">2</span><span class="tok-o">,</span> <span class="tok-mi">3</span><span class="tok-o">)</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Such an assigment won&#8217;t compile, because of Array&#8217;s invariance. If this assignment would be valid, we&#8217;d run into the problem of being able to write such code: <code>a(0) = "" // ArrayStoreException!</code> which would fail with the dreaded <code>ArrayStoreException</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+We said that "most" immutable collections are covariant in scala. In case you&#8217;re curious, one example of an immutable collection which stands out from that, and is invariant, it&#8217;s <code>Set[A]</code>.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="traits-as-in-interfaces-with-implementation"><a class="anchor" href="#traits-as-in-interfaces-with-implementation"></a>6.1. Traits, as in "interfaces with implementation"</h3>
@@ -1376,7 +1423,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-11-16 18:00:36 GMT
+Last updated 2013-11-18 00:53:27 GMT
 </div>
 </div>
 </body>
