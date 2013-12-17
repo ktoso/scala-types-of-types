@@ -16,7 +16,7 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#the-different-types-of-types-in-scala">1. The different types of&#8230; Types in Scala</a></li>
-<li><a href="#type-annotation">2. Type Annotation</a></li>
+<li><a href="#work-in-progress">2. WORK IN PROGRESS</a></li>
 <li><a href="#unified-type-system-any-anyref-anyval">3. Unified Type System - Any, AnyRef, AnyVal</a></li>
 <li><a href="#the-bottom-types-nothing-and-null">4. The Bottom Types - Nothing and Null</a></li>
 <li><a href="#type-of-an-code-object-code">5. Type of an <code>object</code></a></li>
@@ -64,8 +64,16 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-annotation"><a class="anchor" href="#type-annotation"></a>2. Type Annotation</h2>
+<h2 id="work-in-progress"><a class="anchor" href="#work-in-progress"></a>2. WORK IN PROGRESS</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>While I&#8217;m working on this article since quite some time, there&#8217;s still MUCH to do!
+For example Higher Kinds need a rewrite, there&#8217;s a lot of detail to be added in Self Type&#8217;s and lots and lots more. Check the todo file for more.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;d like to help, please do! I&#8217;ll welcome any pull request, or suggestion (well, I&#8217;d prefer pull requests ;-).
+== Type Annotation</p>
+</div>
 <div class="paragraph">
 <p>Scala has Type Inference, which means that we can skip telling the Type of something each time in the source code,
 and instead we just use `val`s or `def`s without "saying the type explicitly in the source". This being explicit about
@@ -750,7 +758,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="paragraph">
-<p>Here we see that scalac is able to tell us that <code>List</code>, in fact, is a type constructor (it&#8217;s way more talkative when used with the <code>-v`erbose option). Let's investigate the syntax right above this information: `* -&gt; *</code>. This syntax is widely used to represent kinds, and actually I found it quite Haskell inspired - as this is the syntax Haskell uses to print types of functions. The most intuitive way to read it out loud would be "takes one type, returns another type". You might have noticed that we&#8217;ve omitted something from Scala&#8217;s exact output, the plus sign from the relation (as in:<code>* -(+)-&gt; *</code>), this means variance bounds and you can read up in detail about variance in section (TODO LINK TO VARIANCE).</p>
+<p>Here we see that scalac is able to tell us that <code>List</code>, in fact, is a type constructor (it&#8217;s way more talkative when used with the <code>-verbose option). Let's investigate the syntax right above this information: `* -&gt; *</code>. This syntax is widely used to represent kinds, and actually I found it quite Haskell inspired - as this is the syntax Haskell uses to print types of functions. The most intuitive way to read it out loud would be "takes one type, returns another type". You might have noticed that we&#8217;ve omitted something from Scala&#8217;s exact output, the plus sign from the relation (as in:<code>* -(+)-&gt; *</code>), this means variance bounds and you can read up in detail about variance in section (TODO LINK TO VARIANCE).</p>
 </div>
 <div class="paragraph">
 <p>As already mentioned, <code>List[+A]</code> (or <code>Option[+A]</code>, or <code>Set[+A]</code>&#8230; or anything that has one type parameter) is the simplest case of a type constructor - these take <strong>one</strong> parameter.
@@ -1421,6 +1429,10 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </li>
 <li>
 <p>Great StackOverflow answer by <strong>Kriss Nuttycombe</strong> about Type Lambdas: <a href="http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits">http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits</a></p>
+</li>
+<li>
+<p>The :kind pull request to <code>scala</code>, by Adriaan Moors <a href="https://github.com/scala/scala/pull/2340">https://github.com/scala/scala/pull/2340</a>
+I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):</p>
 </li>
 </ul>
 </div>

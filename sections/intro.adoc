@@ -2,4 +2,9 @@
 
 This blog post came into being after a few discussions about Types in Scala after some of JavaOne's parties in 2013. After those discussions I figured that many questions are often repeated by different people, during their learning of Scala. I though that we didn't have a full list of all tricks what we can to with Types in Scala, so I decided to write such a list - giving real life examples why we'd need these types.
 
+== WORK IN PROGRESS
 
+While I'm working on this article since quite some time, there's still MUCH to do!
+For example Higher Kinds need a rewrite, there's a lot of detail to be added in Self Type's and lots and lots more. Check the todo file for more.
+
+If you'd like to help, please do! I'll welcome any pull request, or suggestion (well, I'd prefer pull requests ;-).
