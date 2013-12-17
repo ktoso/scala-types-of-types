@@ -17,40 +17,41 @@
 <ul class="sectlevel1">
 <li><a href="#the-different-types-of-types-in-scala">1. The different types of&#8230; Types in Scala</a></li>
 <li><a href="#work-in-progress">2. WORK IN PROGRESS</a></li>
-<li><a href="#unified-type-system-any-anyref-anyval">3. Unified Type System - Any, AnyRef, AnyVal</a></li>
-<li><a href="#the-bottom-types-nothing-and-null">4. The Bottom Types - Nothing and Null</a></li>
-<li><a href="#type-of-an-code-object-code">5. Type of an <code>object</code></a></li>
-<li><a href="#type-variance-in-scala">6. Type Variance in Scala</a></li>
+<li><a href="#type-annotation">3. Type Annotation</a></li>
+<li><a href="#unified-type-system-any-anyref-anyval">4. Unified Type System - Any, AnyRef, AnyVal</a></li>
+<li><a href="#the-bottom-types-nothing-and-null">5. The Bottom Types - Nothing and Null</a></li>
+<li><a href="#type-of-an-code-object-code">6. Type of an <code>object</code></a></li>
+<li><a href="#type-variance-in-scala">7. Type Variance in Scala</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#traits-as-in-interfaces-with-implementation">6.1. Traits, as in "interfaces with implementation"</a></li>
-<li><a href="#type-linearization-vs-the-diamond-problem">6.2. Type Linearization vs. The Diamond Problem</a></li>
+<li><a href="#traits-as-in-interfaces-with-implementation">7.1. Traits, as in "interfaces with implementation"</a></li>
+<li><a href="#type-linearization-vs-the-diamond-problem">7.2. Type Linearization vs. The Diamond Problem</a></li>
 </ul>
 </li>
-<li><a href="#refined-types-refinements">7. Refined Types (refinements)</a></li>
-<li><a href="#type-alias">8. Type Alias</a></li>
-<li><a href="#abstract-type-member">9. Abstract Type Member</a></li>
-<li><a href="#self-recursive-type">10. Self-Recursive Type</a></li>
-<li><a href="#type-class">11. Type Class</a></li>
-<li><a href="#type-constructor">12. Type Constructor</a></li>
-<li><a href="#higher-order-kind">13. Higher-Order Kind</a></li>
-<li><a href="#self-type-annotation">14. Self Type Annotation</a></li>
-<li><a href="#phantom-type">15. Phantom Type</a></li>
-<li><a href="#structural-type">16. Structural Type</a></li>
-<li><a href="#path-dependent-type">17. Path Dependent Type</a></li>
-<li><a href="#type-projection">18. Type Projection</a></li>
-<li><a href="#existential-types">19. Existential Types</a></li>
-<li><a href="#type-lambda">20. Type Lambda</a></li>
-<li><a href="#dynamic-type">21. Dynamic Type</a></li>
+<li><a href="#refined-types-refinements">8. Refined Types (refinements)</a></li>
+<li><a href="#type-alias">9. Type Alias</a></li>
+<li><a href="#abstract-type-member">10. Abstract Type Member</a></li>
+<li><a href="#self-recursive-type">11. Self-Recursive Type</a></li>
+<li><a href="#type-class">12. Type Class</a></li>
+<li><a href="#type-constructor">13. Type Constructor</a></li>
+<li><a href="#higher-order-kind">14. Higher-Order Kind</a></li>
+<li><a href="#self-type-annotation">15. Self Type Annotation</a></li>
+<li><a href="#phantom-type">16. Phantom Type</a></li>
+<li><a href="#structural-type">17. Structural Type</a></li>
+<li><a href="#path-dependent-type">18. Path Dependent Type</a></li>
+<li><a href="#type-projection">19. Type Projection</a></li>
+<li><a href="#existential-types">20. Existential Types</a></li>
+<li><a href="#type-lambda">21. Type Lambda</a></li>
+<li><a href="#dynamic-type">22. Dynamic Type</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#applydynamic">21.1. applyDynamic</a></li>
-<li><a href="#applydynamicnamed">21.2. applyDynamicNamed</a></li>
-<li><a href="#selectdynamic">21.3. selectDynamic</a></li>
-<li><a href="#updatedynamic">21.4. updateDynamic</a></li>
+<li><a href="#applydynamic">22.1. applyDynamic</a></li>
+<li><a href="#applydynamicnamed">22.2. applyDynamicNamed</a></li>
+<li><a href="#selectdynamic">22.3. selectDynamic</a></li>
+<li><a href="#updatedynamic">22.4. updateDynamic</a></li>
 </ul>
 </li>
-<li><a href="#links-and-kudos">22. Links and Kudos</a></li>
+<li><a href="#links-and-kudos">23. Links and Kudos</a></li>
 </ul>
 </div>
 </div>
@@ -71,9 +72,13 @@
 For example Higher Kinds need a rewrite, there&#8217;s a lot of detail to be added in Self Type&#8217;s and lots and lots more. Check the todo file for more.</p>
 </div>
 <div class="paragraph">
-<p>If you&#8217;d like to help, please do! I&#8217;ll welcome any pull request, or suggestion (well, I&#8217;d prefer pull requests ;-).
-== Type Annotation</p>
+<p>If you&#8217;d like to help, please do! I&#8217;ll welcome any pull request, or suggestion (well, I&#8217;d prefer pull requests ;-).</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="type-annotation"><a class="anchor" href="#type-annotation"></a>3. Type Annotation</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Scala has Type Inference, which means that we can skip telling the Type of something each time in the source code,
 and instead we just use `val`s or `def`s without "saying the type explicitly in the source". This being explicit about
@@ -124,7 +129,7 @@ more and more interesting.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="unified-type-system-any-anyref-anyval"><a class="anchor" href="#unified-type-system-any-anyref-anyval"></a>3. Unified Type System - Any, AnyRef, AnyVal</h2>
+<h2 id="unified-type-system-any-anyref-anyval"><a class="anchor" href="#unified-type-system-any-anyref-anyval"></a>4. Unified Type System - Any, AnyRef, AnyVal</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We refer to a Scala&#8217;s typesystem as being "unified" because there is a "Top Type", <code>Any</code>. <strong>This is different than Java</strong>, which has "special cases" in form of primitive types (<code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>byte</code>, <code>char</code>, <code>short</code>, <code>boolean</code>), which do not extend Java&#8217;s "Almost-Top Type" - <code>java.lang.Object</code>.</p>
@@ -194,7 +199,7 @@ more and more interesting.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="the-bottom-types-nothing-and-null"><a class="anchor" href="#the-bottom-types-nothing-and-null"></a>4. The Bottom Types - Nothing and Null</h2>
+<h2 id="the-bottom-types-nothing-and-null"><a class="anchor" href="#the-bottom-types-nothing-and-null"></a>5. The Bottom Types - Nothing and Null</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In Scala everything has "some" type&#8230; but have you ever wondered how the type inferencer can still work, and infer sound types when working with "weird" situations like throwing exceptions? Let&#8217;s investigate the below "if/else throw" example:</p>
@@ -313,7 +318,7 @@ TypeRef(TypeSymbol(final abstract class Int extends AnyVal))</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-of-an-code-object-code"><a class="anchor" href="#type-of-an-code-object-code"></a>5. Type of an <code>object</code></h2>
+<h2 id="type-of-an-code-object-code"><a class="anchor" href="#type-of-an-code-object-code"></a>6. Type of an <code>object</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Scala `object`s are implemented via classes (obviously - as it&#8217;s the basic building block on the JVM),
@@ -338,7 +343,7 @@ takeAnObject(ExampleObj)</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-variance-in-scala"><a class="anchor" href="#type-variance-in-scala"></a>6. Type Variance in Scala</h2>
+<h2 id="type-variance-in-scala"><a class="anchor" href="#type-variance-in-scala"></a>7. Type Variance in Scala</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Variance, in general, can be explained as "type compatible-ness" between types, forming an <code>extends</code> relation.
@@ -449,7 +454,7 @@ We said that "most" immutable collections are covariant in scala. In case you&#8
 </table>
 </div>
 <div class="sect2">
-<h3 id="traits-as-in-interfaces-with-implementation"><a class="anchor" href="#traits-as-in-interfaces-with-implementation"></a>6.1. Traits, as in "interfaces with implementation"</h3>
+<h3 id="traits-as-in-interfaces-with-implementation"><a class="anchor" href="#traits-as-in-interfaces-with-implementation"></a>7.1. Traits, as in "interfaces with implementation"</h3>
 <div class="paragraph">
 <p>First, let&#8217;s take a look as the simplest thing possible about traits:
 how we can basically treat a type with multiple traits mixed in, as if it is implementing these "interfaces with implementation",
@@ -485,7 +490,7 @@ directly multiple inheritance:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="type-linearization-vs-the-diamond-problem"><a class="anchor" href="#type-linearization-vs-the-diamond-problem"></a>6.2. Type Linearization vs. The Diamond Problem</h3>
+<h3 id="type-linearization-vs-the-diamond-problem"><a class="anchor" href="#type-linearization-vs-the-diamond-problem"></a>7.2. Type Linearization vs. The Diamond Problem</h3>
 <div class="paragraph">
 <p>![diamond-inheritance-problem](<a href="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Diamond_inheritance.svg/220px-Diamond_inheritance.svg.png">http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Diamond_inheritance.svg/220px-Diamond_inheritance.svg.png</a>)</p>
 </div>
@@ -592,7 +597,7 @@ Also it&#8217;s rather easy to resolve the simpler cases of linearization by jus
 </div>
 </div>
 <div class="sect1">
-<h2 id="refined-types-refinements"><a class="anchor" href="#refined-types-refinements"></a>7. Refined Types (refinements)</h2>
+<h2 id="refined-types-refinements"><a class="anchor" href="#refined-types-refinements"></a>8. Refined Types (refinements)</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Refinements are very easy to explain as "subclassing without naming the subclass". So in source code it would look like this:</p>
@@ -617,7 +622,7 @@ Also it&#8217;s rather easy to resolve the simpler cases of linearization by jus
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-alias"><a class="anchor" href="#type-alias"></a>8. Type Alias</h2>
+<h2 id="type-alias"><a class="anchor" href="#type-alias"></a>9. Type Alias</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>It&#8217;s not really another kind of type, but a trick we can use to make our code more readable:</p>
@@ -639,7 +644,7 @@ but <strong>name them</strong> so it makes sense for the future reader of this c
 </div>
 </div>
 <div class="sect1">
-<h2 id="abstract-type-member"><a class="anchor" href="#abstract-type-member"></a>9. Abstract Type Member</h2>
+<h2 id="abstract-type-member"><a class="anchor" href="#abstract-type-member"></a>10. Abstract Type Member</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Let&#8217;s now go deeper into the use cases of Type Aliases, which we call Abstract Type Members.</p>
@@ -680,7 +685,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="sect1">
-<h2 id="self-recursive-type"><a class="anchor" href="#self-recursive-type"></a>10. Self-Recursive Type</h2>
+<h2 id="self-recursive-type"><a class="anchor" href="#self-recursive-type"></a>11. Self-Recursive Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This we brought up with &lt;a href="http://andrzejgrzesik.info"&gt;Andrzej Grzesik&lt;/a&gt;, while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up &lt;a href="http://andrzejgrzesik.info/2013/09/29/container-types/"&gt;on his blog, by explaining how the self-recursive generic type trick works in Java&#8217;s Enum class&lt;/a&gt;. Another nice blog post about this type-trick, is &lt;a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/"&gt;The dangers of correlating subtype polymorphism with generic polymorphism&lt;/a&gt;, where lukaseder points out why/where this pattern may cause you trouble.</p>
@@ -694,7 +699,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-class"><a class="anchor" href="#type-class"></a>11. Type Class</h2>
+<h2 id="type-class"><a class="anchor" href="#type-class"></a>12. Type Class</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -715,7 +720,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-constructor"><a class="anchor" href="#type-constructor"></a>12. Type Constructor</h2>
+<h2 id="type-constructor"><a class="anchor" href="#type-constructor"></a>13. Type Constructor</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Type Constructors act pretty much like functions, but on the type level. The simplest example would be</p>
@@ -767,7 +772,7 @@ We refer to them as <strong>first-order kinds</strong> (<code>* -&gt; *</code>).
 </div>
 </div>
 <div class="sect1">
-<h2 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>13. Higher-Order Kind</h2>
+<h2 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>14. Higher-Order Kind</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>TODO nothing here yet, coming soon&#8230;</p>
@@ -795,7 +800,7 @@ This is a type constructor that takes type constructor(s): a higher-kinded type.
 </div>
 </div>
 <div class="sect1">
-<h2 id="self-type-annotation"><a class="anchor" href="#self-type-annotation"></a>14. Self Type Annotation</h2>
+<h2 id="self-type-annotation"><a class="anchor" href="#self-type-annotation"></a>15. Self Type Annotation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Self Types</strong> are used in order to "require" that, if another class uses this trait,
@@ -866,7 +871,7 @@ And while we&#8217;re at it, let&#8217;s discuss why it is called self-type (exc
 </div>
 </div>
 <div class="sect1">
-<h2 id="phantom-type"><a class="anchor" href="#phantom-type"></a>15. Phantom Type</h2>
+<h2 id="phantom-type"><a class="anchor" href="#phantom-type"></a>16. Phantom Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>TODO MORE EXAMPLES HERE</strong></p>
@@ -962,7 +967,7 @@ but let&#8217;s move on to the <code>start</code> and <code>stop</code> commands
 </div>
 </div>
 <div class="sect1">
-<h2 id="structural-type"><a class="anchor" href="#structural-type"></a>16. Structural Type</h2>
+<h2 id="structural-type"><a class="anchor" href="#structural-type"></a>17. Structural Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Strucural Types are often compared to "<strong>type-safe duck typing</strong>", which is quite a good comparation if you&#8217;d want to get some intuition for it.</p>
@@ -1036,7 +1041,7 @@ if you really need to reach for structural typing, and cannot do it in some othe
 </div>
 </div>
 <div class="sect1">
-<h2 id="path-dependent-type"><a class="anchor" href="#path-dependent-type"></a>17. Path Dependent Type</h2>
+<h2 id="path-dependent-type"><a class="anchor" href="#path-dependent-type"></a>18. Path Dependent Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This Type allows us to type-check on a Type internal to another class. This may seem weird at first, but is very intuitive once you see it:</p>
@@ -1101,7 +1106,7 @@ that this container should only contain children of this parent - and not "any p
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-projection"><a class="anchor" href="#type-projection"></a>18. Type Projection</h2>
+<h2 id="type-projection"><a class="anchor" href="#type-projection"></a>19. Type Projection</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Type Projections are similar to Path Dependent Types, in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes, splitting them with a <code>#</code> sign (hash sign, pound sign). Let&#8217;s start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):</p>
@@ -1127,7 +1132,7 @@ that this container should only contain children of this parent - and not "any p
 </div>
 </div>
 <div class="sect1">
-<h2 id="existential-types"><a class="anchor" href="#existential-types"></a>19. Existential Types</h2>
+<h2 id="existential-types"><a class="anchor" href="#existential-types"></a>20. Existential Types</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Existential Types are something that deeply relates to Type Erasure, which JVM languages "have to live with".</p>
@@ -1173,7 +1178,7 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-lambda"><a class="anchor" href="#type-lambda"></a>20. Type Lambda</h2>
+<h2 id="type-lambda"><a class="anchor" href="#type-lambda"></a>21. Type Lambda</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In type lambda&#8217;s we&#8217;ll be using <strong>Path Dependent</strong> as well as <strong>Structural Types</strong>, so if you skipped that sections you may want to go back to it.</p>
@@ -1193,7 +1198,7 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>21. Dynamic Type</h2>
+<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>22. Dynamic Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>I&#8217;ve had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?</p>
@@ -1262,7 +1267,7 @@ There are a few features (like the experimental macros for example) that need to
 <p>Let&#8217;s take a look (with examples, at each of them. We&#8217;ll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn&#8217;t (back then) compile) and make it work this time ;-)</p>
 </div>
 <div class="sect2">
-<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>21.1. applyDynamic</h3>
+<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>22.1. applyDynamic</h3>
 <div class="paragraph">
 <p>Ok, our first magic method looks like this:</p>
 </div>
@@ -1292,7 +1297,7 @@ There are a few features (like the experimental macros for example) that need to
 </div>
 </div>
 <div class="sect2">
-<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>21.2. applyDynamicNamed</h3>
+<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>22.2. applyDynamicNamed</h3>
 <div class="paragraph">
 <p>Ok, that was easy. But it didn&#8217;t give us too much control over the names of the parameters.
 Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "ktoso")</code>? Well&#8230; turns out we can!</p>
@@ -1325,7 +1330,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>21.3. selectDynamic</h3>
+<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>22.3. selectDynamic</h3>
 <div class="paragraph">
 <p>Not it&#8217;s time for the more "unusual" methods. apply methods we&#8217;re pretty easy to understand. It&#8217;s just a method with some arbitrary name. But hey, isn&#8217;t almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let&#8217;s give it a try! &lt;strong&gt;We&#8217;ll use the example with applyDynamic here, and try to act like it has a method without ()&lt;/strong&gt;:</p>
 </div>
@@ -1355,7 +1360,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>21.4. updateDynamic</h3>
+<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>22.4. updateDynamic</h3>
 <div class="paragraph">
 <p>What&#8217;s left you ask? Ask yourself the following question then: "Since I can act like a <code>Dynamic</code> object has some value in some field&#8230; What else should I be able to do with it?" My answer to that would be: "set it"! That&#8217;s what <code>updateDynamic</code> is used for. There is one special rule about <code>updateDynamic</code> though - it&#8217;s only valid if you also took care about selectDynamic - that&#8217;s why in the first example the code generated errors about both - select and update. For example if we&#8217;d implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn&#8217;t compile anyway. It makes sense in terms of plain semantics if you think about it.</p>
 </div>
@@ -1396,7 +1401,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect1">
-<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>22. Links and Kudos</h2>
+<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>23. Links and Kudos</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I&#8217;ve found helpful (and you might too).</p>

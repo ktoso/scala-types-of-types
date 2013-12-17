@@ -8,3 +8,5 @@ While I'm working on this article since quite some time, there's still MUCH to d
 For example Higher Kinds need a rewrite, there's a lot of detail to be added in Self Type's and lots and lots more. Check the todo file for more.
 
 If you'd like to help, please do! I'll welcome any pull request, or suggestion (well, I'd prefer pull requests ;-).
+
+
