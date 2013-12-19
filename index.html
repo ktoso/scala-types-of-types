@@ -323,7 +323,7 @@ TypeRef(TypeSymbol(final abstract class Int extends AnyVal))</code></pre>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Scala `object`s are implemented via classes (obviously - as it&#8217;s the basic building block on the JVM),
-but you&#8217;ll notice that we cannot get it&#8217;s type the same way as we would with an simple class&#8230;</p>
+but you&#8217;ll notice that we cannot get its type the same way as we would with an simple class&#8230;</p>
 </div>
 <div class="paragraph">
 <p>I surprisingly often, would get the question on how to pass an object into a method. Just saying <code>obj: ExampleObj</code> won&#8217;t work
@@ -638,7 +638,7 @@ Also it&#8217;s rather easy to resolve the simpler cases of linearization by jus
 </div>
 </div>
 <div class="paragraph">
-<p>Using this trick the Map definition now suddenly "makes sense!". If we&#8217;d just use a  <code>String =&gt; Int</code> map,
+<p>Using this trick the Map definition now suddenly "makes sense!". If we&#8217;d just used a <code>String =&gt; Int</code> map,
 we&#8217;d make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc),
 but <strong>name them</strong> so it makes sense for the future reader of this class.</p>
 </div>
@@ -681,7 +681,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="paragraph">
-<p>So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as it&#8217;s type is known.</p>
+<p>So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as its type is known.</p>
 </div>
 </div>
 </div>
@@ -689,7 +689,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <h2 id="self-recursive-type"><a class="anchor" href="#self-recursive-type"></a>11. Self-Recursive Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This we brought up with &lt;a href="http://andrzejgrzesik.info"&gt;Andrzej Grzesik&lt;/a&gt;, while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up &lt;a href="http://andrzejgrzesik.info/2013/09/29/container-types/"&gt;on his blog, by explaining how the self-recursive generic type trick works in Java&#8217;s Enum class&lt;/a&gt;. Another nice blog post about this type-trick, is &lt;a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/"&gt;The dangers of correlating subtype polymorphism with generic polymorphism&lt;/a&gt;, where lukaseder points out why/where this pattern may cause you trouble.</p>
+<p>This we brought up with [Andrzej Grzesik](<a href="http://andrzejgrzesik.info">http://andrzejgrzesik.info</a>), while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up [on his blog, by explaining how the self-recursive generic type trick works in Java&#8217;s Enum class](<a href="http://andrzejgrzesik.info/2013/09/29/container-types/">http://andrzejgrzesik.info/2013/09/29/container-types/</a>). Another nice blog post about this type-trick, is [The dangers of correlating subtype polymorphism with generic polymorphism](<a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/</a>), where lukaseder points out why/where this pattern may cause you trouble.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -709,11 +709,11 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <span class="tok-o">}</span>
 
 <span class="tok-k">implicit</span> <span class="tok-k">val</span> <span class="tok-n">jsonWriter</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Writes</span><span class="tok-o">[</span><span class="tok-kt">Person</span>, <span class="tok-kt">Json</span><span class="tok-o">]</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">writes</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-k">:</span> <span class="tok-kt">Person</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-nc">Json</span><span class="tok-o">.</span><span class="tok-n">toJson</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-o">)</span>
+  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-k">:</span> <span class="tok-kt">Person</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-nc">Json</span><span class="tok-o">.</span><span class="tok-n">toJson</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-o">)</span>
 <span class="tok-o">}</span>
 
 <span class="tok-k">implicit</span> <span class="tok-k">class</span> <span class="tok-nc">Writeable</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">]</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-k">implicit</span> <span class="tok-n">writes</span><span class="tok-k">:</span> <span class="tok-kt">Writes</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">])</span>
+  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">[</span><span class="tok-kt">B</span><span class="tok-o">](</span><span class="tok-k">implicit</span> <span class="tok-n">writes</span><span class="tok-k">:</span> <span class="tok-kt">Writes</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">B</span><span class="tok-o">])</span>
 <span class="tok-o">}</span>
 </code></pre>
 </div>
@@ -1078,7 +1078,7 @@ if you really need to reach for structural typing, and cannot do it in some othe
 </div>
 </div>
 <div class="paragraph">
-<p>The ey to understand here isthat "each class Outer, has it&#8217;s own Inner class", so it&#8217;s a different Type - dependent on which path we use to get there.</p>
+<p>The ey to understand here is that "each Outer class has its own Inner class", so it&#8217;s a different Type - dependent on which path we use to get there.</p>
 </div>
 <div class="paragraph">
 <p>Using this kind of typing is useful, we&#8217;re able to enforce getting the type from inside of a concrete parameter. An example of a signature using this typing would be:</p>
@@ -1562,6 +1562,20 @@ I would especialy like to thank all proof-readers and reviewers tha that have he
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Give back some kudos! Share this page if you liked it using IRC, or social networks :-)</p>
+</div>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone"></div>
+
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
 <h1>Tweets~!<h1>
 
 <blockquote class="twitter-tweet" data-conversation="none" lang="en"><p><a href="https://twitter.com/heathercmiller">@heathercmiller</a> <a href="https://twitter.com/ktosopl">@ktosopl</a> +1 This doc is fantastic!</p>&mdash; Thomas Lockney (@tlockney) <a href="https://twitter.com/tlockney/statuses/412992418489704448">December 17, 2013</a></blockquote>
@@ -1587,7 +1601,7 @@ I would especialy like to thank all proof-readers and reviewers tha that have he
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-12-19 22:39:38 CET
+Last updated 2013-12-19 23:19:40 CET
 </div>
 </div>
 </body>
