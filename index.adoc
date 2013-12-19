@@ -55,3 +55,7 @@ include::sections/kudos.adoc[]
 
 </script>
 ++++
+
+++++
+<script src="http://ktoso.github.io/scala-types-of-types/assets/js/bootstrap.min.js"></script>
+++++
