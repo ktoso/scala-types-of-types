@@ -6,7 +6,7 @@ trait Writes[In, Out] {
 }
 
 implicit val jsonWriter = new Writes[Person, Json] {
-  def writes(p: Person) = Json.toJson(p)
+  def write(p: Person) = Json.toJson(p)
 }
 
 implicit class Writeable[A] {

@@ -25,6 +25,6 @@ object IntContainer extends SimplestContainer {
 }
 ```
 
-So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as it's type is known.
+So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as its type is known.
 
 
