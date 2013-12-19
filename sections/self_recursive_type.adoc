@@ -1,6 +1,6 @@
 == Self-Recursive Type
 
-This we brought up with <a href="http://andrzejgrzesik.info">Andrzej Grzesik</a>, while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up <a href="http://andrzejgrzesik.info/2013/09/29/container-types/">on his blog, by explaining how the self-recursive generic type trick works in Java's Enum class</a>. Another nice blog post about this type-trick, is <a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">The dangers of correlating subtype polymorphism with generic polymorphism</a>, where lukaseder points out why/where this pattern may cause you trouble.
+This we brought up with [Andrzej Grzesik](http://andrzejgrzesik.info), while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up [on his blog, by explaining how the self-recursive generic type trick works in Java's Enum class](http://andrzejgrzesik.info/2013/09/29/container-types/). Another nice blog post about this type-trick, is [The dangers of correlating subtype polymorphism with generic polymorphism](http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/), where lukaseder points out why/where this pattern may cause you trouble.
 
 ```scala
 class Apple

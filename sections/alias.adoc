@@ -9,7 +9,7 @@ type Age = Int
 val data:  Map[User, Age] =  Map.empty
 ```
 
-Using this trick the Map definition now suddenly "makes sense!". If we'd just use a  `String => Int` map,
+Using this trick the Map definition now suddenly "makes sense!". If we'd just used a `String => Int` map,
 we'd make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc),
 but **name them** so it makes sense for the future reader of this class.
 
