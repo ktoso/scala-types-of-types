@@ -12,7 +12,7 @@ val thing: Int =
 
 As you can see in the comments, the type of the if block is `Int` (easy), the type of the else block is `Nothing` (interresting). The inferencer was able to infer that the `thing` value, will only ever be of type `Int`. This is because of the **Bottom Type** property of Nothing.
 
-NOTE:  A very nice intuition about how bottom types work is: _"Nothing extends anything."_
+NOTE:  A very nice intuition about how bottom types work is: _"`Nothing` extends everything."_
 
 Type inference always looks for the "common type" of both branches in an if stamement, so if the other branch here is a Type that extends everything, the infered type will automatically be the Type from the first branch.
 
