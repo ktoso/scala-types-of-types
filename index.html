@@ -42,16 +42,17 @@
 <li><a href="#type-projection">19. Type Projection</a></li>
 <li><a href="#existential-types">20. Existential Types</a></li>
 <li><a href="#type-lambda">21. Type Lambda</a></li>
-<li><a href="#dynamic-type">22. Dynamic Type</a></li>
+<li><a href="#delayed-init">22. Delayed Init</a></li>
+<li><a href="#dynamic-type">23. Dynamic Type</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#applydynamic">22.1. applyDynamic</a></li>
-<li><a href="#applydynamicnamed">22.2. applyDynamicNamed</a></li>
-<li><a href="#selectdynamic">22.3. selectDynamic</a></li>
-<li><a href="#updatedynamic">22.4. updateDynamic</a></li>
+<li><a href="#applydynamic">23.1. applyDynamic</a></li>
+<li><a href="#applydynamicnamed">23.2. applyDynamicNamed</a></li>
+<li><a href="#selectdynamic">23.3. selectDynamic</a></li>
+<li><a href="#updatedynamic">23.4. updateDynamic</a></li>
 </ul>
 </li>
-<li><a href="#links-and-kudos">23. Links and Kudos</a></li>
+<li><a href="#links-and-kudos">24. Links and Kudos</a></li>
 </ul>
 </div>
 </div>
@@ -1198,7 +1199,109 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>22. Dynamic Type</h2>
+<h2 id="delayed-init"><a class="anchor" href="#delayed-init"></a>22. Delayed Init</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since we started talking about the "weird" types Scala contains, we can&#8217;t let this one go without a dedicated section for it. <code>DelayedInit</code> is actually a "<em>compiler trick</em>" above anything else, and not really tremendously important for the type system itself, but once you understand it, you&#8217;ll know how <code>scala.App</code> actually works, so let&#8217;s dive into our example with <code>App</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">object</span> <span class="tok-nc">Main</span> <span class="tok-k">extends</span> <span class="tok-nc">App</span> <span class="tok-o">{</span>
+  <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-s">&quot;Hello world!&quot;</span><span class="tok-o">)</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By looking at this code, and applying our basic Scala knowlage to it we might think "<em>Ok, so the <code>println</code> is actualy in the constructor of the Main class!</em>". And this would usually be true, but <strong>not in this case</strong>, since we inherited the <code>DelayedInit</code> trait - as <code>App</code> extends it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">App</span> <span class="tok-k">extends</span> <span class="tok-nc">DelayedInit</span> <span class="tok-o">{</span>
+  <span class="tok-c1">// code here ...</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And let&#8217;s take a look at the full source code of the <code>DelayedInit</code> trait right away:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">DelayedInit</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">delayedInit</span><span class="tok-o">(</span><span class="tok-n">x</span><span class="tok-k">:</span> <span class="tok-o">=&gt;</span> <span class="tok-nc">Unit</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Unit</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, it does not contain any implementation - all the work around it is actually performed by the compiler compiler, which will treat treat all classes and objects inheriting <code>DelayedInit</code> in a special way (note: trait&#8217;s will <em>not</em> be rewriten like this). The special treatment goes like this:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>imagine your class/object body is a function, doing all these things that are in the class/object body,</p>
+</li>
+<li>
+<p>the compiler creates this function for you, and will pass it into the <code>delayedInit(x: =&gt; Unit)</code> method (notice the <em>call-by-name</em> in the parameter).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s quickly give an example for this, and then we&#8217;ll re-implement what <code>App</code> does for us, but by hand (and the help of <code>delayedInit</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// we write:</span>
+<span class="tok-k">object</span> <span class="tok-nc">Main</span> <span class="tok-k">extends</span> <span class="tok-nc">DelayedInit</span> <span class="tok-o">{</span>
+  <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-s">&quot;hello!&quot;</span><span class="tok-o">)</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c1">// the compiler emits:</span>
+<span class="tok-k">object</span> <span class="tok-nc">Main</span> <span class="tok-k">extends</span> <span class="tok-nc">DelayedInit</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">delayedInit</span><span class="tok-o">(</span><span class="tok-n">x</span><span class="tok-k">:</span> <span class="tok-o">=&gt;</span> <span class="tok-nc">Unit</span> <span class="tok-k">=</span> <span class="tok-o">{</span> <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-s">&quot;Hello!&quot;</span><span class="tok-o">)</span> <span class="tok-o">})</span> <span class="tok-k">=</span> <span class="tok-c1">// impl is left for us to fill in</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using this mechanism you can run the body of your class whenever you want (&#8230; maybe never?). Since we now know how <code>delayedInit</code> works, let&#8217;s implement our own version of <code>scala.App</code> (which actually does it in exactly the same way).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">SimpleApp</span> <span class="tok-k">extends</span> <span class="tok-nc">DelayedInit</span> <span class="tok-o">{</span>
+
+  <span class="tok-k">private</span> <span class="tok-k">val</span> <span class="tok-n">initCode</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">ListBuffer</span><span class="tok-o">[()</span> <span class="tok-k">=&gt;</span> <span class="tok-kt">Unit</span><span class="tok-o">]</span>
+
+  <span class="tok-k">override</span> <span class="tok-k">def</span> <span class="tok-n">delayedInit</span><span class="tok-o">(</span><span class="tok-n">body</span><span class="tok-k">:</span> <span class="tok-o">=&gt;</span> <span class="tok-nc">Unit</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-n">initCode</span> <span class="tok-o">+=</span> <span class="tok-o">(()</span> <span class="tok-k">=&gt;</span> <span class="tok-n">body</span><span class="tok-o">)</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-k">def</span> <span class="tok-n">main</span><span class="tok-o">(</span><span class="tok-n">args</span><span class="tok-k">:</span> <span class="tok-kt">Array</span><span class="tok-o">[</span><span class="tok-kt">String</span><span class="tok-o">])</span> <span class="tok-k">=</span> <span class="tok-o">{</span>
+    <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-s">&quot;Whoa, I&#39;m a SimpleApp!&quot;</span><span class="tok-o">)</span>
+
+    <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-n">proc</span> <span class="tok-k">&lt;-</span> <span class="tok-n">initCode</span><span class="tok-o">)</span> <span class="tok-n">proc</span><span class="tok-o">()</span>
+
+    <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-s">&quot;So long and thanks for all the fish!&quot;</span><span class="tok-o">)</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span>
+
+                                <span class="tok-c1">// Running the bellow class would print print:</span>
+<span class="tok-k">object</span> <span class="tok-nc">Test</span> <span class="tok-k">extends</span> <span class="tok-nc">SimpleApp</span> <span class="tok-o">{</span> <span class="tok-c1">//</span>
+                                <span class="tok-c1">// Whoa, I&#39;m a SimpleApp!</span>
+  <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-s">&quot;  Hello World!&quot;</span><span class="tok-o">)</span>     <span class="tok-c1">//   Hello World!</span>
+                                <span class="tok-c1">// So long and thanks for all the fish!</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That&#8217;s it. Since the rewriting is <em>not</em> applied to traits, the code we see in our <code>SimpleApp</code> will not be modified by extending DelayedInit, thanks to this, we can make use of the delayedInit method and accumulate any "class bodies" that we encouter (imagine we&#8217;re dealing with a deep hierarchy of classes here, then the <code>delayedInit</code> would be called multiple times), and then we simply implement the <code>main</code> method like you would in plain Java land.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>23. Dynamic Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>I&#8217;ve had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?</p>
@@ -1267,7 +1370,7 @@ There are a few features (like the experimental macros for example) that need to
 <p>Let&#8217;s take a look (with examples, at each of them. We&#8217;ll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn&#8217;t (back then) compile) and make it work this time ;-)</p>
 </div>
 <div class="sect2">
-<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>22.1. applyDynamic</h3>
+<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>23.1. applyDynamic</h3>
 <div class="paragraph">
 <p>Ok, our first magic method looks like this:</p>
 </div>
@@ -1297,7 +1400,7 @@ There are a few features (like the experimental macros for example) that need to
 </div>
 </div>
 <div class="sect2">
-<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>22.2. applyDynamicNamed</h3>
+<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>23.2. applyDynamicNamed</h3>
 <div class="paragraph">
 <p>Ok, that was easy. But it didn&#8217;t give us too much control over the names of the parameters.
 Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "ktoso")</code>? Well&#8230; turns out we can!</p>
@@ -1330,7 +1433,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>22.3. selectDynamic</h3>
+<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>23.3. selectDynamic</h3>
 <div class="paragraph">
 <p>Not it&#8217;s time for the more "unusual" methods. apply methods we&#8217;re pretty easy to understand. It&#8217;s just a method with some arbitrary name. But hey, isn&#8217;t almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let&#8217;s give it a try! &lt;strong&gt;We&#8217;ll use the example with applyDynamic here, and try to act like it has a method without ()&lt;/strong&gt;:</p>
 </div>
@@ -1360,7 +1463,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>22.4. updateDynamic</h3>
+<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>23.4. updateDynamic</h3>
 <div class="paragraph">
 <p>What&#8217;s left you ask? Ask yourself the following question then: "Since I can act like a <code>Dynamic</code> object has some value in some field&#8230; What else should I be able to do with it?" My answer to that would be: "set it"! That&#8217;s what <code>updateDynamic</code> is used for. There is one special rule about <code>updateDynamic</code> though - it&#8217;s only valid if you also took care about selectDynamic - that&#8217;s why in the first example the code generated errors about both - select and update. For example if we&#8217;d implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn&#8217;t compile anyway. It makes sense in terms of plain semantics if you think about it.</p>
 </div>
@@ -1401,7 +1504,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect1">
-<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>23. Links and Kudos</h2>
+<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>24. Links and Kudos</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I&#8217;ve found helpful (and you might too).</p>
@@ -1474,7 +1577,7 @@ I would especialy like to thank all proof-readers and reviewers tha that have he
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-12-19 13:30:04 CET
+Last updated 2013-12-19 13:34:20 CET
 </div>
 </div>
 </body>

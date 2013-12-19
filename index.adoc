@@ -38,6 +38,7 @@ include::sections/path_dependent_type.adoc[]
 include::sections/type_projection.adoc[]
 include::sections/existential_type.adoc[]
 include::sections/type_lambda.adoc[]
+include::sections/delayed_init.adoc[]
 include::sections/dynamic.adoc[]
 
 include::sections/kudos.adoc[]

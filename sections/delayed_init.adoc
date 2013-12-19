@@ -1,0 +1,76 @@
+== Delayed Init
+
+Since we started talking about the "weird" types Scala contains, we can't let this one go without a dedicated section for it. `DelayedInit` is actually a "_compiler trick_" above anything else, and not really tremendously important for the type system itself, but once you understand it, you'll know how `scala.App` actually works, so let's dive into our example with `App`:
+
+```scala
+object Main extends App {
+  println("Hello world!")
+}
+```
+
+By looking at this code, and applying our basic Scala knowlage to it we might think "_Ok, so the `println` is actualy in the constructor of the Main class!_". And this would usually be true, but **not in this case**, since we inherited the `DelayedInit` trait - as `App` extends it:
+
+```scala
+trait App extends DelayedInit {
+  // code here ...
+}
+```
+
+And let's take a look at the full source code of the `DelayedInit` trait right away:
+
+```scala
+trait DelayedInit {
+  def delayedInit(x: => Unit): Unit
+}
+```
+
+As you can see, it does not contain any implementation - all the work around it is actually performed by the compiler compiler, which will treat treat all classes and objects inheriting `DelayedInit` in a special way (note: trait's will _not_ be rewriten like this). The special treatment goes like this:
+
+* imagine your class/object body is a function, doing all these things that are in the class/object body,
+* the compiler creates this function for you, and will pass it into the `delayedInit(x: => Unit)` method (notice the _call-by-name_ in the parameter).
+
+Let's quickly give an example for this, and then we'll re-implement what `App` does for us, but by hand (and the help of `delayedInit`):
+
+```scala
+// we write:
+object Main extends DelayedInit {
+  println("hello!")
+}
+
+// the compiler emits:
+object Main extends DelayedInit {
+  def delayedInit(x: => Unit = { println("Hello!") }) = // impl is left for us to fill in
+}
+```
+
+Using this mechanism you can run the body of your class whenever you want (... maybe never?). Since we now know how `delayedInit` works, let's implement our own version of `scala.App` (which actually does it in exactly the same way).
+
+```scala
+trait SimpleApp extends DelayedInit {
+
+  private val initCode = new ListBuffer[() => Unit]
+
+  override def delayedInit(body: => Unit) {
+    initCode += (() => body)
+  }
+
+  def main(args: Array[String]) = {
+    println("Whoa, I'm a SimpleApp!")
+
+    for (proc <- initCode) proc()
+
+    println("So long and thanks for all the fish!")
+  }
+}
+
+                                // Running the bellow class would print print:
+object Test extends SimpleApp { //
+                                // Whoa, I'm a SimpleApp!
+  println("  Hello World!")     //   Hello World!
+                                // So long and thanks for all the fish!
+}
+```
+
+That's it. Since the rewriting is _not_ applied to traits, the code we see in our `SimpleApp` will not be modified by extending DelayedInit, thanks to this, we can make use of the delayedInit method and accumulate any "class bodies" that we encouter (imagine we're dealing with a deep hierarchy of classes here, then the `delayedInit` would be called multiple times), and then we simply implement the `main` method like you would in plain Java land.
+
+
