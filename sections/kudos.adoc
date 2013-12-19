@@ -16,7 +16,7 @@ Obvisouly this vademecum required quite a bit of reseach and double-checking, so
 I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):
 
 * Sergio Rodrigez, for the most in depth article review I've ever seen in my life and lots of suggestions,
-* Andrzej
+* Andrzej Grzesik, fellow PolishJUG / GeeCON guy
 * Joshua Sureth, for the awesome comments and examples over lunch after devoxx
 * The awesome guys from Softwaremill
 * The awesome guys from VirtusLab
