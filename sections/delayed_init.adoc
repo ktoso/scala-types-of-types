@@ -1,6 +1,6 @@
 == Delayed Init
 
-Since we started talking about the "weird" types Scala contains, we can't let this one go without a dedicated section for it. `DelayedInit` is actually a "_compiler trick_" above anything else, and not really tremendously important for the type system itself, but once you understand it, you'll know how `scala.App` actually works, so let's dive into our example with `App`:
+Since we started talking about the "weird" types in Scala, we can't let this one go without a dedicated section for it. `DelayedInit` is actually a "_compiler trick_" above anything else, and not really tremendously important for the type system itself, but once you understand it, you'll know how `scala.App` actually works, so let's dive into our example with `App`:
 
 ```scala
 object Main extends App {
