@@ -10,6 +10,6 @@ implicit val jsonWriter = new Writes[Person, Json] {
 }
 
 implicit class Writeable[A] {
-  def write(implicit writes: Writes[A])
+  def write[B](implicit writes: Writes[A, B])
 }
 ```
