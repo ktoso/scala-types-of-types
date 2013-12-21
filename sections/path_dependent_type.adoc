@@ -49,6 +49,6 @@ class ChildrenContainer(p: Parent) {
 Using the path dependent type we have now encoded in the type system, the logic,
 that this container should only contain children of this parent - and not "any parent".
 
-We'll see how to require the "child of any parent" Type in the section about <<type-projection, Type Projections>>soon.
+We'll see how to require the "child of any parent" Type in the section about <<type-projection, Type Projections>> soon.
 
 
