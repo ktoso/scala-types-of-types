@@ -748,7 +748,7 @@ res1: Boolean = true</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>So now we&#8217;re sure we&#8217;ll only ever compare apples with apples, and other Fruit with the same kind (<em>sub-class</em>) of <code>Fruit</code>. There&#8217;s more to discuss here though - what about subclasses of <code>Apple</code> and <code>Orange</code>? Well, because we "filled-in" the type parameter at Apple / Orange level in the type hierarchy, we basically said "apples can only be compared to apples", which means that sub-classes of apples, can be compared with each other - <code>Fruit`s signature of `compareTo</code> will still be happy, because the right hand side of our call would be some Fruit[Apple]&#8201;&#8212;&#8201;only a bit more concrete, for example let&#8217;s try this with a japanese apple (ja. "りんご", "ringo") and a polish apple (pl. "Jabłuszko"):</p>
+<p>So now we&#8217;re sure we&#8217;ll only ever compare apples with apples, and other Fruit with the same kind (<em>sub-class</em>) of <code>Fruit</code>. There&#8217;s more to discuss here though - what about subclasses of <code>Apple</code> and <code>Orange</code>? Well, because we "filled-in" the type parameter at Apple / Orange level in the type hierarchy, we basically said "apples can only be compared to apples", which means that sub-classes of apples, can be compared with each other - Fruit&#8217;s signature of <code>compareTo</code> will still be happy, because the right hand side of our call would be some <code>Fruit[Apple]</code>&#8201;&#8212;&#8201;only a bit more concrete, for example let&#8217;s try this with a japanese apple (ja. "りんご", "ringo") and a polish apple (pl. "Jabłuszko"):</p>
 </div>
 <div class="listingblock">
 <div class="content">

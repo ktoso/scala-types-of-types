@@ -47,7 +47,7 @@ scala> orange compareTo orange
 res1: Boolean = true
 ```
 
-So now we're sure we'll only ever compare apples with apples, and other Fruit with the same kind (_sub-class_) of `Fruit`. There's more to discuss here though - what about subclasses of `Apple` and `Orange`? Well, because we "filled-in" the type parameter at Apple / Orange level in the type hierarchy, we basically said "apples can only be compared to apples", which means that sub-classes of apples, can be compared with each other - `Fruit`s signature of `compareTo` will still be happy, because the right hand side of our call would be some Fruit[Apple] -- only a bit more concrete, for example let's try this with a japanese apple (ja. "りんご", "ringo") and a polish apple (pl. "Jabłuszko"):
+So now we're sure we'll only ever compare apples with apples, and other Fruit with the same kind (_sub-class_) of `Fruit`. There's more to discuss here though - what about subclasses of `Apple` and `Orange`? Well, because we "filled-in" the type parameter at Apple / Orange level in the type hierarchy, we basically said "apples can only be compared to apples", which means that sub-classes of apples, can be compared with each other - Fruit's signature of `compareTo` will still be happy, because the right hand side of our call would be some `Fruit[Apple]` -- only a bit more concrete, for example let's try this with a japanese apple (ja. "りんご", "ringo") and a polish apple (pl. "Jabłuszko"):
 
 ```scala
 object `りんご`  extends Apple
