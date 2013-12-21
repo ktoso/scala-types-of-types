@@ -3,3 +3,5 @@
 Although very simple, let's discuss what case classes give us.
 
 WARNING: TODO!
+
+

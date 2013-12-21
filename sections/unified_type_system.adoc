@@ -2,7 +2,7 @@
 
 We refer to a Scala's typesystem as being "unified" because there is a "Top Type", `Any`. **This is different than Java**, which has "special cases" in form of primitive types (`int`, `long`, `float`, `double`, `byte`, `char`, `short`, `boolean`), which do not extend Java's "Almost-Top Type" - `java.lang.Object`.
 
-image::http://www.blog.project13.pl/wp-content/uploads/2012/12/skitch-5.png[Unified Type System]
+image::assets/img/scala-types.png[Scala's Unified Type System, align="center"]
 
 Scala takes on the idea of having one common Top Type for all Types by introducing `Any`. `Any` is a supertype of both `AnyRef` and `AnyVal`.
 
