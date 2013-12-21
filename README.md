@@ -3,7 +3,7 @@ Scala's Types of Types
 
 This document is aimed at explaining all-the-things-type in Scala in a human friendly way and in one place, so you don't have to stop discussions for "oh but there was this nice blog post about the ... type!".
 
-Contributions are very welcome, of course.
+Contributions are very welcome, please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
 
 License
 =======
