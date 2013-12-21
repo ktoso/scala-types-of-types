@@ -30,8 +30,6 @@ In order to build the documentation you have to:
 cd scala-types-of-types
 
 bundle install
-# OR just: `gem install asciidoctor`
-
 make
 ```
 
