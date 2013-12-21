@@ -702,7 +702,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// naive impl, Fruit is NOT self-recursively parameterised</span>
 
 <span class="tok-k">trait</span> <span class="tok-nc">Fruit</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">compareTo</span><span class="tok-o">(</span><span class="tok-n">other</span><span class="tok-k">:</span> <span class="tok-kt">Fruit</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Boolean</span> <span class="tok-o">=</span> <span class="tok-kc">true</span> <span class="tok-c1">// impl doesn&#39;t matter in our example, we care about compile-time</span>
+  <span class="tok-k">final</span> <span class="tok-k">def</span> <span class="tok-n">compareTo</span><span class="tok-o">(</span><span class="tok-n">other</span><span class="tok-k">:</span> <span class="tok-kt">Fruit</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Boolean</span> <span class="tok-o">=</span> <span class="tok-kc">true</span> <span class="tok-c1">// impl doesn&#39;t matter in our example, we care about compile-time</span>
 <span class="tok-o">}</span>
 
 <span class="tok-k">class</span> <span class="tok-nc">Apple</span>  <span class="tok-k">extends</span> <span class="tok-nc">Fruit</span>
@@ -721,7 +721,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Fruit</span><span class="tok-o">[</span><span class="tok-kt">T</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Fruit</span><span class="tok-o">[</span><span class="tok-kt">T</span><span class="tok-o">]]</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">compareTo</span><span class="tok-o">(</span><span class="tok-n">other</span><span class="tok-k">:</span> <span class="tok-kt">Fruit</span><span class="tok-o">[</span><span class="tok-kt">T</span><span class="tok-o">])</span><span class="tok-k">:</span> <span class="tok-kt">Boolean</span> <span class="tok-o">=</span> <span class="tok-kc">true</span> <span class="tok-c1">// impl doesn&#39;t matter in our example</span>
+  <span class="tok-k">final</span> <span class="tok-k">def</span> <span class="tok-n">compareTo</span><span class="tok-o">(</span><span class="tok-n">other</span><span class="tok-k">:</span> <span class="tok-kt">Fruit</span><span class="tok-o">[</span><span class="tok-kt">T</span><span class="tok-o">])</span><span class="tok-k">:</span> <span class="tok-kt">Boolean</span> <span class="tok-o">=</span> <span class="tok-kc">true</span> <span class="tok-c1">// impl doesn&#39;t matter in our example</span>
 <span class="tok-o">}</span>
 
 <span class="tok-k">class</span> <span class="tok-nc">Apple</span>  <span class="tok-k">extends</span> <span class="tok-nc">Fruit</span><span class="tok-o">[</span><span class="tok-kt">Apple</span><span class="tok-o">]</span>

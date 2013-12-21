@@ -8,7 +8,7 @@ Imagine you have some `Fruit` trait, and both an `Apple` and an `Orange` extend 
 // naive impl, Fruit is NOT self-recursively parameterised
 
 trait Fruit {
-  def compareTo(other: Fruit): Boolean = true // impl doesn't matter in our example, we care about compile-time
+  final def compareTo(other: Fruit): Boolean = true // impl doesn't matter in our example, we care about compile-time
 }
 
 class Apple  extends Fruit
@@ -24,7 +24,7 @@ So in the naive implementation, since the trait `Fruit` has no clue about the ty
 
 ```scala
 trait Fruit[T <: Fruit[T]] {
-  def compareTo(other: Fruit[T]): Boolean = true // impl doesn't matter in our example
+  final def compareTo(other: Fruit[T]): Boolean = true // impl doesn't matter in our example
 }
 
 class Apple  extends Fruit[Apple]
