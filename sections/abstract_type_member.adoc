@@ -13,7 +13,7 @@ trait SimplestContainer {
 }
 ```
 
-Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about *Path-dependent Types*, as well as in the below example.
+Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about <<path-dependent-type, Path Dependent Types>>, as well as in the below example.
 
 todo; Then, this is how we would implement this trait:
 
