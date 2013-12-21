@@ -1,4 +1,4 @@
-== Universal Trait &#x2717;
+== Universal Trait +++<span style="color:red">&#x2717;</span>+++
 
 Universal traits are traits that `extend Any`, they should only have `def`s, and no initialization code.
 

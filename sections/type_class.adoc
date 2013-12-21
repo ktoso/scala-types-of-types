@@ -1,4 +1,4 @@
-== Type Class &#x2717;
+== Type Class +++<span style="color:red">&#x2717;</span>+++
 
 ```scala
 trait Writes[In, Out] {

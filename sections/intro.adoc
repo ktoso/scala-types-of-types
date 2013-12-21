@@ -9,6 +9,6 @@ For example Higher Kinds need a rewrite, there's a lot of detail to be added in 
 
 If you'd like to help, please do! I'll welcome any pull request, or suggestion (well, I'd prefer pull requests ;-).
 
-Also, if you see a section marked with "&#x2717;" it means that it needs re-work or that it's not complete in some way.
+Also, if you see a section marked with "+++<span style="color:red">&#x2717;</span>+++" it means that it needs re-work or that it's not complete in some way.
 
 

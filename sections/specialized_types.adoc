@@ -1,3 +1,4 @@
-== Specialized Types &#x2717;
+== Specialized Types +++<span style="color:red">&#x2717;</span>+++
 
 WARNING: TODO - explain @specialized on an example, link to paper about this
+
