@@ -5,3 +5,4 @@ Universal traits are traits that `extend Any`, they should only have `def`s, and
 TODO TODO
 
 WARN: TODO IMPLEMENT DOCS :-)
+
