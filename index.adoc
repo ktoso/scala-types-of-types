@@ -61,9 +61,17 @@ include::sections/kudos.adoc[]
 ++++
 
 ++++
+<style>
+li.active {
+  background: aliceblue;
+}
+</style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://ktoso.github.io/scala-types-of-types/assets/js/bootstrap.min.js"></script>
 <script>
-  $('body').scrollspy({ target: '#toc' })
+$(document).ready(function() {
+  $('#toc ul').addClass('nav nav-list');
+  $('body').scrollspy({ target: '#toc' });
+});
 </script>
 ++++
