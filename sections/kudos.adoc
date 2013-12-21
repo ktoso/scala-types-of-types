@@ -1,7 +1,8 @@
-Links and Kudos
----------------
+== Bibliography and kudos
 
-Obvisouly this vademecum required quite a bit of reseach and double-checking, so here are all the links I've found helpful (and you might too).
+=== Reference and further reading
+
+Obviously this vademecum required quite a bit of reseach and double-checking, so here are all the links I've found helpful (and you might too).
 
 * Twitter's Scala School: http://twitter.github.io/scala_school quite a bit of Scala concepts. Which helped me a lot in nicely explaining Variance (nicest explanation I found, since "ever").
 * Very old, but still valid explanation of Universal Types: http://www.scala-lang.org/old/node/128
@@ -15,16 +16,23 @@ Obvisouly this vademecum required quite a bit of reseach and double-checking, so
 * Great StackOverflow answer by **Kriss Nuttycombe** about Type Lambdas: http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits
 * The :kind pull request to `scala`, by Adriaan Moors https://github.com/scala/scala/pull/2340
 
+=== Thanks and kudos
+
 I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):
 
 * Sergio Rodrigez, for the most in depth article review I've ever seen in my life and lots of suggestions,
-* Andrzej Grzesik, fellow PolishJUG / GeeCON guy
+* Andrzej Grzesik, fellow http://java.pl[PolishJUG] / http://geecon.org[GeeCON] guy
 * Joshua Sureth, for the awesome comments and examples over lunch after devoxx
-* The awesome guys from Softwaremill
-* The awesome guys from VirtusLab
-* TODO TODO
+* The awesome guys from http://softwaremill.com[SoftwareMill] for reviews and comments
+* The awesome guys from http://virtuslab.com[VirtusLab] for typo fixes, the makefile and suggestions
+* The http://www.krakowscala.pl[Kraków Scala User Group]'s members, for proof reading and suggestions
+* All the kind people who pull-requested typo's and small fixes
+* You! Really. Thanks for reading this, you rock.
 
-Give back some kudos! Share this page if you liked it using IRC, or social networks :-)
+That's all folks, and if it's not, please ping me and I'll update the guide. _Life is Study!_ -- mailto:konrad.malawski@java.pl[Konrad 'ktoso' Malawski]
+
+=== Give back some kudos!
+If you liked this page, please share it with your friends using IRC any other chat service, or email, or social networks using these clicky-clicky buttons bellow! :-)
 
 ++++
 <!-- Place this tag where you want the +1 button to render. -->
