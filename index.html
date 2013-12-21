@@ -31,7 +31,7 @@
 <li><a href="#refined-types-refinements">8. Refined Types (refinements)</a></li>
 <li><a href="#type-alias">9. Type Alias</a></li>
 <li><a href="#abstract-type-member">10. Abstract Type Member</a></li>
-<li><a href="#self-recursive-type">11. Self-Recursive Type</a></li>
+<li><a href="#self-recursive-type">11. Self-Recursive Type &#x2717;</a></li>
 <li><a href="#type-class">12. Type Class</a></li>
 <li><a href="#type-constructor">13. Type Constructor</a></li>
 <li><a href="#higher-order-kind">14. Higher-Order Kind</a></li>
@@ -41,7 +41,7 @@
 <li><a href="#path-dependent-type">18. Path Dependent Type</a></li>
 <li><a href="#type-projection">19. Type Projection</a></li>
 <li><a href="#existential-types">20. Existential Types</a></li>
-<li><a href="#type-lambda">21. Type Lambda</a></li>
+<li><a href="#type-lambda">21. Type Lambda &#x2717;</a></li>
 <li><a href="#delayed-init">22. Delayed Init</a></li>
 <li><a href="#dynamic-type">23. Dynamic Type</a></li>
 <li>
@@ -74,6 +74,9 @@ For example Higher Kinds need a rewrite, there&#8217;s a lot of detail to be add
 </div>
 <div class="paragraph">
 <p>If you&#8217;d like to help, please do! I&#8217;ll welcome any pull request, or suggestion (well, I&#8217;d prefer pull requests ;-).</p>
+</div>
+<div class="paragraph">
+<p>Also, if you see a section marked with "&#x2717;" it means that it needs re-work or that it&#8217;s not complete in some way.</p>
 </div>
 </div>
 </div>
@@ -686,7 +689,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="sect1">
-<h2 id="self-recursive-type"><a class="anchor" href="#self-recursive-type"></a>11. Self-Recursive Type</h2>
+<h2 id="self-recursive-type"><a class="anchor" href="#self-recursive-type"></a>11. Self-Recursive Type &#x2717;</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This we brought up with [Andrzej Grzesik](<a href="http://andrzejgrzesik.info">http://andrzejgrzesik.info</a>), while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up [on his blog, by explaining how the self-recursive generic type trick works in Java&#8217;s Enum class](<a href="http://andrzejgrzesik.info/2013/09/29/container-types/">http://andrzejgrzesik.info/2013/09/29/container-types/</a>). Another nice blog post about this type-trick, is [The dangers of correlating subtype polymorphism with generic polymorphism](<a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/</a>), where lukaseder points out why/where this pattern may cause you trouble.</p>
@@ -1179,7 +1182,7 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-lambda"><a class="anchor" href="#type-lambda"></a>21. Type Lambda</h2>
+<h2 id="type-lambda"><a class="anchor" href="#type-lambda"></a>21. Type Lambda &#x2717;</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In type lambda&#8217;s we&#8217;ll be using <strong>Path Dependent</strong> as well as <strong>Structural Types</strong>, so if you skipped that sections you may want to go back to it.</p>

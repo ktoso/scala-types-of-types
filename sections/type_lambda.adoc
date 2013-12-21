@@ -1,4 +1,4 @@
-== Type Lambda
+== Type Lambda &#x2717;
 
 In type lambda's we'll be using *Path Dependent* as well as *Structural Types*, so if you skipped that sections you may want to go back to it.
 
