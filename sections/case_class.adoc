@@ -5,18 +5,17 @@ Although very simple, let's discuss what case classes give us.
 Lets start with a simple java-like class
 
 ```scala
-class Circle(r: Double){
-  val radius = r
-}
+class JavaCircle(val radius: Double)
 ```
 
 which generates something linke this using :
 
 ```
-scala> :javap Circle
-public class Circle extends java.lang.Object{
+scala> :javap JavaCircle
+public class JavaCircle extends java.lang.Object{
     public double radius();
-    public Circle(double);
+    public void radius_$eq(double);
+    public JavaCircle(double);
 }
 ```
 
