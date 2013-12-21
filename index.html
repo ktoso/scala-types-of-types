@@ -912,7 +912,7 @@ TODO!
 <i class="icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-All you need to do to define a Value Class is to have <strong>a class with only one public val parameter</strong>, if you don&#8217;t the compiler will complain. That one parameter does <em>not</em> have to be a primitive, it can be anything.
+All you need to do to define a Value Class is to have <strong>a class with only one public val parameter</strong> extending <code>AnyVal</code>, and follow a few restrictions around it. That one parameter does <em>not</em> have to be a primitive, it can be anything. The restrictions (or limitations) on the other hand are a longer list, as for example a value class cannot contain any other fields than <code>def</code> members and cannot be extended etc. For a full list and more in-depth examples refer to the Scala documentation&#8217;s <a href="http://docs.scala-lang.org/overviews/core/value-classes.html#summary_of_limitations">Value Classes - summary of limitations</a>.
 </td>
 </tr>
 </table>

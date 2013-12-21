@@ -18,7 +18,7 @@ case class Foot(value: Double) extends AnyVal {
 
 We'll be using Case (Value) Classes in all our examples here, but it's not technically required to do so (although very convinient). You could implement a Value Class using a normal class with one `val` parameter instead, but using case classes is usualy the best way to go. Why only one parameter you might ask -- this is because we'll try to avoid wrapping the value, and this only makes sense for single values, otherwise we'd have to keep a Tuple around somewhere, which gets fuzzy very quickly and we'd loose the performance of not-wrapping anyway. So remember - value classes work only for 1 value, although no-one said that that parameter must be a primitive (!), it can be a normal class, like `Fruit` or `Person`, we'll still be able to avoid wrapping it in the Value Class at some times.
 
-TIP: All you need to do to define a Value Class is to have *a class with only one public val parameter*, if you don't the compiler will complain. That one parameter does _not_ have to be a primitive, it can be anything.
+TIP: All you need to do to define a Value Class is to have *a class with only one public val parameter* extending `AnyVal`, and follow a few restrictions around it. That one parameter does _not_ have to be a primitive, it can be anything. The restrictions (or limitations) on the other hand are a longer list, as for example a value class cannot contain any other fields than `def` members and cannot be extended etc. For a full list and more in-depth examples refer to the Scala documentation's http://docs.scala-lang.org/overviews/core/value-classes.html#summary_of_limitations[Value Classes - summary of limitations].
 
 Bellow are a few examples of defining a Value Class:
 
