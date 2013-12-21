@@ -35,6 +35,7 @@
 <li><a href="#type-constructor">12. Type Constructor</a></li>
 <li><a href="#higher-order-kind">13. Higher-Order Kind</a></li>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <li><a href="#case-class-span-style-color-red-span">14. Case Class <span style="color:red">&#x2717;</span></a></li>
 <li><a href="#value-class">15. Value Class</a></li>
 <li><a href="#type-class-span-style-color-red-span">16. Type Class <span style="color:red">&#x2717;</span></a></li>
@@ -67,6 +68,9 @@
 </li>
 =======
 <li><a href="#case-class">14. Case Class &#x2717;</a></li>
+=======
+<li><a href="#case-class">14. Case Class</a></li>
+>>>>>>> Add section about copying.
 <li><a href="#value-class">15. Value Class</a></li>
 <li><a href="#universal-trait">16. Universal Trait &#x2717;</a></li>
 <li><a href="#self-type-annotation">17. Self Type Annotation</a></li>
@@ -887,7 +891,11 @@ This is a type constructor that takes type constructor(s): a higher-kinded type.
 </div>
 </div>
 <div class="sect1">
+<<<<<<< HEAD
 <h2 id="case-class-span-style-color-red-span"><a class="anchor" href="#case-class-span-style-color-red-span"></a>14. Case Class <span style="color:red">&#x2717;</span></h2>
+=======
+<h2 id="case-class"><a class="anchor" href="#case-class"></a>14. Case Class</h2>
+>>>>>>> Add section about copying.
 <div class="sectionbody">
 <div class="paragraph">
 <p>Although very simple, let&#8217;s discuss what case classes give us.</p>
@@ -910,9 +918,7 @@ TODO!
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Circle</span><span class="tok-o">(</span><span class="tok-n">r</span><span class="tok-k">:</span> <span class="tok-kt">Double</span><span class="tok-o">){</span>
-  <span class="tok-k">val</span> <span class="tok-n">radius</span> <span class="tok-k">=</span> <span class="tok-n">r</span>
-<span class="tok-o">}</span>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">SimpleCircle</span><span class="tok-o">(</span><span class="tok-k">val</span> <span class="tok-n">radius</span><span class="tok-k">:</span> <span class="tok-kt">Double</span><span class="tok-o">)</span>
 </code></pre>
 </div>
 </div>
@@ -921,18 +927,23 @@ TODO!
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">scala> :javap Circle
-public class Circle extends java.lang.Object{
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">scala> :javap SimpleCircle
+public class SimpleCircle extends java.lang.Object{
     public double radius();
-    public Circle(double);
+    public void radius_$eq(double);
+    public JavaCircle(double);
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>but if we want it to behave like <a href="http://en.wikipedia.org/wiki/Value_object">Value Object</a>
+<<<<<<< HEAD
 we must override <code>equal</code> and <code>hash_code</code> methods (generate it by IDE). Now, scala for the rescue.</p>
 >>>>>>> Create section about case class.
 </div>
+=======
+we must override <code>equal</code> and <code>hashCode</code> methods (generate it by IDE). Now, scala for the rescue.</p>
+>>>>>>> Add section about copying.
 </div>
 </div>
 <div class="sect1">
@@ -943,7 +954,7 @@ we must override <code>equal</code> and <code>hash_code</code> methods (generate
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">CaseCircle</span><span class="tok-o">(</span><span class="tok-n">radius</span><span class="tok-k">:</span> <span class="tok-kt">Double</span><span class="tok-o">)</span>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Circle</span><span class="tok-o">(</span><span class="tok-n">radius</span><span class="tok-k">:</span> <span class="tok-kt">Double</span><span class="tok-o">)</span>
 </code></pre>
 </div>
 </div>
@@ -952,8 +963,7 @@ we must override <code>equal</code> and <code>hash_code</code> methods (generate
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="asciidoc language-asciidoc">scala> :javap CaseCircle
-Compiled from "Circle.scala"
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">scala> :javap Circle
 public class CaseCircle extends java.lang.Object implements scala.Product,scala.Serializable{
     public static scala.Function1 andThen(scala.Function1);
     public static scala.Function1 compose(scala.Function1);
@@ -974,8 +984,7 @@ public class CaseCircle extends java.lang.Object implements scala.Product,scala.
 </div>
 </div>
 <div class="paragraph">
-<p>as we can see, we have <code>equals</code> and <code>hashCode</code> generated by compile.
-Also compile is so kind to generate copy method and mark class as Serializable.</p>
+<p>as we can see, we have <code>equals</code> and <code>hashCode</code> generated by compile and mark class as Serializable.</p>
 </div>
 <div class="paragraph">
 <p>More over case class is equipted with extractor (also generate by compiler in companion object).
@@ -988,6 +997,23 @@ It can be used in pattern matching to simplified it.</p>
 <span class="tok-o">}</span>
 </code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Also compile is so kind to generate copy method, it is importent becouse case classes are <strong>immutable</strong>.
+We can modify it only by creation new object with updateing changed value. So example should take away doubt.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Point</span><span class="tok-o">(</span><span class="tok-n">x</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">,</span> <span class="tok-n">y</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">)</span>
+
+<span class="tok-k">val</span> <span class="tok-n">a</span> <span class="tok-k">=</span> <span class="tok-nc">Point</span><span class="tok-o">(</span><span class="tok-mi">0</span><span class="tok-o">,</span><span class="tok-mi">0</span><span class="tok-o">)</span>
+<span class="tok-k">val</span> <span class="tok-n">b</span> <span class="tok-k">=</span> <span class="tok-n">a</span><span class="tok-o">.</span><span class="tok-n">copy</span><span class="tok-o">(</span><span class="tok-n">y</span><span class="tok-k">=</span><span class="tok-mi">10</span><span class="tok-o">)</span>
+<span class="tok-k">val</span> <span class="tok-n">c</span> <span class="tok-k">=</span> <span class="tok-n">b</span><span class="tok-o">.</span><span class="tok-n">copy</span><span class="tok-o">(</span><span class="tok-n">x</span><span class="tok-k">=</span><span class="tok-mi">10</span><span class="tok-o">)</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>so point <code>b</code> have cordinates <code>(0,10)</code>, and point <code>c</code> have <code>(10,10)</code></p>
 </div>
 <div class="paragraph">
 <p>More about case class can be found in <a href="http://www.scala-lang.org/files/archive/nightly/pdfs/ScalaReference.pdf#subsection.5.3.2">Scala Language Specification</a></p>
