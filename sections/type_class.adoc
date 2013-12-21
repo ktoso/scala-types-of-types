@@ -1,4 +1,4 @@
-== Type Class
+== Type Class &#x2717;
 
 ```scala
 trait Writes[In, Out] {
