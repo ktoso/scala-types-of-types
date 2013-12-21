@@ -6,9 +6,7 @@ image::assets/img/scala-types.png[Scala's Unified Type System, align="center"]
 
 Scala takes on the idea of having one common Top Type for all Types by introducing `Any`. `Any` is a supertype of both `AnyRef` and `AnyVal`.
 
-`AnyRef` is the "object world" of Java (and the JVM), it corresponds to `java.lang.Object`, and is the supertype of all objects.
-
-`AnyVal` represents the "value world" of Java, such as `int` and it's friends.
+`AnyRef` is the "object world" of Java (and the JVM), it corresponds to `java.lang.Object`, and is the supertype of all objects. `AnyVal` on the other hand represents the "value world" of Java, such as `int` and other JVM primitives.
 
 Thanks to this hierarchy, we're able to define methods taking `Any` - thus being compatible with both `scala.Int` instances as well as `java.lang.String`:
 
@@ -48,5 +46,5 @@ check(new Object) // -> AnyRef = fails to compile
 
 ```
 
-In the above example I've used a TypeClass `Checker[T]` and a type bound, which will be discussed below. The general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
+In the above example I've used a TypeClass `Checker[T]` and a type bound, which will be discussed below. The general idea is that this method will only take <<value-class, Value Classes>>, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.
 

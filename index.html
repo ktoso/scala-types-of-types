@@ -151,10 +151,7 @@ more and more interesting.</p>
 <p>Scala takes on the idea of having one common Top Type for all Types by introducing <code>Any</code>. <code>Any</code> is a supertype of both <code>AnyRef</code> and <code>AnyVal</code>.</p>
 </div>
 <div class="paragraph">
-<p><code>AnyRef</code> is the "object world" of Java (and the JVM), it corresponds to <code>java.lang.Object</code>, and is the supertype of all objects.</p>
-</div>
-<div class="paragraph">
-<p><code>AnyVal</code> represents the "value world" of Java, such as <code>int</code> and it&#8217;s friends.</p>
+<p><code>AnyRef</code> is the "object world" of Java (and the JVM), it corresponds to <code>java.lang.Object</code>, and is the supertype of all objects. <code>AnyVal</code> on the other hand represents the "value world" of Java, such as <code>int</code> and other JVM primitives.</p>
 </div>
 <div class="paragraph">
 <p>Thanks to this hierarchy, we&#8217;re able to define methods taking <code>Any</code> - thus being compatible with both <code>scala.Int</code> instances as well as <code>java.lang.String</code>:</p>
@@ -202,7 +199,7 @@ more and more interesting.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>In the above example I&#8217;ve used a TypeClass <code>Checker[T]</code> and a type bound, which will be discussed below. The general idea is that this method will only take value classes, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.</p>
+<p>In the above example I&#8217;ve used a TypeClass <code>Checker[T]</code> and a type bound, which will be discussed below. The general idea is that this method will only take <a href="#value-class">Value Classes</a>, be it Int or our own Value Type. While probably not used very often, it shows how nicely the typesystem embraces java primitives, and brings them into the "real" type system, and not as a separate case, as is the case with Java.</p>
 </div>
 </div>
 </div>
@@ -885,7 +882,7 @@ TODO!
 <p>Value classes have been around in Scala for a long time internally, and you&#8217;ve used them already many times because all Number&#8217;s in Scala use this compiler trick to avoid boxing and unboxing numeric values from <code>int</code> to <code>scala.Int</code> etc. As a quick reminder, let&#8217;s recall that <code>Array[Int]</code> is an actual JVM <code>int[]</code> (or for bytecode happy people, it&#8217;s the JVM runtime type called: <code>[I</code>) which has tons of performance implications, but in one word&#8201;&#8212;&#8201;arrays of numbers are fast, arrays of references not as much.</p>
 </div>
 <div class="paragraph">
-<p>Ok, since we now know the compiler has fancy tricks to avoid boxing `int`s into `Int`s when it doesn&#8217;t have to. Let&#8217;s see how this feature is exposed for us, end users since Scala 2.10.x. The feature is called "value classes", is fairly simple to apply to your existing classes.</p>
+<p>Ok, since we now know the compiler has fancy tricks to avoid boxing <code>int`s into `Int`s when it doesn't have to. Let's see how this feature is exposed for us, end users since Scala 2.10.x. The feature is called "value classes", is fairly simple to apply to your existing classes. Using them is as simple as adding `extends AnyVal</code> to your class and following a few rules listed bellow. If you&#8217;re not familiar with <code>AnyVal</code>, this might be a good moment for a quick refresher by looking at Section <a href="#unified-type-system-any-anyref-anyval">Unified Type System - Any, AnyRef, AnyVal</a>.</p>
 </div>
 <div class="paragraph">
 <p>For our example let&#8217;s implement a <code>Meter</code> which will serve as wrapper for plain <code>Int</code> and be able to convert the number of meters, into the number of type <code>Foot</code>. We need this class because no-one understands the crazy imperial units system ;-) On the downside though, why should we pay the runtime overhead of having an object around an <code>int</code> (that&#8217;s quite a few bytes (!) per instance) if for 95% of the time we&#8217;ll be using the plain meter value - because it&#8217;s a project for the european market? Value classes to the rescue!</p>
@@ -918,24 +915,6 @@ All you need to do to define a Value Class is to have <strong>a class with only 
 </table>
 </div>
 <div class="paragraph">
-<p>Bellow are a few examples of defining a Value Class:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code class="repl language-repl">// this fails:
-scala> class A(a: Int) extends AnyVal
-<console>:7: error: value class needs to have exactly one public val parameter
-
-// this works
-scala> class A(val a: Int) extends AnyVal
-defined class A
-
-// this works too, suggested style:
-scala> case class A(a: Int) extends AnyVal
-defined class A</code></pre>
-</div>
-</div>
-<div class="paragraph">
 <p>Ok, so now that we got our <code>Meter</code> and <code>Foot</code> <strong>Value Case Classes</strong>, let&#8217;s first examine how the generated bytecode has changes from a normal case class when we added the <code>extends AnyVal</code> part, making Meter a value class:</p>
 </div>
 <div class="listingblock">
@@ -946,13 +925,12 @@ defined class A</code></pre>
 <span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Meter</span> <span class="tok-kd">extends</span> <span class="tok-n">java</span><span class="tok-o">.</span><span class="tok-na">lang</span><span class="tok-o">.</span><span class="tok-na">Object</span> <span class="tok-kd">implements</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Product</span><span class="tok-o">,</span><span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Serializable</span><span class="tok-o">{</span>
     <span class="tok-kd">public</span> <span class="tok-kt">double</span> <span class="tok-nf">value</span><span class="tok-o">();</span>
     <span class="tok-kd">public</span> <span class="tok-n">Foot</span> <span class="tok-nf">toFeet</span><span class="tok-o">();</span>
-
-    <span class="tok-c1">// more here, but not interesting for us right now</span>
+    <span class="tok-c1">// ...</span>
 <span class="tok-o">}</span>
 
 <span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-o">:</span><span class="tok-n">javap</span> <span class="tok-n">Meter$</span>
 <span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Meter</span><span class="tok-n">$</span> <span class="tok-kd">extends</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">runtime</span><span class="tok-o">.</span><span class="tok-na">AbstractFunction1</span> <span class="tok-kd">implements</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Serializable</span><span class="tok-o">{</span>
-  <span class="tok-c1">// more gere, but not interesting for us right now</span>
+    <span class="tok-c1">// ... (skipping not interesting in this use-case methods)</span>
 <span class="tok-o">}</span>
 </code></pre>
 </div>
@@ -968,30 +946,65 @@ defined class A</code></pre>
 <span class="tok-kd">public</span> <span class="tok-kd">final</span> <span class="tok-kd">class</span> <span class="tok-nc">Meter</span> <span class="tok-kd">extends</span> <span class="tok-n">java</span><span class="tok-o">.</span><span class="tok-na">lang</span><span class="tok-o">.</span><span class="tok-na">Object</span> <span class="tok-kd">implements</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Product</span><span class="tok-o">,</span><span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Serializable</span><span class="tok-o">{</span>
     <span class="tok-kd">public</span> <span class="tok-kt">double</span> <span class="tok-nf">value</span><span class="tok-o">();</span>
     <span class="tok-kd">public</span> <span class="tok-n">Foot</span> <span class="tok-nf">toFeet</span><span class="tok-o">();</span>
-
-   <span class="tok-c1">// in general, stayed the same as before</span>
+    <span class="tok-c1">// ...</span>
 <span class="tok-o">}</span>
 
 <span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-o">:</span><span class="tok-n">javap</span> <span class="tok-n">Meter$</span>
 <span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Meter</span><span class="tok-n">$</span> <span class="tok-kd">extends</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">runtime</span><span class="tok-o">.</span><span class="tok-na">AbstractFunction1</span> <span class="tok-kd">implements</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Serializable</span><span class="tok-o">{</span>
     <span class="tok-kd">public</span> <span class="tok-kd">final</span> <span class="tok-n">Foot</span> <span class="tok-n">toFeet$extension</span><span class="tok-o">(</span><span class="tok-kt">double</span><span class="tok-o">);</span>
-
-    <span class="tok-c1">// a few new methods appeared! All ending with $extension</span>
+    <span class="tok-c1">// ...</span>
 <span class="tok-o">}</span>
 </code></pre>
 </div>
 </div>
-<div class="admonitionblock warning">
+<div class="paragraph">
+<p>There&#8217;s basically one thing that should catch our attention here, it&#8217;s that the Meter&#8217;s companion class when created as a Value Class, has gained a new method - <code>toFeet$extension(double): Foot</code>. Before this method was an instance method, of the Meter class, and it did not take any arguments (so it was: <code>toFeet(): Foot</code>). The generated method is marked as "extension", and this is actually exactly the name we give to such methods (.NET developers might see where this is headed already).</p>
+</div>
+<div class="paragraph">
+<p>As our goal with Value Clases is to avoid having to allocate the entire value object, and instead work directly on the wrapped value we have to stop using using instance methods&#8201;&#8212;&#8201;as they would force us into having an instance of the Wrapper (<code>Meter</code>) class. What we can do instead is promoting the instance method, into an <strong>extension method</strong>, which we&#8217;ll store in the companion object of <code>Meter</code>, and instead of using the <code>value: Double</code> field of the instance, we&#8217;ll <em>pass in</em> the <code>Double</code> value each time we&#8217;ll be calling the <strong>extension method</strong>.</p>
+</div>
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="icon-warning" title="Warning"></i>
+<i class="icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-TODO TODO finishup explain extension methods and show example byte code of usage
+<strong>Extension methods</strong> serve the same purpose as <strong>Implicit conversions</strong> (which are a more general and more powerful utility), yet are better than conversions in one simple way&#8201;&#8212;&#8201;they avoid having to allocate the "Wrapper" object, which implicit conversions would otherwise use to provide the "added methods". Extension methods take the route of rewriting the generated methods a little, so that they take the type-to-be-extended as their 1st argument. So for example, if you write <code>3.toHexString</code> this method is added to <code>Int</code> via an <em>implicit conversion</em>, but as the <strong>target</strong> is <code>class RichInt extends AnyVal</code>, so a Value Class, the call does <em>not</em> force an allocation of <code>RichInt</code>, and instead will be rewriten into <code>RichInt$.$MODULE$.toHexString$extension(3)</code>, thus avoiding the allocation of <code>RichInt</code>.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s now use our newly gained knowlage and investigate what the compiler will actually do for us in the <code>Meter</code> example. Right next to the source code "as we write it", the comments will be explaining what the compiler actualy generates (thus, what happens when we run this code):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// source code                 // what the runtime really does</span>
+
+<span class="tok-k">val</span> <span class="tok-n">m</span><span class="tok-k">:</span> <span class="tok-kt">Meter</span>  <span class="tok-o">=</span> <span class="tok-nc">Meter</span><span class="tok-o">(</span><span class="tok-mf">12.0</span><span class="tok-o">)</span>    <span class="tok-c1">// store 12.0                                      </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="tok-k">val</span> <span class="tok-n">d</span><span class="tok-k">:</span> <span class="tok-kt">Double</span> <span class="tok-o">=</span> <span class="tok-n">m</span><span class="tok-o">.</span><span class="tok-n">value</span> <span class="tok-o">*</span> <span class="tok-mi">2</span>    <span class="tok-c1">// double multiply (12.0 * 2.0), store             </span><i class="conum" data-value="2"></i><b>(2)</b>
+<span class="tok-k">val</span> <span class="tok-n">f</span><span class="tok-k">:</span> <span class="tok-kt">Foot</span>   <span class="tok-o">=</span> <span class="tok-n">m</span><span class="tok-o">.</span><span class="tok-n">toFeet</span>       <span class="tok-c1">// call Meter$.$MODULE$.toFeet$extension(12.0)     </span><i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>One might expect an allocation of a Meter object here, but as we&#8217;re using a Value Class, only the wrapped value gets stored - that is we&#8217;re working a plain <code>double</code> from here on, during <strong>runtime</strong> (assignment and typechecking still verifies "as if" this was a Meter instance)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Here we access the <code>value</code> of the Value Class (name of the field does not matter). Notice that the runtime operates on raw doubles here, and thus, does not have to call an <code>value</code> method, like it would have usualy if we&#8217;d use a plain case class.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Here we seem to be calling an instance method, defined on <code>Meter</code>, but in fact, the compiler has substituted this call with an extension method call, where it passes in the 12.0 value. We get back a Foot instance&#8230; oh wait! but <code>Foot</code> was also defined as Value Class, so in runtime we&#8217;d again get back a plain double! Source-code-wise we don&#8217;t have to care though - it&#8217;s nice if we get the performance gain from using a Value Class, but it does not affect our code in line 72 in any way.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>These are the basics around extension methods and value classes. If you want to read more about the different edge-cases around them, please refer to the <a href="http://docs.scala-lang.org/overviews/core/value-classes.html">official documentaion&#8217;s section about Value Classes</a> where <strong>Mark Harrah</strong>, explains them very well with tons of examples, so I won&#8217;t be duplicating his effort here beyond the basic introduction :-)</p>
 </div>
 </div>
 </div>
