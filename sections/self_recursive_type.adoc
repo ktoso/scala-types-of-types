@@ -20,14 +20,43 @@ val orange = new Orange()
 apple compareTo orange // compiles, but we want to make this NOT compile!
 ```
 
-So in the naive implementation, since the trait `Fruit` has no clue about 
-
-TIP: You could get the same type-safety using more fancy tricks, like path dependent types or implicit parameters and type classes. But the simplest thing that does-the-job here would be this.
-
-This we brought up with [Andrzej Grzesik](http://andrzejgrzesik.info), while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up [on his blog, by explaining how the self-recursive generic type trick works in Java's Enum class](http://andrzejgrzesik.info/2013/09/29/container-types/). Another nice blog post about this type-trick, is [The dangers of correlating subtype polymorphism with generic polymorphism](http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/), where lukaseder points out why/where this pattern may cause you trouble.
+So in the naive implementation, since the trait `Fruit` has no clue about the types extending it, so it's not possible to restrict the compareTo signature to only allow "_the same subclass as `this`_" in the parameter. Let's now rewrite this example to use an *Self Recursive Type Parameter*:
 
 ```scala
-class Apple
+trait Fruit[T <: Fruit[T]] {
+  def compareTo(other: Fruit[T]): Boolean = true // impl doesn't matter in our example
+}
+
+class Apple  extends Fruit[Apple]
+class Orange extends Fruit[Orange]
+
+val apple = new Apple
+val orange = new Orange
 ```
+
+Notice the Type Parameter in Fruit's signature. You could read it as "I take some `T`, that `T` must be a `Fruit[T]`", and the only way to satisfy such bounds is by extending this trait as we do with `Apple` and `Orange` now. Now if we'd try comparing `apple` to `orange` we'll get a compile time error:
+
+```repl
+scala> orange compareTo apple
+<console>:13: error: type mismatch;
+ found   : Apple
+ required: Fruit[Orange]
+              orange compareTo apple
+
+scala> orange compareTo orange
+res1: Boolean = true
+```
+
+So now we're sure we'll only ever compare apples with apples, and other Fruit with the same kind (_sub-class_) of `Fruit`. There's more to discuss here though - what about subclasses of `Apple` and `Orange`? Well, because we "filled-in" the type parameter at Apple / Orange level in the type hierarchy, we basically said "apples can only be compared to apples", which means that sub-classes of apples, can be compared with each other - `Fruit`s signature of `compareTo` will still be happy, because the right hand side of our call would be some Fruit[Apple] -- only a bit more concrete, for example let's try this with a japanese apple (ja. "りんご", "ringo") and a polish apple (pl. "Jabłuszko"):
+
+```scala
+object `りんご`  extends Apple
+object Jabłuszko extends Apple
+
+`りんご` compareTo Jabłuszko
+// true
+```
+
+TIP: You could get the same type-safety using more fancy tricks, like path dependent types or implicit parameters and type classes. But the simplest thing that does-the-job here would be this.
 
 

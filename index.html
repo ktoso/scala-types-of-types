@@ -716,7 +716,49 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="paragraph">
-<p>So in the naive implementation, since the trait <code>Fruit</code> has no clue about</p>
+<p>So in the naive implementation, since the trait <code>Fruit</code> has no clue about the types extending it, so it&#8217;s not possible to restrict the compareTo signature to only allow "<em>the same subclass as `this`</em>" in the parameter. Let&#8217;s now rewrite this example to use an <strong>Self Recursive Type Parameter</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Fruit</span><span class="tok-o">[</span><span class="tok-kt">T</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Fruit</span><span class="tok-o">[</span><span class="tok-kt">T</span><span class="tok-o">]]</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">compareTo</span><span class="tok-o">(</span><span class="tok-n">other</span><span class="tok-k">:</span> <span class="tok-kt">Fruit</span><span class="tok-o">[</span><span class="tok-kt">T</span><span class="tok-o">])</span><span class="tok-k">:</span> <span class="tok-kt">Boolean</span> <span class="tok-o">=</span> <span class="tok-kc">true</span> <span class="tok-c1">// impl doesn&#39;t matter in our example</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">class</span> <span class="tok-nc">Apple</span>  <span class="tok-k">extends</span> <span class="tok-nc">Fruit</span><span class="tok-o">[</span><span class="tok-kt">Apple</span><span class="tok-o">]</span>
+<span class="tok-k">class</span> <span class="tok-nc">Orange</span> <span class="tok-k">extends</span> <span class="tok-nc">Fruit</span><span class="tok-o">[</span><span class="tok-kt">Orange</span><span class="tok-o">]</span>
+
+<span class="tok-k">val</span> <span class="tok-n">apple</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Apple</span>
+<span class="tok-k">val</span> <span class="tok-n">orange</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Orange</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice the Type Parameter in Fruit&#8217;s signature. You could read it as "I take some <code>T</code>, that <code>T</code> must be a <code>Fruit[T]</code>", and the only way to satisfy such bounds is by extending this trait as we do with <code>Apple</code> and <code>Orange</code> now. Now if we&#8217;d try comparing <code>apple</code> to <code>orange</code> we&#8217;ll get a compile time error:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="repl language-repl">scala> orange compareTo apple
+<console>:13: error: type mismatch;
+ found   : Apple
+ required: Fruit[Orange]
+              orange compareTo apple
+
+scala> orange compareTo orange
+res1: Boolean = true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So now we&#8217;re sure we&#8217;ll only ever compare apples with apples, and other Fruit with the same kind (<em>sub-class</em>) of <code>Fruit</code>. There&#8217;s more to discuss here though - what about subclasses of <code>Apple</code> and <code>Orange</code>? Well, because we "filled-in" the type parameter at Apple / Orange level in the type hierarchy, we basically said "apples can only be compared to apples", which means that sub-classes of apples, can be compared with each other - <code>Fruit`s signature of `compareTo</code> will still be happy, because the right hand side of our call would be some Fruit[Apple]&#8201;&#8212;&#8201;only a bit more concrete, for example let&#8217;s try this with a japanese apple (ja. "りんご", "ringo") and a polish apple (pl. "Jabłuszko"):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">object</span> <span class="tok-nc">`りんご`</span>  <span class="tok-k">extends</span> <span class="tok-nc">Apple</span>
+<span class="tok-k">object</span> <span class="tok-nc">Jabłuszko</span> <span class="tok-k">extends</span> <span class="tok-nc">Apple</span>
+
+<span class="tok-n">`りんご`</span> <span class="tok-n">compareTo</span> <span class="tok-nc">Jabłuszko</span>
+<span class="tok-c1">// true</span>
+</code></pre>
+</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -729,15 +771,6 @@ You could get the same type-safety using more fancy tricks, like path dependent 
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>This we brought up with [Andrzej Grzesik](<a href="http://andrzejgrzesik.info">http://andrzejgrzesik.info</a>), while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up [on his blog, by explaining how the self-recursive generic type trick works in Java&#8217;s Enum class](<a href="http://andrzejgrzesik.info/2013/09/29/container-types/">http://andrzejgrzesik.info/2013/09/29/container-types/</a>). Another nice blog post about this type-trick, is [The dangers of correlating subtype polymorphism with generic polymorphism](<a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/</a>), where lukaseder points out why/where this pattern may cause you trouble.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Apple</span>
-</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -1566,7 +1599,10 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 <p>Scala Doc: <a href="http://www.scala-lang.org/api/current/index.html">http://www.scala-lang.org/api/current/index.html</a></p>
 </li>
 <li>
-<p>Wikipedia on the Diamond Problem: <a href="http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem">http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem</a></p>
+<p><a href="http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem">Wikipedia on the Diamond Problem</a></p>
+</li>
+<li>
+<p><a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">The dangers of correlating subtype polymorphism with generic polymorphism</a> blog post</p>
 </li>
 <li>
 <p>Safari Books online about Type Linearization: <a href="http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/">http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/</a></p>
