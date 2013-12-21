@@ -939,37 +939,45 @@ defined class A</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="repl language-repl">// case class
-scala> :javap Meter
-public class Meter extends java.lang.Object implements scala.Product,scala.Serializable{
-    public double value();
-    public Foot toFeet();
+<pre class="pygments highlight"><code class="java language-java"><span class="tok-c1">// case class</span>
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-o">:</span><span class="tok-n">javap</span> <span class="tok-n">Meter</span>
 
-    // more here, but not interesting for us right now
-}
+<span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Meter</span> <span class="tok-kd">extends</span> <span class="tok-n">java</span><span class="tok-o">.</span><span class="tok-na">lang</span><span class="tok-o">.</span><span class="tok-na">Object</span> <span class="tok-kd">implements</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Product</span><span class="tok-o">,</span><span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Serializable</span><span class="tok-o">{</span>
+    <span class="tok-kd">public</span> <span class="tok-kt">double</span> <span class="tok-nf">value</span><span class="tok-o">();</span>
+    <span class="tok-kd">public</span> <span class="tok-n">Foot</span> <span class="tok-nf">toFeet</span><span class="tok-o">();</span>
 
-scala> :javap Meter$
-public class Meter$ extends scala.runtime.AbstractFunction1 implements scala.Serializable{
-  // more gere, but not interesting for us right now
-}
+    <span class="tok-c1">// more here, but not interesting for us right now</span>
+<span class="tok-o">}</span>
 
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-o">:</span><span class="tok-n">javap</span> <span class="tok-n">Meter$</span>
+<span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Meter</span><span class="tok-n">$</span> <span class="tok-kd">extends</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">runtime</span><span class="tok-o">.</span><span class="tok-na">AbstractFunction1</span> <span class="tok-kd">implements</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Serializable</span><span class="tok-o">{</span>
+  <span class="tok-c1">// more gere, but not interesting for us right now</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And the bytecode generated for the value class bellow:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="java language-java"><span class="tok-c1">// case value class</span>
 
-// case value class
-scala> :javap Meter
-Compiled from "<console>"
-public final class Meter extends java.lang.Object implements scala.Product,scala.Serializable{
-    public double value();
-    public Foot toFeet();
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-o">:</span><span class="tok-n">javap</span> <span class="tok-n">Meter</span>
+<span class="tok-kd">public</span> <span class="tok-kd">final</span> <span class="tok-kd">class</span> <span class="tok-nc">Meter</span> <span class="tok-kd">extends</span> <span class="tok-n">java</span><span class="tok-o">.</span><span class="tok-na">lang</span><span class="tok-o">.</span><span class="tok-na">Object</span> <span class="tok-kd">implements</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Product</span><span class="tok-o">,</span><span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Serializable</span><span class="tok-o">{</span>
+    <span class="tok-kd">public</span> <span class="tok-kt">double</span> <span class="tok-nf">value</span><span class="tok-o">();</span>
+    <span class="tok-kd">public</span> <span class="tok-n">Foot</span> <span class="tok-nf">toFeet</span><span class="tok-o">();</span>
 
-   // in general, stayed the same as before
-}
+   <span class="tok-c1">// in general, stayed the same as before</span>
+<span class="tok-o">}</span>
 
-scala> :javap Meter$
-public class Meter$ extends scala.runtime.AbstractFunction1 implements scala.Serializable{
-    public final Foot toFeet$extension(double);
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-o">:</span><span class="tok-n">javap</span> <span class="tok-n">Meter$</span>
+<span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Meter</span><span class="tok-n">$</span> <span class="tok-kd">extends</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">runtime</span><span class="tok-o">.</span><span class="tok-na">AbstractFunction1</span> <span class="tok-kd">implements</span> <span class="tok-n">scala</span><span class="tok-o">.</span><span class="tok-na">Serializable</span><span class="tok-o">{</span>
+    <span class="tok-kd">public</span> <span class="tok-kd">final</span> <span class="tok-n">Foot</span> <span class="tok-n">toFeet$extension</span><span class="tok-o">(</span><span class="tok-kt">double</span><span class="tok-o">);</span>
 
-    // a few new methods appeared! All ending with $extension
-}</code></pre>
+    <span class="tok-c1">// a few new methods appeared! All ending with $extension</span>
+<span class="tok-o">}</span>
+</code></pre>
 </div>
 </div>
 <div class="admonitionblock warning">
