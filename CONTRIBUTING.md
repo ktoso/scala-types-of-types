@@ -6,10 +6,16 @@ That's very simple!
 You either open up an issue on github, mentioning what you'd like to see added or changed (or maybe discussed in more detail).
 Or you can pull request with your suggested changes right away!
 
-Please do make sure the project still compiles nicely before submiting though! You can compile the project by running the `./make` command. 
+Please do make sure the project still compiles nicely before submiting though! You can compile the project by running the `make` command. 
 For details on the language and tooling used for this document (asciidoctor) please read the next section!
 
 That's all.
+
+What should i have to contribute ?
+=========================
+
+* Ruby >= 1.9.3
+* Make 
 
 How do I build index.html?
 ==========================
@@ -25,7 +31,7 @@ cd scala-types-of-types
 bundle install
 # OR just: `gem install asciidoctor`
 
-./make
+make
 ```
 
 That's it. This will generate all target files.
