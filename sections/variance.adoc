@@ -16,7 +16,7 @@ http://www.slideshare.net/dgalichet/demystifying-scala-type-system
 |===
 | Name          | Description                        | Scala Syntax
 | Invariant     | C[T'] and C[T] are **not** related | C[T]
-| Covariant     | C[T'] is a subclass of [T]         | C[+T]
+| Covariant     | C[T'] is a subclass of C[T]        | C[+T]
 | Contravariant | C[T] is a subclass of C[T']        | C[-T]
 |===
 
