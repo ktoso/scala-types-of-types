@@ -57,13 +57,13 @@ public class Meter$ extends scala.runtime.AbstractFunction1 implements scala.Ser
 }
 ```
 
-There's basically one thing that should catch our attention here, it's that the Meter's companion class when created as a Value Class, has gained a new method - `toFeet$extension(double): Foot`. Before this method was an instance method, of the Meter class, and it did not take any arguments (so it was: `toFeet(): Foot`). The generated method is marked as "extension", and this is actually exactly the name we give to such methods (.NET developers might see where this is headed already).
+There's basically one thing that should catch our attention here, it's that the Meter's companion class when created as a Value Class, has gained a new method - `toFeet$extension(double): Foot`. Before this method was an instance method, of the Meter class, and it did not take any arguments (so it was: `toFeet(): Foot`). The generated method is marked as "extension", and this is actualy exactly the name we give to such methods (.NET developers might see where this is headed already).
 
 As our goal with Value Classes is to avoid having to allocate the entire value object, and instead work directly on the wrapped value we have to stop using instance methods -- as they would force us into having an instance of the Wrapper (`Meter`) class. What we can do instead is promoting the instance method, into an *extension method*, which we'll store in the companion object of `Meter`, and instead of using the `value: Double` field of the instance, we'll _pass in_ the `Double` value each time we'll be calling the *extension method*. 
 
 TIP: *Extension methods* serve the same purpose as *Implicit conversions* (which are a more general and more powerful utility), yet are better than conversions in one simple way -- they avoid having to allocate the "Wrapper" object, which implicit conversions would otherwise use to provide the "added methods". Extension methods take the route of rewriting the generated methods a little, so that they take the type-to-be-extended as their 1st argument. So for example, if you write `3.toHexString` this method is added to `Int` via an _implicit conversion_, but as the *target* is `class RichInt extends AnyVal`, so a Value Class, the call does _not_ force an allocation of `RichInt`, and instead will be rewriten into `RichInt$.$MODULE$.toHexString$extension(3)`, thus avoiding the allocation of `RichInt`.
 
-Let's now use our newly gained knowlage and investigate what the compiler will actually do for us in the `Meter` example. Right next to the source code "as we write it", the comments will be explaining what the compiler actualy generates (thus, what happens when we run this code):
+Let's now use our newly gained knowlage and investigate what the compiler will actualy do for us in the `Meter` example. Right next to the source code "as we write it", the comments will be explaining what the compiler actualy generates (thus, what happens when we run this code):
 
 [source,scala]
 ----

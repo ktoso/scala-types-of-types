@@ -965,7 +965,7 @@ All you need to do to define a Value Class is to have <strong>a class with only 
 </div>
 </div>
 <div class="paragraph">
-<p>There&#8217;s basically one thing that should catch our attention here, it&#8217;s that the Meter&#8217;s companion class when created as a Value Class, has gained a new method - <code>toFeet$extension(double): Foot</code>. Before this method was an instance method, of the Meter class, and it did not take any arguments (so it was: <code>toFeet(): Foot</code>). The generated method is marked as "extension", and this is actually exactly the name we give to such methods (.NET developers might see where this is headed already).</p>
+<p>There&#8217;s basically one thing that should catch our attention here, it&#8217;s that the Meter&#8217;s companion class when created as a Value Class, has gained a new method - <code>toFeet$extension(double): Foot</code>. Before this method was an instance method, of the Meter class, and it did not take any arguments (so it was: <code>toFeet(): Foot</code>). The generated method is marked as "extension", and this is actualy exactly the name we give to such methods (.NET developers might see where this is headed already).</p>
 </div>
 <div class="paragraph">
 <p>As our goal with Value Classes is to avoid having to allocate the entire value object, and instead work directly on the wrapped value we have to stop using instance methods&#8201;&#8212;&#8201;as they would force us into having an instance of the Wrapper (<code>Meter</code>) class. What we can do instead is promoting the instance method, into an <strong>extension method</strong>, which we&#8217;ll store in the companion object of <code>Meter</code>, and instead of using the <code>value: Double</code> field of the instance, we&#8217;ll <em>pass in</em> the <code>Double</code> value each time we&#8217;ll be calling the <strong>extension method</strong>.</p>
@@ -983,7 +983,7 @@ All you need to do to define a Value Class is to have <strong>a class with only 
 </table>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s now use our newly gained knowlage and investigate what the compiler will actually do for us in the <code>Meter</code> example. Right next to the source code "as we write it", the comments will be explaining what the compiler actualy generates (thus, what happens when we run this code):</p>
+<p>Let&#8217;s now use our newly gained knowlage and investigate what the compiler will actualy do for us in the <code>Meter</code> example. Right next to the source code "as we write it", the comments will be explaining what the compiler actualy generates (thus, what happens when we run this code):</p>
 </div>
 <div class="listingblock">
 <div class="content">
