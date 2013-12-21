@@ -496,7 +496,7 @@ directly multiple inheritance:</p>
 <div class="sect2">
 <h3 id="type-linearization-vs-the-diamond-problem"><a class="anchor" href="#type-linearization-vs-the-diamond-problem"></a>7.2. Type Linearization vs. The Diamond Problem</h3>
 <div class="paragraph">
-<p>![diamond-inheritance-problem](<a href="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Diamond_inheritance.svg/220px-Diamond_inheritance.svg.png">http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Diamond_inheritance.svg/220px-Diamond_inheritance.svg.png</a>)</p>
+<p>image::http://ktoso.github.io/scala-types-of-types/assets/img/220px-Diamond_inheritance.svg.png</p>
 </div>
 <div class="paragraph">
 <p>For the "diamond problem" to appear, it&#8217;s enough if we have one overriding implementation in <code>B</code> or/and <code>C</code>. This introduces an ambiguity when calling the common method in <code>D</code>, did we inherit the version of the method from <code>C</code> or from <code>B</code>? In Scala&#8217;s case the case with only one overriding method is very simple - the override wins. But let&#8217;s work through the more complex case:</p>
