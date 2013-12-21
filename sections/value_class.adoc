@@ -67,7 +67,7 @@ Let's now use our newly gained knowlage and investigate what the compiler will a
 
 [source,scala]
 ----
-// source code                 // what the runtime really does
+// source code                 // what the emited bytecode actualy does
 
 val m: Meter  = Meter(12.0)    // store 12.0                                      <1>
 val d: Double = m.value * 2    // double multiply (12.0 * 2.0), store             <2>
