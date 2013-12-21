@@ -1,8 +1,8 @@
-== Universal trait &#x2717;
+== Universal Trait &#x2717;
 
 Universal traits are traits that `extend Any`, they should only have `def`s, and no initialization code.
 
 TODO TODO
 
-WARN: TODO IMPLEMENT DOCS :-)
+WARNING: TODO IMPLEMENT DOCS :-)
 
