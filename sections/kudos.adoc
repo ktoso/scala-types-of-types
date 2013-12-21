@@ -29,6 +29,8 @@ I would especialy like to thank all proof-readers and reviewers tha that have he
 * All the kind people who pull-requested typo's and small fixes
 * You! Really. Thanks for reading this, you rock.
 
+Pull requests and comments are very welcome, if you're up to it please go ahead, here's the https://github.com/ktoso/scala-types-of-types[git repository].
+
 That's all folks, and if it's not, please ping me and I'll update the guide. _Life is Study!_ -- mailto:konrad.malawski@java.pl[Konrad 'ktoso' Malawski]
 
 === Give back some kudos!
