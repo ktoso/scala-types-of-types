@@ -16,6 +16,7 @@ What should i have to contribute ?
 
 * Ruby >= 1.9.3
 * Make 
+* Asciidoctor (install via `bundle install`) 
 
 How do I build index.html?
 ==========================
