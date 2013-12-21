@@ -1,5 +1,29 @@
 == Self-Recursive Type &#x2717;
 
+While this not being a Scala specific type, it still sometimes raises a few eyebrows. One example many of a self-recursive type many of us are (perhaps unknowingly) familiar with, is Java's `Enum<E>`, if you're curious about it, check out the <a href="http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Enum.java">Enum sources from Java 7</a>. But now back to Scala and first let's see what we're actually talking about.
+
+Imagine you have some `Fruit` trait, and both an `Apple` and an `Orange` extend it. The Fruit trait also has an "compareTo" method, and here the problem comes up: imagine you'd want to say "_I can't compare oranges with apples, they're totally different things!_". First let's look at how we loose this compile-time safety with the naive implementation:
+
+```scala
+// naive impl, Fruit is NOT self-recursively parameterised
+
+trait Fruit {
+  def compareTo(other: Fruit): Boolean = true // impl doesn't matter in our example, we care about compile-time
+}
+
+class Apple  extends Fruit
+class Orange extends Fruit
+
+val apple = new Apple()
+val orange = new Orange()
+
+apple compareTo orange // compiles, but we want to make this NOT compile!
+```
+
+So in the naive implementation, since the trait `Fruit` has no clue about 
+
+TIP: You could get the same type-safety using more fancy tricks, like path dependent types or implicit parameters and type classes. But the simplest thing that does-the-job here would be this.
+
 This we brought up with [Andrzej Grzesik](http://andrzejgrzesik.info), while discussing my blog post series about various Type Systems (my favourite topic :-)). Andrzej followed up [on his blog, by explaining how the self-recursive generic type trick works in Java's Enum class](http://andrzejgrzesik.info/2013/09/29/container-types/). Another nice blog post about this type-trick, is [The dangers of correlating subtype polymorphism with generic polymorphism](http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/), where lukaseder points out why/where this pattern may cause you trouble.
 
 ```scala
