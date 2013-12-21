@@ -45,7 +45,7 @@
 <li><a href="#type-projection">22. Type Projection</a></li>
 <li><a href="#existential-types">23. Existential Types</a></li>
 <li><a href="#type-lambda">24. Type Lambda &#x2717;</a></li>
-<li><a href="#delayed-init">25. Delayed Init</a></li>
+<li><a href="#specialized-types">25. Specialized Types &#x2717;</a></li>
 <li><a href="#dynamic-type">26. Dynamic Type</a></li>
 <li>
 <ul class="sectlevel2">
@@ -1437,8 +1437,21 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="delayed-init"><a class="anchor" href="#delayed-init"></a>25. Delayed Init</h2>
+<h2 id="specialized-types"><a class="anchor" href="#specialized-types"></a>25. Specialized Types &#x2717;</h2>
 <div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+TODO - explain @specialized on an example, link to paper about this
+== Delayed Init
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Since we started talking about the "weird" types in Scala, we can&#8217;t let this one go without a dedicated section for it. <code>DelayedInit</code> is actually a "<em>compiler trick</em>" above anything else, and not really tremendously important for the type system itself, but once you understand it, you&#8217;ll know how <code>scala.App</code> actually works, so let&#8217;s dive into our example with <code>App</code>:</p>
 </div>
@@ -1846,7 +1859,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-12-21 15:06:14 CET
+Last updated 2013-12-21 18:59:21 CET
 </div>
 </div>
 </body>
