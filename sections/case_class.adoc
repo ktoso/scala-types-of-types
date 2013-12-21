@@ -55,6 +55,7 @@ Also compile is so kind to generate copy method and mark class as Serializable.
 
 More over case class is equipted with extractor (also generate by compiler in companion object). 
 It can be used in pattern matching to simplified it.
+
 ``` scala
 CaseCrile(2.5) match {
   case CaseCircle(r) => println("Radius = " + r)
