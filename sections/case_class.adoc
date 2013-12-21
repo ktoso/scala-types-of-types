@@ -1,0 +1,5 @@
+== Case Class &#x2717;
+
+Although very simple, let's discuss what case classes give us.
+
+TIP: TODO!

@@ -32,10 +32,10 @@
 <li><a href="#type-alias">9. Type Alias</a></li>
 <li><a href="#abstract-type-member">10. Abstract Type Member</a></li>
 <li><a href="#self-recursive-type">11. Self-Recursive Type &#x2717;</a></li>
-<li><a href="#type-class">12. Type Class &#x2717;</a></li>
-<li><a href="#type-constructor">13. Type Constructor</a></li>
-<li><a href="#higher-order-kind">14. Higher-Order Kind</a></li>
-<li><a href="#self-type-annotation">15. Self Type Annotation</a></li>
+<li><a href="#type-constructor">12. Type Constructor</a></li>
+<li><a href="#higher-order-kind">13. Higher-Order Kind</a></li>
+<li><a href="#case-class">14. Case Class &#x2717;</a></li>
+<li><a href="#universal-trait">15. Universal trait &#x2717;</a></li>
 <li><a href="#phantom-type">16. Phantom Type</a></li>
 <li><a href="#structural-type">17. Structural Type</a></li>
 <li><a href="#path-dependent-type">18. Path Dependent Type</a></li>
@@ -775,28 +775,7 @@ You could get the same type-safety using more fancy tricks, like path dependent 
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-class"><a class="anchor" href="#type-class"></a>12. Type Class &#x2717;</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Writes</span><span class="tok-o">[</span><span class="tok-kt">In</span>, <span class="tok-kt">Out</span><span class="tok-o">]</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-n">it</span><span class="tok-k">:</span> <span class="tok-kt">In</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Out</span>
-<span class="tok-o">}</span>
-
-<span class="tok-k">implicit</span> <span class="tok-k">val</span> <span class="tok-n">jsonWriter</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Writes</span><span class="tok-o">[</span><span class="tok-kt">Person</span>, <span class="tok-kt">Json</span><span class="tok-o">]</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-k">:</span> <span class="tok-kt">Person</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-nc">Json</span><span class="tok-o">.</span><span class="tok-n">toJson</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-o">)</span>
-<span class="tok-o">}</span>
-
-<span class="tok-k">implicit</span> <span class="tok-k">class</span> <span class="tok-nc">Writeable</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">]</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">[</span><span class="tok-kt">B</span><span class="tok-o">](</span><span class="tok-k">implicit</span> <span class="tok-n">writes</span><span class="tok-k">:</span> <span class="tok-kt">Writes</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">B</span><span class="tok-o">])</span>
-<span class="tok-o">}</span>
-</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="type-constructor"><a class="anchor" href="#type-constructor"></a>13. Type Constructor</h2>
+<h2 id="type-constructor"><a class="anchor" href="#type-constructor"></a>12. Type Constructor</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Type Constructors act pretty much like functions, but on the type level. The simplest example would be</p>
@@ -848,7 +827,7 @@ We refer to them as <strong>first-order kinds</strong> (<code>* -&gt; *</code>).
 </div>
 </div>
 <div class="sect1">
-<h2 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>14. Higher-Order Kind</h2>
+<h2 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>13. Higher-Order Kind</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>TODO nothing here yet, coming soon&#8230;</p>
@@ -876,8 +855,92 @@ This is a type constructor that takes type constructor(s): a higher-kinded type.
 </div>
 </div>
 <div class="sect1">
-<h2 id="self-type-annotation"><a class="anchor" href="#self-type-annotation"></a>15. Self Type Annotation</h2>
+<h2 id="case-class"><a class="anchor" href="#case-class"></a>14. Case Class &#x2717;</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Although very simple, let&#8217;s discuss what case classes give us.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+TODO!
+== Value Class
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Value classes have been around in Scala for a long time internally, and you&#8217;ve used them already many times because all Number&#8217;s in Scala use this compiler trick to avoid boxing and unboxing numeric values from <code>int</code> to <code>scala.Int</code> etc. As a quick reminder, let&#8217;s recall that <code>Array[Int]</code> is an actual JVM <code>int[]</code> (or for bytecode happy people, it&#8217;s the JVM runtime type called: <code>[I</code>) which has tons of performance implications, but in one word&#8201;&#8212;&#8201;arrays of numbers are fast, arrays of references not as much.</p>
+</div>
+<div class="paragraph">
+<p>Ok, since we now know the compiler has fancy tricks to avoid boxing `int`s into `Int`s when it doesn&#8217;t have to. Let&#8217;s see how this feature is exposed for us, end users since Scala 2.10.x. The feature is called "value classes", is fairly simple to apply to your existing classes.</p>
+</div>
+<div class="paragraph">
+<p>For our example let&#8217;s implement a <code>Meter</code> which will serve as wrapper for plain <code>Int</code> and be able to convert the number of meters, into the number of type <code>Foot</code>. We need this class because no-one understands the crazy imperial units system ;-) On the downside though, why should we pay the runtime overhead of having an object around an <code>int</code> (that&#8217;s quite a few bytes (!) per instance) if for 95% of the time we&#8217;ll be using the plain meter value - because it&#8217;s a project for the european market? Value classes to the rescue!</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Small side note</strong>: We&#8217;ll be using Case (Value) Classes in all our examples here, but it&#8217;s not technically required to do so (although very convinient). All you need to do to define a Value Class is to have a class with only <strong>one public val parameter</strong>, if you don&#8217;t the compiler will complain:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="repl language-repl">scala> class A(a: Int) extends AnyVal
+<console>:7: error: value class needs to have exactly one public val parameter</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+We&#8217;re using a <code>case class</code> in our examples, but it&#8217;s not a requirement. All you need to satisfy in order to implement a Value Class is:
+== Type Class &#x2717;
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Writes</span><span class="tok-o">[</span><span class="tok-kt">In</span>, <span class="tok-kt">Out</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-n">it</span><span class="tok-k">:</span> <span class="tok-kt">In</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Out</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">implicit</span> <span class="tok-k">val</span> <span class="tok-n">jsonWriter</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Writes</span><span class="tok-o">[</span><span class="tok-kt">Person</span>, <span class="tok-kt">Json</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-k">:</span> <span class="tok-kt">Person</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-nc">Json</span><span class="tok-o">.</span><span class="tok-n">toJson</span><span class="tok-o">(</span><span class="tok-n">p</span><span class="tok-o">)</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">implicit</span> <span class="tok-k">class</span> <span class="tok-nc">Writeable</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">[</span><span class="tok-kt">B</span><span class="tok-o">](</span><span class="tok-k">implicit</span> <span class="tok-n">writes</span><span class="tok-k">:</span> <span class="tok-kt">Writes</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">B</span><span class="tok-o">])</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="universal-trait"><a class="anchor" href="#universal-trait"></a>15. Universal trait &#x2717;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Universal traits are traits that <code>extend Any</code>, they should only have `def`s, and no initialization code.</p>
+</div>
+<div class="paragraph">
+<p>TODO TODO</p>
+</div>
+<div class="paragraph">
+<p>WARN: TODO IMPLEMENT DOCS :-)
+== Self Type Annotation</p>
+</div>
 <div class="paragraph">
 <p><strong>Self Types</strong> are used in order to "require" that, if another class uses this trait,
 it should also provide implementation of whatever it is that you&#8217;re requireing.</p>
@@ -1677,7 +1740,7 @@ I would especialy like to thank all proof-readers and reviewers tha that have he
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-12-21 13:54:53 CET
+Last updated 2013-12-21 15:06:14 CET
 </div>
 </div>
 </body>

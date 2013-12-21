@@ -1,0 +1,20 @@
+== Value Class
+
+Value classes have been around in Scala for a long time internally, and you've used them already many times because all Number's in Scala use this compiler trick to avoid boxing and unboxing numeric values from `int` to `scala.Int` etc. As a quick reminder, let's recall that `Array[Int]` is an actual JVM `int[]` (or for bytecode happy people, it's the JVM runtime type called: `[I`) which has tons of performance implications, but in one word -- arrays of numbers are fast, arrays of references not as much.
+
+Ok, since we now know the compiler has fancy tricks to avoid boxing `int`s into `Int`s when it doesn't have to. Let's see how this feature is exposed for us, end users since Scala 2.10.x. The feature is called "value classes", is fairly simple to apply to your existing classes.
+
+For our example let's implement a `Meter` which will serve as wrapper for plain `Int` and be able to convert the number of meters, into the number of type `Foot`. We need this class because no-one understands the crazy imperial units system ;-) On the downside though, why should we pay the runtime overhead of having an object around an `int` (that's quite a few bytes (!) per instance) if for 95% of the time we'll be using the plain meter value - because it's a project for the european market? Value classes to the rescue!
+
+```scala
+case class
+```
+
+*Small side note*: We'll be using Case (Value) Classes in all our examples here, but it's not technically required to do so (although very convinient). All you need to do to define a Value Class is to have a class with only *one public val parameter*, if you don't the compiler will complain:
+
+```repl
+scala> class A(a: Int) extends AnyVal
+<console>:7: error: value class needs to have exactly one public val parameter
+```
+
+TIP: We're using a `case class` in our examples, but it's not a requirement. All you need to satisfy in order to implement a Value Class is: 
