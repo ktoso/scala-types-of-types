@@ -20,7 +20,7 @@ public class JavaCircle extends java.lang.Object{
 ```
 
 but if we want it to behave like http://en.wikipedia.org/wiki/Value_object[Value Object] 
-we must override `equal` and `hash_code` methods (generate it by IDE). Now, scala for the rescue.
+we must override `equal` and `hashCode` methods (generate it by IDE). Now, scala for the rescue.
 
 We can write
 ```scala
