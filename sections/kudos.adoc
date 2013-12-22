@@ -27,6 +27,7 @@ I would especialy like to thank all proof-readers and reviewers tha that have he
 * The awesome guys from http://virtuslab.com[VirtusLab] for typo fixes, the makefile and suggestions
 * The http://www.krakowscala.pl[Kraków Scala User Group]'s members, for proof reading and suggestions
 * All the kind people who pull-requested typo's and small fixes
+* _TODO, there's more people_
 * You! Really. Thanks for reading this, you rock.
 
 Pull requests and comments are very welcome, if you're up to it please go ahead, here's the https://github.com/ktoso/scala-types-of-types[git repository].
