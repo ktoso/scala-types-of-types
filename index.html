@@ -34,13 +34,7 @@
 <li><a href="#self-recursive-type-span-style-color-red-span">11. Self-Recursive Type <span style="color:red">&#x2717;</span></a></li>
 <li><a href="#type-constructor">12. Type Constructor</a></li>
 <li><a href="#higher-order-kind">13. Higher-Order Kind</a></li>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<li><a href="#case-class-span-style-color-red-span">14. Case Class <span style="color:red">&#x2717;</span></a></li>
-=======
 <li><a href="#case-class">14. Case Class</a></li>
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <li><a href="#value-class">15. Value Class</a></li>
 <li><a href="#type-class-span-style-color-red-span">16. Type Class <span style="color:red">&#x2717;</span></a></li>
 <li><a href="#universal-trait-span-style-color-red-span">17. Universal Trait <span style="color:red">&#x2717;</span></a></li>
@@ -70,35 +64,6 @@
 <li><a href="#give-back-some-kudos">28.3. Give back some kudos!</a></li>
 </ul>
 </li>
-<<<<<<< HEAD
-=======
-<li><a href="#case-class">14. Case Class &#x2717;</a></li>
-=======
-<li><a href="#case-class">14. Case Class</a></li>
->>>>>>> Add section about copying.
-<li><a href="#value-class">15. Value Class</a></li>
-<li><a href="#universal-trait">16. Universal Trait &#x2717;</a></li>
-<li><a href="#self-type-annotation">17. Self Type Annotation</a></li>
-<li><a href="#phantom-type">18. Phantom Type</a></li>
-<li><a href="#structural-type">19. Structural Type</a></li>
-<li><a href="#path-dependent-type">20. Path Dependent Type</a></li>
-<li><a href="#type-projection">21. Type Projection</a></li>
-<li><a href="#existential-types">22. Existential Types</a></li>
-<li><a href="#type-lambda">23. Type Lambda &#x2717;</a></li>
-<li><a href="#delayed-init">24. Delayed Init</a></li>
-<li><a href="#dynamic-type">25. Dynamic Type</a></li>
-<li>
-<ul class="sectlevel2">
-<li><a href="#applydynamic">25.1. applyDynamic</a></li>
-<li><a href="#applydynamicnamed">25.2. applyDynamicNamed</a></li>
-<li><a href="#selectdynamic">25.3. selectDynamic</a></li>
-<li><a href="#updatedynamic">25.4. updateDynamic</a></li>
-</ul>
-</li>
-<li><a href="#links-and-kudos">26. Links and Kudos</a></li>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 </ul>
 </div>
 </div>
@@ -899,10 +864,6 @@ This is a type constructor that takes type constructor(s): a higher-kinded type.
 </div>
 <div class="sect1">
 <h2 id="case-class"><a class="anchor" href="#case-class"></a>14. Case Class</h2>
-<<<<<<< HEAD
->>>>>>> Add section about copying.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
@@ -917,31 +878,8 @@ Is pulled in from PR and needs some fixes. TODO TODO
 </table>
 </div>
 <div class="paragraph">
-<<<<<<< HEAD
-<p>Although very simple, let&#8217;s discuss what case classes give us.</p>
-</div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-TODO!
-</td>
-</tr>
-</table>
-=======
-<div class="paragraph">
-<p>Lets start with a simple java-like class</p>
-=======
 <p>Although very simple, let&#8217;s discuss what case classes give us. Example starts with simple java-like class</p>
->>>>>>> Update index.html
 </div>
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">SimpleCircle</span><span class="tok-o">(</span><span class="tok-k">val</span> <span class="tok-n">radius</span><span class="tok-k">:</span> <span class="tok-kt">Double</span><span class="tok-o">)</span>
@@ -963,18 +901,8 @@ public class SimpleCircle extends java.lang.Object{
 </div>
 <div class="paragraph">
 <p>but if we want it to behave like <a href="http://en.wikipedia.org/wiki/Value_object">Value Object</a>
-<<<<<<< HEAD
-we must override <code>equal</code> and <code>hash_code</code> methods (generate it by IDE). Now, scala for the rescue.</p>
->>>>>>> Create section about case class.
-</div>
-=======
 we must override <code>equal</code> and <code>hashCode</code> methods (generate it by IDE). Now, scala for the rescue.</p>
->>>>>>> Add section about copying.
 </div>
-</div>
-<div class="sect1">
-<h2 id="value-class"><a class="anchor" href="#value-class"></a>15. Value Class</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>We can add prefix <code>case</code> to class like this (class name was changed to avoid clashes)</p>
 </div>
@@ -1195,12 +1123,6 @@ All you need to do to define a Value Class is to have <strong>a class with only 
 </div>
 <div class="sect1">
 <h2 id="universal-trait-span-style-color-red-span"><a class="anchor" href="#universal-trait-span-style-color-red-span"></a>17. Universal Trait <span style="color:red">&#x2717;</span></h2>
-<<<<<<< HEAD
-=======
-<h2 id="universal-trait"><a class="anchor" href="#universal-trait"></a>16. Universal Trait &#x2717;</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p>Universal traits are traits that <code>extend Any</code>, they should only have `def`s, and no initialization code.</p>
@@ -1224,12 +1146,6 @@ TODO IMPLEMENT DOCS :-)
 </div>
 <div class="sect1">
 <h2 id="self-type-annotation"><a class="anchor" href="#self-type-annotation"></a>18. Self Type Annotation</h2>
-<<<<<<< HEAD
-=======
-<h2 id="self-type-annotation"><a class="anchor" href="#self-type-annotation"></a>17. Self Type Annotation</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Self Types</strong> are used in order to "require" that, if another class uses this trait,
@@ -1301,12 +1217,6 @@ And while we&#8217;re at it, let&#8217;s discuss why it is called self-type (exc
 </div>
 <div class="sect1">
 <h2 id="phantom-type"><a class="anchor" href="#phantom-type"></a>19. Phantom Type</h2>
-<<<<<<< HEAD
-=======
-<h2 id="phantom-type"><a class="anchor" href="#phantom-type"></a>18. Phantom Type</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>TODO MORE EXAMPLES HERE</strong></p>
@@ -1403,22 +1313,16 @@ but let&#8217;s move on to the <code>start</code> and <code>stop</code> commands
 </div>
 <div class="sect1">
 <h2 id="structural-type"><a class="anchor" href="#structural-type"></a>20. Structural Type</h2>
-<<<<<<< HEAD
-=======
-<h2 id="structural-type"><a class="anchor" href="#structural-type"></a>19. Structural Type</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
-<p>Strucural Types are often compared to "<strong>type-safe duck typing</strong>", which is quite a good comparation if you&#8217;d want to get some intuition for it.</p>
+<p>Strucural Types are often described as "<strong>type-safe duck typing</strong>", which is quite a good comparison if you want to gain some intuition for it.</p>
 </div>
 <div class="paragraph">
 <p>So far we&#8217;ve only been thinking about types in terms of "<strong>does it implement interface X?</strong>". With <strong>structural types</strong> we can go a step further and start reasoning
-about the structure of a given object (hence the name). When using structure to check if something matches such type we have to change our question to: "<strong>does it have a method with this signature?</strong>".</p>
+about the structure of a given object (hence the name). When checking whether a type matches using structual typing, we need to change our question to:"<strong>does it have a method with this signature?</strong>".</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s look at a very popular use-case in action, to see why it is so powerful. Imagine that you have many classes of things that can be <strong>closed</strong>. In Java-land one would usualy implement the <code>java.io.Closeable</code> interface in order to make it possible to write some common <code>Closeables</code> utility class (in fact, <strong>Google Guava</strong> provides such an utility class). Now imagine that someone also implemented a <code>MyOwnCloseable</code> class but didn&#8217;t extend <code>java.io.Closeable</code>. Your <code>Closeables</code> library would be stuck - as due to the static typing, you would not be able to pass instances of <code>MyOwnCloseable</code> into it. Let&#8217;s solve this problem via using Structural Typing:</p>
+<p>Let&#8217;s look at a very popular use-case in action, to see why it is so powerful. Imagine that you have many classes of things that can be <strong>closed</strong>. In Java-land one would usualy implement the <code>java.io.Closeable</code> interface in order to make it possible to write some common <code>Closeable</code> utility classes (in fact, <strong>Google Guava</strong> provides such a utility class). Now imagine that someone also implemented a <code>MyOwnCloseable</code> class but didn&#8217;t extend <code>java.io.Closeable</code>. Your <code>Closeables</code> library would not work here due to the static typing. You would not be able to pass instances of <code>MyOwnCloseable</code> into it. Let&#8217;s solve this problem using Structural Typing:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1439,26 +1343,22 @@ about the structure of a given object (hence the name). When using structure to 
   <span class="tok-o">}</span>
 
 
-<span class="tok-c1">// takes a java.io.File (implements Closeable):</span>
+<span class="tok-c1">// accepts a java.io.File (implements Closeable):</span>
 <span class="tok-n">closeQuietly</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-nc">StringReader</span><span class="tok-o">(</span><span class="tok-s">&quot;example&quot;</span><span class="tok-o">))</span>
 
-<span class="tok-c1">// takes</span>
+<span class="tok-c1">// accepts a MyOwnCloseable</span>
 <span class="tok-n">closeQuietly</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-nc">MyOwnCloseable</span><span class="tok-o">)</span>
 </code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The structural type is defined on the method&#8217;s parameter here. It basically says that the only thing we expect from the type that should be passed in here
-is that it should have this method. It could have more methods - so it&#8217;s not an exact match but the minimal set of methods a type has to define in order to be valid for us.</p>
+<p>The structural type is defined as a parameter to the method. It basically says that the only thing we expect from the type is that it should have this method. It could have more methods - so it&#8217;s not an exact match but the minimal set of methods a type has to define in order to be valid.</p>
 </div>
 <div class="paragraph">
-<p>Another fact to keep in mind when using <strong>Structural Typing is that it actually has huge (negative) runtime performance implications, as it is actually implemented
-using reflection</strong>. We won&#8217;t look into the byte code for this case, but remember that it&#8217;s very easy to investitage the generated bytecode for scala (or java) classes, by using :javap in the Scala REPL, so you can check it out yourself.</p>
+<p>Another fact to keep in mind when using <strong>Structural Typing is that it actually has huge (negative) runtime performance implications, as it is actually implemented using reflection</strong>. We won&#8217;t look into the byte code for this case, but remember that it&#8217;s very easy to investigate the generated bytecode for scala (or java) classes, by using :javap in the Scala REPL. So you should try this out yourself.</p>
 </div>
 <div class="paragraph">
-<p>Before we move over to the next subject, let&#8217;s briefly touch on a small but neat stype tip.
-Imagine that your Structural Type is quite big, an example would be - a type representing something that you can open, work on, and then must close.
-By using a Type Alias (described in detail in another section) with the Structural Type, we&#8217;re able to separate the type definition from the method, where we want to take in such instance:</p>
+<p>Before we move over to the next subject, let&#8217;s briefly touch on a small but neat style tip. Imagine that your Structural Type is quite big, an example would be a type representing something that you can open, work on, and then must close. By using a Type Alias (described in detail in another section) with a Structural Type, we&#8217;re able to separate the type definition from the method, where we want to take in such instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1476,19 +1376,12 @@ By using a Type Alias (described in detail in another section) with the Structur
 </div>
 </div>
 <div class="paragraph">
-<p>So using this type alias, we&#8217;ve made the <code>def</code> way cleaner - so I&#8217;d highly recommend type aliasing bigger structural types. And one last warning, always check
-if you really need to reach for structural typing, and cannot do it in some other way - as it has quite some negative performance impact.</p>
+<p>So using this type alias, we&#8217;ve made the <code>def</code> much cleaner. I&#8217;d highly recommend type aliasing bigger structural types. And one last warning, always check if you really need to reach for structural typing, and cannot do it in some other way, considering the negative performance impact.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="path-dependent-type"><a class="anchor" href="#path-dependent-type"></a>21. Path Dependent Type</h2>
-<<<<<<< HEAD
-=======
-<h2 id="path-dependent-type"><a class="anchor" href="#path-dependent-type"></a>20. Path Dependent Type</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p>This Type allows us to type-check on a Type internal to another class. This may seem weird at first, but is very intuitive once you see it:</p>
@@ -1554,12 +1447,6 @@ that this container should only contain children of this parent - and not "any p
 </div>
 <div class="sect1">
 <h2 id="type-projection"><a class="anchor" href="#type-projection"></a>22. Type Projection</h2>
-<<<<<<< HEAD
-=======
-<h2 id="type-projection"><a class="anchor" href="#type-projection"></a>21. Type Projection</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p>Type Projections are similar to Path Dependent Types, in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes, splitting them with a <code>#</code> sign (hash sign, pound sign). Let&#8217;s start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):</p>
@@ -1586,12 +1473,6 @@ that this container should only contain children of this parent - and not "any p
 </div>
 <div class="sect1">
 <h2 id="existential-types"><a class="anchor" href="#existential-types"></a>23. Existential Types</h2>
-<<<<<<< HEAD
-=======
-<h2 id="existential-types"><a class="anchor" href="#existential-types"></a>22. Existential Types</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p>Existential Types are something that deeply relates to Type Erasure, which JVM languages "have to live with".</p>
@@ -1638,12 +1519,6 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 <div class="sect1">
 <h2 id="type-lambda-span-style-color-red-span"><a class="anchor" href="#type-lambda-span-style-color-red-span"></a>24. Type Lambda <span style="color:red">&#x2717;</span></h2>
-<<<<<<< HEAD
-=======
-<h2 id="type-lambda"><a class="anchor" href="#type-lambda"></a>23. Type Lambda &#x2717;</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p>In type lambda&#8217;s we&#8217;ll be using <strong>Path Dependent</strong> as well as <strong>Structural Types</strong>, so if you skipped that sections you may want to go back to it.</p>
@@ -1681,12 +1556,6 @@ TODO - explain @specialized on an example, link to paper about this
 </div>
 <div class="sect1">
 <h2 id="delayed-init"><a class="anchor" href="#delayed-init"></a>26. Delayed Init</h2>
-<<<<<<< HEAD
-=======
-<h2 id="delayed-init"><a class="anchor" href="#delayed-init"></a>24. Delayed Init</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p>Since we started talking about the "weird" types in Scala, we can&#8217;t let this one go without a dedicated section for it. <code>DelayedInit</code> is actually a "<em>compiler trick</em>" above anything else, and not really tremendously important for the type system itself, but once you understand it, you&#8217;ll know how <code>scala.App</code> actually works, so let&#8217;s dive into our example with <code>App</code>:</p>
@@ -1789,12 +1658,6 @@ TODO - explain @specialized on an example, link to paper about this
 </div>
 <div class="sect1">
 <h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>27. Dynamic Type</h2>
-<<<<<<< HEAD
-=======
-<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>25. Dynamic Type</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="paragraph">
 <p>I&#8217;ve had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?</p>
@@ -1864,12 +1727,6 @@ There are a few features (like the experimental macros for example) that need to
 </div>
 <div class="sect2">
 <h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>27.1. applyDynamic</h3>
-<<<<<<< HEAD
-=======
-<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>25.1. applyDynamic</h3>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="paragraph">
 <p>Ok, our first magic method looks like this:</p>
 </div>
@@ -1900,12 +1757,6 @@ There are a few features (like the experimental macros for example) that need to
 </div>
 <div class="sect2">
 <h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>27.2. applyDynamicNamed</h3>
-<<<<<<< HEAD
-=======
-<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>25.2. applyDynamicNamed</h3>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="paragraph">
 <p>Ok, that was easy. But it didn&#8217;t give us too much control over the names of the parameters.
 Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "ktoso")</code>? Well&#8230; turns out we can!</p>
@@ -1939,12 +1790,6 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 <div class="sect2">
 <h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>27.3. selectDynamic</h3>
-<<<<<<< HEAD
-=======
-<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>25.3. selectDynamic</h3>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="paragraph">
 <p>Not it&#8217;s time for the more "unusual" methods. apply methods we&#8217;re pretty easy to understand. It&#8217;s just a method with some arbitrary name. But hey, isn&#8217;t almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let&#8217;s give it a try! &lt;strong&gt;We&#8217;ll use the example with applyDynamic here, and try to act like it has a method without ()&lt;/strong&gt;:</p>
 </div>
@@ -1975,12 +1820,6 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 <div class="sect2">
 <h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>27.4. updateDynamic</h3>
-<<<<<<< HEAD
-=======
-<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>25.4. updateDynamic</h3>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="paragraph">
 <p>What&#8217;s left you ask? Ask yourself the following question then: "Since I can act like a <code>Dynamic</code> object has some value in some field&#8230; What else should I be able to do with it?" My answer to that would be: "set it"! That&#8217;s what <code>updateDynamic</code> is used for. There is one special rule about <code>updateDynamic</code> though - it&#8217;s only valid if you also took care about selectDynamic - that&#8217;s why in the first example the code generated errors about both - select and update. For example if we&#8217;d implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn&#8217;t compile anyway. It makes sense in terms of plain semantics if you think about it.</p>
 </div>
@@ -2022,12 +1861,6 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 <div class="sect1">
 <h2 id="bibliography-and-kudos"><a class="anchor" href="#bibliography-and-kudos"></a>28. Bibliography and kudos</h2>
-<<<<<<< HEAD
-=======
-<h2 id="links-and-kudos"><a class="anchor" href="#links-and-kudos"></a>26. Links and Kudos</h2>
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="reference-and-further-reading"><a class="anchor" href="#reference-and-further-reading"></a>28.1. Reference and further reading</h3>
@@ -2161,12 +1994,6 @@ $(document).ready(function() {
 <div id="footer">
 <div id="footer-text">
 Last updated 2013-12-22 00:20:24 CET
-<<<<<<< HEAD
-=======
-Last updated 2013-12-21 16:33:15 CET
->>>>>>> Create section about case class.
-=======
->>>>>>> pulled in Lukasz's contrib, will have to fix a bit
 </div>
 </div>
 </body>
