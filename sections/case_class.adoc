@@ -49,11 +49,11 @@ We can modify it only by creation new object with updating changed value. Exampl
 ```scala
 case class Point(x: Int, y: Int)
 
-val a = Point(0,0)
-val b = a.copy(y=10)
-val c = b.copy(x=10)
+val a = Point(0, 0)
+val b = a.copy(y = 10)
+val c = b.copy(x = 10)
 ```
-so point `b` have cordinates `(0,10)`, and point `c` have `(10,10)`
+so point `b` have cordinates `(0, 10)`, and point `c` have `(10, 10)`
 
 More over, case class is equipted with extractor (also generate by compiler in companion object). 
 It can be used in pattern matching to simplified it.

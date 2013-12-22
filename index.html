@@ -923,14 +923,14 @@ We can modify it only by creation new object with updating changed value. Exampl
 <div class="content">
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Point</span><span class="tok-o">(</span><span class="tok-n">x</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">,</span> <span class="tok-n">y</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">)</span>
 
-<span class="tok-k">val</span> <span class="tok-n">a</span> <span class="tok-k">=</span> <span class="tok-nc">Point</span><span class="tok-o">(</span><span class="tok-mi">0</span><span class="tok-o">,</span><span class="tok-mi">0</span><span class="tok-o">)</span>
-<span class="tok-k">val</span> <span class="tok-n">b</span> <span class="tok-k">=</span> <span class="tok-n">a</span><span class="tok-o">.</span><span class="tok-n">copy</span><span class="tok-o">(</span><span class="tok-n">y</span><span class="tok-k">=</span><span class="tok-mi">10</span><span class="tok-o">)</span>
-<span class="tok-k">val</span> <span class="tok-n">c</span> <span class="tok-k">=</span> <span class="tok-n">b</span><span class="tok-o">.</span><span class="tok-n">copy</span><span class="tok-o">(</span><span class="tok-n">x</span><span class="tok-k">=</span><span class="tok-mi">10</span><span class="tok-o">)</span>
+<span class="tok-k">val</span> <span class="tok-n">a</span> <span class="tok-k">=</span> <span class="tok-nc">Point</span><span class="tok-o">(</span><span class="tok-mi">0</span><span class="tok-o">,</span> <span class="tok-mi">0</span><span class="tok-o">)</span>
+<span class="tok-k">val</span> <span class="tok-n">b</span> <span class="tok-k">=</span> <span class="tok-n">a</span><span class="tok-o">.</span><span class="tok-n">copy</span><span class="tok-o">(</span><span class="tok-n">y</span> <span class="tok-k">=</span> <span class="tok-mi">10</span><span class="tok-o">)</span>
+<span class="tok-k">val</span> <span class="tok-n">c</span> <span class="tok-k">=</span> <span class="tok-n">b</span><span class="tok-o">.</span><span class="tok-n">copy</span><span class="tok-o">(</span><span class="tok-n">x</span> <span class="tok-k">=</span> <span class="tok-mi">10</span><span class="tok-o">)</span>
 </code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>so point <code>b</code> have cordinates <code>(0,10)</code>, and point <code>c</code> have <code>(10,10)</code></p>
+<p>so point <code>b</code> have cordinates <code>(0, 10)</code>, and point <code>c</code> have <code>(10, 10)</code></p>
 </div>
 <div class="paragraph">
 <p>More over, case class is equipted with extractor (also generate by compiler in companion object).
