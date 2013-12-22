@@ -1,5 +1,7 @@
 == Case Class
 
+WARNING: Is pulled in from PR and needs some fixes. TODO TODO
+
 Although very simple, let's discuss what case classes give us. Example starts with simple java-like class
 
 ```scala
