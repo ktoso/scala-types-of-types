@@ -19,7 +19,7 @@ Type inference always looks for the "common type" of both branches in an if stam
 ```scala
 Types visualized:
 
-           [Int] -> ... -> AnyVal -> Anything
+           [Int] -> ... -> AnyVal -> Any
 Nothing -> [Int] -> ... -> AnyVal -> Any
 ```
 
@@ -62,7 +62,7 @@ Int
 TypeRef(TypeSymbol(final abstract class Int extends AnyVal))
 ```
 
-The verbose option adds a bit more information here, now we know that `Int` is an `AnyVal` - this is a special class representing value types - which cannot hold `Null`. If we look into <a href="https://github.com/scala/scala/blob/v2.10.3/src/library/scala/AnyVal.scala">AnyVal's sources</a>, we'll find:
+The verbose option adds a bit more information here, now we know that `Int` is an `AnyVal` - this is a special class representing value types - which cannot hold `Null`. If we look into https://github.com/scala/scala/blob/v2.10.3/src/library/scala/AnyVal.scala[AnyVal's sources], we'll find:
 
 ```scala
 abstract class AnyVal extends Any with NotNull
