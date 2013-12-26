@@ -19,7 +19,7 @@ In these situations, leaving out the Type Annotation is OK. Although you may dec
 
 In case of doubt you can refer to the below hint-questions to wether or not, include a Type Annotation.
 
-* It it a parameter? **Yes**, you have to.
+* Is it a parameter? **Yes**, you have to.
 * Is it a public methods return value? **Yes**, for self-documenting code and control over exported types.
 * Do you need to return a more general interface than the inferencer would find? **Yes**, otherwise you'd expose your implementation details for example.
 * Else... No, don't include a Type Annotation.
