@@ -1,5 +1,7 @@
 == Specialized Types
 
+=== @specialized
+
 Type specialization is actualy more of an performance technique than plain "type system stuff", but nevertheless it's something very important and worth keeping in mind if you want to write well performing collections. For our example we'll be implementing a very useful collection called `Parcel[A]`, which can hold a value of a given type -- how useful indeed!
 
 ```scala
