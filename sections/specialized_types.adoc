@@ -92,3 +92,4 @@ WARNING: This is not a Scala feature, but can be used with scalac as a _compiler
 We've explained in the previous section that specialization is quite powerful, yet at the same time it's a bit of a "compiler bomb", with it's exponential growth potential. Turns out there is already a working proof of concept that takes away this problem. Miniboxing is a compiler plugin achieving the same result as `@specialized` but without generating thousands of classes.
 
 WARNING: TODO, there's a project from withing EPFL to make specialization more efficient: scala-miniboxing.org[Scala Miniboxing]
+
