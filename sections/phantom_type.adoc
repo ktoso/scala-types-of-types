@@ -1,6 +1,7 @@
-== Phantom Type
+== Phantom Type +++<span style="color:red">&#x2717;</span>+++
 
-**TODO MORE EXAMPLES HERE**
+WARNING: TODO, needs a lot more love. For example "really phantom types" are not explained at all -- those that we never construct.
+
 
 ```scala
 trait Started
