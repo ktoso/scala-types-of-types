@@ -45,23 +45,27 @@
 <li><a href="#type-projection">22. Type Projection</a></li>
 <li><a href="#existential-types">23. Existential Types</a></li>
 <li><a href="#type-lambda-span-style-color-red-span">24. Type Lambda <span style="color:red">&#x2717;</span></a></li>
-<li><a href="#specialized-types-span-style-color-red-span">25. Specialized Types <span style="color:red">&#x2717;</span></a></li>
-<li><a href="#delayed-init">26. Delayed Init</a></li>
-<li><a href="#dynamic-type">27. Dynamic Type</a></li>
+<li><a href="#specialized-types">25. Specialized Types</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#applydynamic">27.1. applyDynamic</a></li>
-<li><a href="#applydynamicnamed">27.2. applyDynamicNamed</a></li>
-<li><a href="#selectdynamic">27.3. selectDynamic</a></li>
-<li><a href="#updatedynamic">27.4. updateDynamic</a></li>
+<li><a href="#miniboxing">25.1. Miniboxing</a></li>
 </ul>
 </li>
-<li><a href="#bibliography-and-kudos">28. Bibliography and kudos</a></li>
+<li><a href="#dynamic-type">26. Dynamic Type</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#reference-and-further-reading">28.1. Reference and further reading</a></li>
-<li><a href="#thanks-and-kudos">28.2. Thanks and kudos</a></li>
-<li><a href="#give-back-some-kudos">28.3. Give back some kudos!</a></li>
+<li><a href="#applydynamic">26.1. applyDynamic</a></li>
+<li><a href="#applydynamicnamed">26.2. applyDynamicNamed</a></li>
+<li><a href="#selectdynamic">26.3. selectDynamic</a></li>
+<li><a href="#updatedynamic">26.4. updateDynamic</a></li>
+</ul>
+</li>
+<li><a href="#bibliography-and-kudos">27. Bibliography and kudos</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#reference-and-further-reading">27.1. Reference and further reading</a></li>
+<li><a href="#thanks-and-kudos">27.2. Thanks and kudos</a></li>
+<li><a href="#give-back-some-kudos">27.3. Give back some kudos!</a></li>
 </ul>
 </li>
 </ul>
@@ -1538,8 +1542,127 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="specialized-types-span-style-color-red-span"><a class="anchor" href="#specialized-types-span-style-color-red-span"></a>25. Specialized Types <span style="color:red">&#x2717;</span></h2>
+<h2 id="specialized-types"><a class="anchor" href="#specialized-types"></a>25. Specialized Types</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Type specialization is actualy more of an performance technique than plain "type system stuff", but nevertheless it&#8217;s something very important and worth keeping in mind if you want to write well performing collections. For our example we&#8217;ll be implementing a very useful collection called <code>Parcel[A]</code>, which can hold a value of a given type&#8201;&#8212;&#8201;how useful indeed!</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Parcel</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">](</span><span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">A</span><span class="tok-o">)</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That&#8217;s our basic implementation. What&#8217;s the drawbacks here? Well, as <code>A</code> can be anything, it will be represented as an Java <strong>object</strong>, even if we&#8217;d only ever put <code>Int</code> into boxes. So the above class would cause us to box and unbox primitive values, because the container is working on objects:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">val</span> <span class="tok-n">i</span><span class="tok-k">:</span> <span class="tok-kt">Int</span> <span class="tok-o">=</span> <span class="tok-nc">Int</span><span class="tok-o">.</span><span class="tok-n">unbox</span><span class="tok-o">(</span><span class="tok-nc">Parcel</span><span class="tok-o">.</span><span class="tok-n">apply</span><span class="tok-o">(</span><span class="tok-nc">Int</span><span class="tok-o">.</span><span class="tok-n">box</span><span class="tok-o">(</span><span class="tok-mi">1</span><span class="tok-o">)))</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As we all know - boxing when you don&#8217;t really need to is not a good idea as it&#8217;s generating more work for the runtime with "back and forth" converting the <code>int</code> to <code>Int</code>. What could do to fix this problem? One of the tricks to apply here is to "<strong>specialize</strong>" our Parcel for all primitive types (let&#8217;s say only <code>Long</code> and <code>Int</code> are good enough for now), like this:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you&#8217;ve already read about <a href="#value-class">Value Classes</a> you might have noticed that <code>Parcel</code> could be very nicely implemented using those instead! That is indeed true. However, <code>specialized</code> has been around in Scala since <code>2.8.1</code> and Value Classes were introduced recently in <code>2.10.x</code>. Also, <strong>you can specialize on more than one value</strong> (although it does <strong>exponentially</strong> (sic!) grow the generated code!), while with Value Classes you&#8217;re constrained to one value.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Parcel</span><span class="tok-o">[</span><span class="tok-kt">A</span><span class="tok-o">](</span><span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">A</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">something</span><span class="tok-k">:</span> <span class="tok-kt">A</span> <span class="tok-o">=</span> <span class="tok-o">???</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c1">// specialzation &quot;by hand&quot;</span>
+<span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">IntParcel</span><span class="tok-o">(</span><span class="tok-n">intValue</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">override</span> <span class="tok-k">def</span> <span class="tok-n">something</span><span class="tok-k">:</span> <span class="tok-kt">Int</span> <span class="tok-o">=</span> <span class="tok-cm">/* works on low-level Int, no wrapping! */</span> <span class="tok-o">???</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">LongParcel</span><span class="tok-o">(</span><span class="tok-n">intValue</span><span class="tok-k">:</span> <span class="tok-kt">Long</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">override</span> <span class="tok-k">def</span> <span class="tok-n">something</span><span class="tok-k">:</span> <span class="tok-kt">Long</span> <span class="tok-o">=</span> <span class="tok-cm">/* works on low-level Long, no wrapping! */</span> <span class="tok-o">???</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The implementations inside <code>IntParcel</code> and <code>LongParcel</code> will efficiently avoid boxing, as they work directly on the primitives, and need not reach into the object realm. Now we just have to manualy select which <code>*Parcel</code> we want to use, depending on our use-case.</p>
+</div>
+<div class="paragraph">
+<p>That&#8217;s all nice and good but&#8230; the code basically has just become far less maintanable, with <code>N</code> implementations, for each primitive that we want to support (which could be any of: <code>int</code>, <code>long</code>, <code>byte</code>, <code>char</code>, <code>short</code>, <code>float</code>, <code>double</code>, <code>boolean</code>, <code>void</code>, plus the <code>Object</code> case)! That&#8217;s a lot of boilerplate to maintain.</p>
+</div>
+<div class="paragraph">
+<p>Since we&#8217;re now familiar with the idea of specialization, and that it&#8217;s not really as nice to implement by hand, let&#8217;s see how Scala helps us out here by introducing the <code>@specialized</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Parcel</span><span class="tok-o">[</span><span class="tok-kt">@specialized</span> <span class="tok-kt">A</span><span class="tok-o">](</span><span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">A</span><span class="tok-o">)</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So we&#8217;re applying the <code>@specialized</code> annotation to the type parameter <code>A</code>, thus instructing the compiler to generate all specialized variants of this class - that is: <code>ByteParcel</code>, <code>IntParcel</code>, <code>LongParcel</code>, <code>FloatParcel</code>, <code>DoubleParcel</code>, <code>BooleanParcel</code>, <code>CharParcel</code>, <code>ShortParcel</code>, <code>CharParcel</code> and even <code>VoidParcel</code> (not actual names of the implementors, but you get the idea). Applying the "right" version is also taken up by the compiler, so we can write our code without caring if a class is specialized or not, and the compiler will do it&#8217;s best to use the specialized version (if available):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">val</span> <span class="tok-n">pi</span> <span class="tok-k">=</span> <span class="tok-nc">Parcel</span><span class="tok-o">(</span><span class="tok-mi">1</span><span class="tok-o">)</span>     <span class="tok-c1">// will use `int` specialized methods</span>
+<span class="tok-k">val</span> <span class="tok-n">pl</span> <span class="tok-k">=</span> <span class="tok-nc">Parcel</span><span class="tok-o">(</span><span class="tok-mi">1L</span><span class="tok-o">)</span>    <span class="tok-c1">// will use `long` specialized methods</span>
+<span class="tok-k">val</span> <span class="tok-n">pb</span> <span class="tok-k">=</span> <span class="tok-nc">Parcel</span><span class="tok-o">(</span><span class="tok-kc">false</span><span class="tok-o">)</span> <span class="tok-c1">// will use `boolean` specialized methods</span>
+<span class="tok-k">val</span> <span class="tok-n">po</span> <span class="tok-k">=</span> <span class="tok-nc">Parcel</span><span class="tok-o">(</span><span class="tok-s">&quot;pi&quot;</span><span class="tok-o">)</span>  <span class="tok-c1">// will use `Object` methods</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>"<em>Great, so let&#8217;s use it everywhere!</em>"&#8201;&#8212;&#8201;is a common reaction when people find out about specialization, as it can speed-up low level operations multiple times with lowering memory usage at the same time! Sadly, <strong>it comes at a high price</strong>: the generated code quickly becomes huge when used with multiple parameters like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Thing</span><span class="tok-o">[</span><span class="tok-kt">A</span>, <span class="tok-kt">B</span><span class="tok-o">](</span><span class="tok-nd">@specialized</span> <span class="tok-n">a</span><span class="tok-k">:</span> <span class="tok-kt">A</span><span class="tok-o">,</span> <span class="tok-nd">@specialized</span> <span class="tok-n">b</span><span class="tok-k">:</span> <span class="tok-kt">B</span><span class="tok-o">)</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example we&#8217;re using the second style of applying specialization - right onto the parameters - the effect is still the same as if we&#8217;d specialize <code>A</code> and <code>B</code> directly. Please notice that the above code would generate <code>8 * 8 = 64</code> (<em>sic!</em>) implementations, as it has to take care of cases like "A is an <code>int</code>, and B is an <code>int</code>" as well as "A is a <code>boolean</code>, but B is a <code>long</code>"&#8201;&#8212;&#8201;you can see where this is heading. In fact the number of generated classes is around <code>2 * 10^(nr_of_type_specializations)</code>, which easily reaches thousands of classes for already 3 type parameters!</p>
+</div>
+<div class="paragraph">
+<p>There are ways to limit this exponential explosion, for example by limiting the specialization target types. Let&#8217;s say our <code>Parcel</code> will be used mosltly with integers, and never with floating point numbers&#8201;&#8212;&#8201;using this we can ask the compiler to only specialize for <code>Long</code> and <code>Int</code> like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Parcel</span><span class="tok-o">[</span><span class="tok-kt">@specialized</span><span class="tok-o">(</span><span class="tok-kt">Int</span>, <span class="tok-kt">Long</span><span class="tok-o">)</span> <span class="tok-kt">A</span><span class="tok-o">](</span><span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">A</span><span class="tok-o">)</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s also look into the bytecode a little bit this time, by using <code>:javap Parcel</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">// Parcel, specialized for Int and Long
+public class Parcel extends java.lang.Object implements scala.Product,scala.Serializable{
+    public java.lang.Object value(); // generic version, "catch all"
+    public int value$mcI$sp();       // int specialized version
+    public long value$mcJ$sp();}     // long specialized version
+
+    public boolean specInstance$();  // method to check if we're a specialized class impl.
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, the compiler has prepared additional specialized methods for us, such as <code>value$mcI$sp()</code> returning an <code>int</code> and the same style of method for <code>long</code>. One other method worth mentioning here is <code>specInstance$</code> which returns <code>true</code> if the used implementation is a specialized class.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re curious, currently these classes are specialized in Scala (list may be incomplete): Function0, Function1, Function2, Tuple1, Tuple2, Product1, Product2, AbstractFunction0, AbstractFunction1, AbstractFunction2. Due to how costy it it to specialize beyond 2 parameters, it&#8217;s a trend to not specialize for more params, although certainly possible.</p>
+</div>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -1547,16 +1670,41 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 <i class="icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-TODO - explain @specialized on an example, link to paper about this
+A prime example why we want to avoid boxing is also memory efficiency. Imagine a <code>boolean</code>, it would be great if it would be stored as one bit, sadly it isn&#8217;t (not on any JVM I know of), for example on HotSpot an <code>boolean</code> is represented as <code>int</code>, so it takes <strong>4 bytes</strong> of space. It&#8217;s cousin <code>java.lang.Boolean</code> on the other hand has <strong>8 bytes of object header</strong>, as does any Java object, then it stores the <code>boolean</code> inside (another <strong>4 bytes</strong>), and due to the <strong>Java Object Layout alignment rules</strong>, the space taked up by this object will be aligned to <strong>16 bytes</strong> (8 for object header, 4 for the value, 4 bytes of padding). That&#8217;s yet another reason why we want to avoid boxing so badly.
 </td>
 </tr>
 </table>
 </div>
+<div class="sect2">
+<h3 id="miniboxing"><a class="anchor" href="#miniboxing"></a>25.1. Miniboxing</h3>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+This is not a Scala feature, but can be used with scalac as a <em>compiler plugin</em>.
+</td>
+</tr>
+</table>
 </div>
+<div class="paragraph">
+<p>We&#8217;ve explained in the previous section that specialization is quite powerful, yet at the same time it&#8217;s a bit of a "compiler bomb", with it&#8217;s exponential growth potential. Turns out there is already a working proof of concept that takes away this problem. Miniboxing is a compiler plugin achieving the same result as <code>@specialized</code> but without generating thousands of classes.</p>
 </div>
-<div class="sect1">
-<h2 id="delayed-init"><a class="anchor" href="#delayed-init"></a>26. Delayed Init</h2>
-<div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+TODO, there&#8217;s a project from withing EPFL to make specialization more efficient: scala-miniboxing.org[Scala Miniboxing]
+== Delayed Init
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Since we started talking about the "weird" types in Scala, we can&#8217;t let this one go without a dedicated section for it. <code>DelayedInit</code> is actually a "<em>compiler trick</em>" above anything else, and not really tremendously important for the type system itself, but once you understand it, you&#8217;ll know how <code>scala.App</code> actually works, so let&#8217;s dive into our example with <code>App</code>:</p>
 </div>
@@ -1656,8 +1804,9 @@ TODO - explain @specialized on an example, link to paper about this
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>27. Dynamic Type</h2>
+<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>26. Dynamic Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>I&#8217;ve had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?</p>
@@ -1726,7 +1875,7 @@ There are a few features (like the experimental macros for example) that need to
 <p>Let&#8217;s take a look (with examples, at each of them. We&#8217;ll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn&#8217;t (back then) compile) and make it work this time ;-)</p>
 </div>
 <div class="sect2">
-<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>27.1. applyDynamic</h3>
+<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>26.1. applyDynamic</h3>
 <div class="paragraph">
 <p>Ok, our first magic method looks like this:</p>
 </div>
@@ -1756,7 +1905,7 @@ There are a few features (like the experimental macros for example) that need to
 </div>
 </div>
 <div class="sect2">
-<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>27.2. applyDynamicNamed</h3>
+<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>26.2. applyDynamicNamed</h3>
 <div class="paragraph">
 <p>Ok, that was easy. But it didn&#8217;t give us too much control over the names of the parameters.
 Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "ktoso")</code>? Well&#8230; turns out we can!</p>
@@ -1789,7 +1938,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>27.3. selectDynamic</h3>
+<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>26.3. selectDynamic</h3>
 <div class="paragraph">
 <p>Not it&#8217;s time for the more "unusual" methods. apply methods we&#8217;re pretty easy to understand. It&#8217;s just a method with some arbitrary name. But hey, isn&#8217;t almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let&#8217;s give it a try! &lt;strong&gt;We&#8217;ll use the example with applyDynamic here, and try to act like it has a method without ()&lt;/strong&gt;:</p>
 </div>
@@ -1819,7 +1968,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>27.4. updateDynamic</h3>
+<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>26.4. updateDynamic</h3>
 <div class="paragraph">
 <p>What&#8217;s left you ask? Ask yourself the following question then: "Since I can act like a <code>Dynamic</code> object has some value in some field&#8230; What else should I be able to do with it?" My answer to that would be: "set it"! That&#8217;s what <code>updateDynamic</code> is used for. There is one special rule about <code>updateDynamic</code> though - it&#8217;s only valid if you also took care about selectDynamic - that&#8217;s why in the first example the code generated errors about both - select and update. For example if we&#8217;d implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn&#8217;t compile anyway. It makes sense in terms of plain semantics if you think about it.</p>
 </div>
@@ -1860,10 +2009,10 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect1">
-<h2 id="bibliography-and-kudos"><a class="anchor" href="#bibliography-and-kudos"></a>28. Bibliography and kudos</h2>
+<h2 id="bibliography-and-kudos"><a class="anchor" href="#bibliography-and-kudos"></a>27. Bibliography and kudos</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="reference-and-further-reading"><a class="anchor" href="#reference-and-further-reading"></a>28.1. Reference and further reading</h3>
+<h3 id="reference-and-further-reading"><a class="anchor" href="#reference-and-further-reading"></a>27.1. Reference and further reading</h3>
 <div class="paragraph">
 <p>Obviously this vademecum required quite a bit of reseach and double-checking, so here are all the links I&#8217;ve found helpful (and you might too).</p>
 </div>
@@ -1882,7 +2031,13 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 <p>Scala Doc: <a href="http://www.scala-lang.org/api/current/index.html">http://www.scala-lang.org/api/current/index.html</a></p>
 </li>
 <li>
+<p>Great presentation about introducing <code>@specialized</code> to Scala 2.8, by Dragos: <a href="http://days2010.scala-lang.org/node/138/151/15-7-E%20-%20Specialization%20-%20Dragos.pdf">Scala Days 2010 - Specialization</a></p>
+</li>
+<li>
 <p><a href="http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem">Wikipedia on the Diamond Problem</a></p>
+</li>
+<li>
+<p><strong>Martin Odersky</strong>'s and <strong>Iulian Dragos</strong>'s whitepaper about specialization <a href="http://infoscience.epfl.ch/record/150134">Compiling generics through user-directed type specialization</a></p>
 </li>
 <li>
 <p><a href="http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/">The dangers of correlating subtype polymorphism with generic polymorphism</a> blog post</p>
@@ -1906,7 +2061,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="thanks-and-kudos"><a class="anchor" href="#thanks-and-kudos"></a>28.2. Thanks and kudos</h3>
+<h3 id="thanks-and-kudos"><a class="anchor" href="#thanks-and-kudos"></a>27.2. Thanks and kudos</h3>
 <div class="paragraph">
 <p>I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):</p>
 </div>
@@ -1934,6 +2089,9 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 <p>All the kind people who pull-requested typo&#8217;s and small fixes</p>
 </li>
 <li>
+<p><em>TODO, there&#8217;s more people</em></p>
+</li>
+<li>
 <p>You! Really. Thanks for reading this, you rock.</p>
 </li>
 </ul>
@@ -1946,7 +2104,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="give-back-some-kudos"><a class="anchor" href="#give-back-some-kudos"></a>28.3. Give back some kudos!</h3>
+<h3 id="give-back-some-kudos"><a class="anchor" href="#give-back-some-kudos"></a>27.3. Give back some kudos!</h3>
 <div class="paragraph">
 <p>If you liked this page, please share it with your friends using IRC any other chat service, or email, or social networks using these clicky-clicky buttons bellow! :-)</p>
 </div>
