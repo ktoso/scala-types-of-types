@@ -1567,7 +1567,7 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="paragraph">
-<p>As we all know - boxing when you don&#8217;t really need to is not a good idea as it&#8217;s generating more work for the runtime with "back and forth" converting the <code>int</code> to <code>Int</code>. What could do to fix this problem? One of the tricks to apply here is to "<strong>specialize</strong>" our Parcel for all primitive types (let&#8217;s say only <code>Long</code> and <code>Int</code> are good enough for now), like this:</p>
+<p>As we all know - boxing when you don&#8217;t really need to is not a good idea as it&#8217;s generating more work for the runtime with "back and forth" converting the <code>int</code> to <code>object Int</code>. What could do to fix this problem? One of the tricks to apply here is to "<strong>specialize</strong>" our Parcel for all primitive types (let&#8217;s say only <code>Long</code> and <code>Int</code> are good enough for now), like this:</p>
 </div>
 <div class="admonitionblock note">
 <table>

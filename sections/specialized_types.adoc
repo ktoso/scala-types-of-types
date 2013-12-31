@@ -14,7 +14,7 @@ That's our basic implementation. What's the drawbacks here? Well, as `A` can be 
 val i: Int = Int.unbox(Parcel.apply(Int.box(1)))
 ```
 
-As we all know - boxing when you don't really need to is not a good idea as it's generating more work for the runtime with "back and forth" converting the `int` to `Int`. What could do to fix this problem? One of the tricks to apply here is to "**specialize**" our Parcel for all primitive types (let's say only `Long` and `Int` are good enough for now), like this:
+As we all know - boxing when you don't really need to is not a good idea as it's generating more work for the runtime with "back and forth" converting the `int` to `object Int`. What could do to fix this problem? One of the tricks to apply here is to "**specialize**" our Parcel for all primitive types (let's say only `Long` and `Int` are good enough for now), like this:
 
 NOTE: If you've already read about <<value-class, Value Classes>> you might have noticed that `Parcel` could be very nicely implemented using those instead! That is indeed true. However, `specialized` has been around in Scala since `2.8.1` and Value Classes were introduced recently in `2.10.x`. Also, *you can specialize on more than one value* (although it does *exponentially* (sic!) grow the generated code!), while with Value Classes you're constrained to one value.
 
