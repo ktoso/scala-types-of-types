@@ -8,7 +8,7 @@ because that's already referring to the instance, so there's a member called `ty
 
 How it might look like in your code is explained by the below example:
 
-```
+```scala
 object ExampleObj
 
 def takeAnObject(obj: ExampleObj.type) = {}
