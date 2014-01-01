@@ -3,13 +3,12 @@ How to contribute?
 
 That's very simple!
 
-You either open up an issue on github, mentioning what you'd like to see added or changed (or maybe discussed in more detail).
-Or you can pull request with your suggested changes right away!
+You either open up an issue on github, mentioning what you'd like to see added or changed (or maybe discussed in more detail). Or you can pull request with your suggested changes right away!
 
 Please do make sure the project still compiles nicely before submiting though! You can compile the project by running the `make` command. 
 For details on the language and tooling used for this document (asciidoctor) please read the next section!
 
-That's all.
+PS: Please do _not_ include `index.html` in your pull requests, it'll be generated again from *.adoc files anyway after your pull request gets accepted. :-)
 
 What should i have to contribute ?
 =========================
@@ -17,6 +16,10 @@ What should i have to contribute ?
 * Ruby >= 1.9.3
 * Make 
 * Asciidoctor (install via `bundle install`) 
+
+What's the syntax for asciidoctor?
+==================================
+Use this syntax reference site: http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
 
 How do I build index.html?
 ==========================
