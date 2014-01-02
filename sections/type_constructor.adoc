@@ -1,12 +1,11 @@
 == Type Constructor
 
-Type Constructors act pretty much like functions, but on the type level. The simplest example would be
-
+Type Constructors act pretty much like functions, but on the type level. 
 That is, if in normal programming you can have a function that takes a value `a` and returns a value `b` based on the previous one, then in type-level programming you'd think of a `List[+A]` being a type constructor, that is:
 
 * `List[+A]` takes a type parameter (`A`),
 * by itself it's not a valid type, you need to fill in the `A` somehow - "_construct the type_",
-* by fillinf it in with `Int` you'd get `List[Int]` which is a concrete type.
+* by filling it in with `Int` you'd get `List[Int]` which is a concrete type.
 
 Using this example, you can see how similar it is to normal constructors - with the only difference that here we work on types, and not instances of objects. It's worth reminding here that in Scala it is not valid to say something is of type `List`, *unlike in Java* where javac would put the `List<Object>` for you. Scala is more strict here, and won't allow us to use `just a List` in the place of a type, as it's expecting a real type - not a type constructor.
 
@@ -32,7 +31,7 @@ We refer to them as *first-order kinds* (`* -> *`). It's also worth mentioning t
 
 == Higher-Order Kind
 
-TODO nothing here yet, coming soon...
+WARNING: TODO nothing here yet, coming soon...
 
 *Higher Kinds* on the other hand, allow us to abstract over type constructors, just like type constructors allow
 us to abstract over the type they.

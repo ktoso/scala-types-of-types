@@ -793,10 +793,8 @@ You could get the same type-safety using more fancy tricks, like path dependent 
 <h2 id="type-constructor"><a class="anchor" href="#type-constructor"></a>12. Type Constructor</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Type Constructors act pretty much like functions, but on the type level. The simplest example would be</p>
-</div>
-<div class="paragraph">
-<p>That is, if in normal programming you can have a function that takes a value <code>a</code> and returns a value <code>b</code> based on the previous one, then in type-level programming you&#8217;d think of a <code>List[+A]</code> being a type constructor, that is:</p>
+<p>Type Constructors act pretty much like functions, but on the type level.
+That is, if in normal programming you can have a function that takes a value <code>a</code> and returns a value <code>b</code> based on the previous one, then in type-level programming you&#8217;d think of a <code>List[+A]</code> being a type constructor, that is:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -807,7 +805,7 @@ You could get the same type-safety using more fancy tricks, like path dependent 
 <p>by itself it&#8217;s not a valid type, you need to fill in the <code>A</code> somehow - "<em>construct the type</em>",</p>
 </li>
 <li>
-<p>by fillinf it in with <code>Int</code> you&#8217;d get <code>List[Int]</code> which is a concrete type.</p>
+<p>by filling it in with <code>Int</code> you&#8217;d get <code>List[Int]</code> which is a concrete type.</p>
 </li>
 </ul>
 </div>
@@ -844,8 +842,17 @@ We refer to them as <strong>first-order kinds</strong> (<code>* -&gt; *</code>).
 <div class="sect1">
 <h2 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>13. Higher-Order Kind</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>TODO nothing here yet, coming soon&#8230;</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+TODO nothing here yet, coming soon&#8230;
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p><strong>Higher Kinds</strong> on the other hand, allow us to abstract over type constructors, just like type constructors allow
