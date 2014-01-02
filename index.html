@@ -133,6 +133,9 @@ the type of something, is called an Type Annotation.</p>
 <p>Is it a public methods return value? <strong>Yes</strong>, for self-documenting code and control over exported types.</p>
 </li>
 <li>
+<p>Is it a recursive or overloaded methods return value? <strong>Yes</strong>, you have to.</p>
+</li>
+<li>
 <p>Do you need to return a more general interface than the inferencer would find? <strong>Yes</strong>, otherwise you&#8217;d expose your implementation details for example.</p>
 </li>
 <li>
@@ -707,7 +710,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <h2 id="self-recursive-type-span-style-color-red-span"><a class="anchor" href="#self-recursive-type-span-style-color-red-span"></a>11. Self-Recursive Type <span style="color:red">&#x2717;</span></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>While this not being a Scala specific type, it still sometimes raises a few eyebrows. One example many of a self-recursive type many of us are (perhaps unknowingly) familiar with, is Java&#8217;s <code>Enum&lt;E&gt;</code>, if you&#8217;re curious about it, check out the &lt;a href="http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Enum.java"&gt;Enum sources from Java 7&lt;/a&gt;. But now back to Scala and first let&#8217;s see what we&#8217;re actually talking about.</p>
+<p>While this not being a Scala specific type, it still sometimes raises a few eyebrows. One example many of a self-recursive type many of us are (perhaps unknowingly) familiar with, is Java&#8217;s <code>Enum&lt;E&gt;</code>, if you&#8217;re curious about it, check out the <a href="http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Enum.java">Enum sources from Java</a>. But now back to Scala and first let&#8217;s see what we&#8217;re actually talking about.</p>
 </div>
 <div class="paragraph">
 <p>Imagine you have some <code>Fruit</code> trait, and both an <code>Apple</code> and an <code>Orange</code> extend it. The Fruit trait also has an "compareTo" method, and here the problem comes up: imagine you&#8217;d want to say "<em>I can&#8217;t compare oranges with apples, they&#8217;re totally different things!</em>". First let&#8217;s look at how we loose this compile-time safety with the naive implementation:</p>
@@ -831,7 +834,7 @@ That is, if in normal programming you can have a function that takes a value <co
 </div>
 </div>
 <div class="paragraph">
-<p>Here we see that scalac is able to tell us that <code>List</code>, in fact, is a type constructor (it&#8217;s way more talkative when used with the <code>-verbose option). Let's investigate the syntax right above this information: `* -&gt; *</code>. This syntax is widely used to represent kinds, and actually I found it quite Haskell inspired - as this is the syntax Haskell uses to print types of functions. The most intuitive way to read it out loud would be "takes one type, returns another type". You might have noticed that we&#8217;ve omitted something from Scala&#8217;s exact output, the plus sign from the relation (as in:<code>* -(+)-&gt; *</code>), this means variance bounds and you can read up in detail about variance in section (TODO LINK TO VARIANCE).</p>
+<p>Here we see that scalac is able to tell us that <code>List</code>, in fact, is a type constructor (it&#8217;s way more talkative when used with the <code>-verbose option). Let's investigate the syntax right above this information: `* -&gt; *</code>. This syntax is widely used to represent kinds, and actually I found it quite Haskell inspired - as this is the syntax Haskell uses to print types of functions. The most intuitive way to read it out loud would be "takes one type, returns another type". You might have noticed that we&#8217;ve omitted something from Scala&#8217;s exact output, the plus sign from the relation (as in:<code>* -(+)-&gt; *</code>), this means variance bounds and you can read up in detail about variance in section <a href="#type-variance-in-scala">Type Variance in Scala</a>.</p>
 </div>
 <div class="paragraph">
 <p>As already mentioned, <code>List[+A]</code> (or <code>Option[+A]</code>, or <code>Set[+A]</code>&#8230; or anything that has one type parameter) is the simplest case of a type constructor - these take <strong>one</strong> parameter.
@@ -2177,7 +2180,7 @@ $(document).ready(function() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-12-22 00:20:24 CET
+Last updated 2014-01-02 14:16:06 CET
 </div>
 </div>
 </body>

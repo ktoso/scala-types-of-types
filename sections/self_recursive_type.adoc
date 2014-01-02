@@ -1,6 +1,6 @@
 == Self-Recursive Type +++<span style="color:red">&#x2717;</span>+++
 
-While this not being a Scala specific type, it still sometimes raises a few eyebrows. One example many of a self-recursive type many of us are (perhaps unknowingly) familiar with, is Java's `Enum<E>`, if you're curious about it, check out the <a href="http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Enum.java">Enum sources from Java 7</a>. But now back to Scala and first let's see what we're actually talking about.
+While this not being a Scala specific type, it still sometimes raises a few eyebrows. One example many of a self-recursive type many of us are (perhaps unknowingly) familiar with, is Java's `Enum<E>`, if you're curious about it, check out the http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Enum.java[Enum sources from Java]. But now back to Scala and first let's see what we're actually talking about.
 
 Imagine you have some `Fruit` trait, and both an `Apple` and an `Orange` extend it. The Fruit trait also has an "compareTo" method, and here the problem comes up: imagine you'd want to say "_I can't compare oranges with apples, they're totally different things!_". First let's look at how we loose this compile-time safety with the naive implementation:
 
