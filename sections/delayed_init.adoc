@@ -24,7 +24,7 @@ trait DelayedInit {
 }
 ```
 
-As you can see, it does not contain any implementation - all the work around it is actually performed by the compiler, which will treat treat all classes and objects inheriting `DelayedInit` in a special way (note: trait's will _not_ be rewriten like this). The special treatment goes like this:
+As you can see, it does not contain any implementation - all the work around it is actually performed by the compiler, which will treat all classes and objects inheriting `DelayedInit` in a special way (note: trait's will _not_ be rewriten like this). The special treatment goes like this:
 
 * imagine your class/object body is a function, doing all these things that are in the class/object body,
 * the compiler creates this function for you, and will pass it into the `delayedInit(x: => Unit)` method (notice the _call-by-name_ in the parameter).
