@@ -5,7 +5,7 @@ and instead we just use `val`s or `def`s without "saying the type explicitly in 
 the type of something, is called an Type Annotation.
 
 ```scala
-class Thing
+trait Thing
 def getThing = new Thing { }
 
 // without Type Annotation, the type is infered to be `Thing`
