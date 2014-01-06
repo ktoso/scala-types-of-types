@@ -6,7 +6,7 @@ the type of something, is called an Type Annotation.
 
 ```scala
 class Thing
-def getThing = new Thing
+def getThing = new Thing { }
 
 // without Type Annotation, the type is infered to be `Thing`
 val infered = getThing
