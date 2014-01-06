@@ -108,7 +108,7 @@ the type of something, is called an Type Annotation.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Thing</span>
-<span class="tok-k">def</span> <span class="tok-n">getThing</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Thing</span>
+<span class="tok-k">def</span> <span class="tok-n">getThing</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Thing { } </span>
 
 <span class="tok-c1">// without Type Annotation, the type is infered to be `Thing`</span>
 <span class="tok-k">val</span> <span class="tok-n">infered</span> <span class="tok-k">=</span> <span class="tok-n">getThing</span>
