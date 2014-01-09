@@ -5,6 +5,11 @@ This document is aimed at explaining all-the-things-type in Scala in a human fri
 
 Contributions are very welcome, please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
 
+View online
+===========
+
+The page is online at: http://ktoso.github.io/scala-types-of-types/
+
 License
 =======
 All content in this repository falls under the **Creative Commons 4.0 BY-SA International License**, so it's like Free Software... but not Software! [Full license available to read here](http://creativecommons.org/licenses/by-sa/4.0/deed.en).
