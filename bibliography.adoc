@@ -1,4 +1,6 @@
-== Bibliography
+== Bibliography and Kudos
+
+=== Bibliography
 
 WARNING: I'm trying to move all links to bibliography style.
 
