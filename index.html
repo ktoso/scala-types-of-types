@@ -1235,105 +1235,141 @@ And while we&#8217;re at it, let&#8217;s discuss why it is called self-type (exc
 <div class="sect1">
 <h2 id="phantom-type-span-style-color-red-span"><a class="anchor" href="#phantom-type-span-style-color-red-span"></a>19. Phantom Type <span style="color:red">&#x2717;</span></h2>
 <div class="sectionbody">
-<div class="admonitionblock warning">
+<div class="paragraph">
+<p>Phantom Types are, very true to it&#8217;s name (even if it&#8217;s a weird one), and can be explained as "Types that are not instanciated, ever".
+Instead of using them directly, we use them to even more strictly enforce some logic, using our types.</p>
+</div>
+<div class="paragraph">
+<p>The example we&#8217;ll look at is a <code>Service</code> class, which has <code>start</code> and <code>stop</code> methods. Now we want to guarantee that you cannot (the type system won&#8217;t allow you to) start an already started service, and vice-versa.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start with preparing our "marker traits", which don&#8217;t contain any logic - we will only use them in order to express the state of an service in it&#8217;s type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">sealed</span> <span class="tok-k">trait</span> <span class="tok-nc">ServiceState</span>
+<span class="tok-k">final</span> <span class="tok-k">class</span> <span class="tok-nc">Started</span> <span class="tok-k">extends</span> <span class="tok-nc">ServiceState</span>
+<span class="tok-k">final</span> <span class="tok-k">class</span> <span class="tok-nc">Stopped</span> <span class="tok-k">extends</span> <span class="tok-nc">ServiceState</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that making the <code>ServiceState</code> trait <code>sealed</code> assures that no-one can suddenly add another state to our system.
+We also define the leaf types here to be final, so no-one can extend them, and add other states to the system.</p>
+</div>
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="icon-warning" title="Warning"></i>
+<i class="icon-note" title="Note"></i>
 </td>
 <td class="content">
-TODO, needs a lot more love. For example "really phantom types" are not explained at all&#8201;&#8212;&#8201;those that we never construct.
+<div class="paragraph">
+<p><strong>The <code>sealed</code> keyword</strong></p>
+</div>
+<div class="paragraph">
+<p><code>sealed</code> makes sure that all classes that extend a class or trait are defined in the same compilation unit. For example, if you define <code>sealed trait State</code> and a few state implementations in the file <em>State.scala</em> it&#8217;ll work, however you cannot extends <code>State</code> from another file (like <em>MyStates.scala</em>).</p>
+</div>
+<div class="paragraph">
+<p>Note that this applies directly to the Type the keyword was applied to, not to it&#8217;s subtypes.
+So you cannot extend State from other files, but if you prepare a type like <code>trait UserDefinedState extends State</code>
+users will still be able to define more sub-types of <code>UserDefinedState</code>, even from other files.
+If you want to prevent this from happening, you should make your sub-types <code>final</code>, like we do in this example.</p>
+</div>
 </td>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Having those prepared, let&#8217;s finally dive in into using them as Phantom Types.
+First let&#8217;s define a class Service, which takes <code>State</code> type parameter - notice here that we <em>don&#8217;t use any value of type S</em> in this class_!
+It&#8217;s just there, unused, like a ghost, or <em>Phantom</em> - which is where it&#8217;s name comes from.</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Started</span>
-<span class="tok-k">trait</span> <span class="tok-nc">Stopped</span>
-<span class="tok-k">trait</span> <span class="tok-nc">StartStopState</span>
-<span class="tok-k">trait</span> <span class="tok-nc">Started</span> <span class="tok-k">extends</span> <span class="tok-nc">StartStopState</span>
-<span class="tok-k">trait</span> <span class="tok-nc">Stopped</span> <span class="tok-k">extends</span> <span class="tok-nc">StartStopState</span>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">Service</span><span class="tok-o">[</span><span class="tok-kt">State</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">ServiceState</span><span class="tok-o">]</span> <span class="tok-nc">private</span> <span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">start</span><span class="tok-o">[</span><span class="tok-kt">T</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">State</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Stopped</span><span class="tok-o">]()</span> <span class="tok-k">=</span> <span class="tok-k">this</span><span class="tok-o">.</span><span class="tok-n">asInstanceOf</span><span class="tok-o">[</span><span class="tok-kt">Service</span><span class="tok-o">[</span><span class="tok-kt">Started</span><span class="tok-o">]]</span>
+  <span class="tok-k">def</span> <span class="tok-n">stop</span><span class="tok-o">[</span><span class="tok-kt">T</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">State</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Started</span><span class="tok-o">]()</span> <span class="tok-k">=</span> <span class="tok-k">this</span><span class="tok-o">.</span><span class="tok-n">asInstanceOf</span><span class="tok-o">[</span><span class="tok-kt">Service</span><span class="tok-o">[</span><span class="tok-kt">Stopped</span><span class="tok-o">]]</span>
+<span class="tok-o">}</span>
+<span class="tok-k">object</span> <span class="tok-nc">Service</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">create</span><span class="tok-o">()</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Service</span><span class="tok-o">[</span><span class="tok-kt">Stopped</span><span class="tok-o">]</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So in the companion object we create a new instance of the Service, at first it is <code>Stopped</code>.
+The Stopped state conforms to the type bounds of the type parameter (<code>&lt;: ServiceState</code>) so it&#8217;s all good.</p>
+</div>
+<div class="paragraph">
+<p>The interesting things happen when we want to start / stop an existing Service. The Type bounds defined on the start method for example,
+are only valid for one value of <code>T</code>, which is <code>Stopped</code>. The transistion to the opposite state is a no-op in our example, we return the same instance,
+and explicitly cast it into the required state. Since nothing is actualy using this type, you won&#8217;t bump into class cast exceptions during this conversion.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s now investigate the above code using the REPL, which will act as a nice finisher for this section.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-k">val</span> <span class="tok-n">initiallyStopped</span> <span class="tok-k">=</span> <span class="tok-nc">Service</span><span class="tok-o">.</span><span class="tok-n">create</span><span class="tok-o">()</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="tok-n">initiallyStopped</span><span class="tok-k">:</span> <span class="tok-kt">Service</span><span class="tok-o">[</span><span class="tok-kt">Stopped</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-nc">Service</span><span class="tok-k">@</span><span class="tok-mi">337688</span><span class="tok-n">d3</span>
 
-<span class="tok-k">class</span> <span class="tok-nc">Service</span><span class="tok-o">[</span><span class="tok-kt">State</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">StartStopState</span><span class="tok-o">]</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">start</span><span class="tok-o">[</span><span class="tok-kt">T</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">State</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Stopped</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-k">this</span><span class="tok-o">.</span><span class="tok-n">asInstanceOf</span><span class="tok-o">[</span><span class="tok-kt">Service</span><span class="tok-o">[</span><span class="tok-kt">Started</span><span class="tok-o">]]</span>
-<span class="tok-o">}</span>
-<span class="tok-k">val</span> <span class="tok-n">x</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Serice</span><span class="tok-o">[</span><span class="tok-kt">Stopped</span><span class="tok-o">]()</span>
-<span class="tok-k">val</span> <span class="tok-n">x</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Service</span><span class="tok-o">[</span><span class="tok-kt">Stopped</span><span class="tok-o">]()</span>
-<span class="tok-n">x</span><span class="tok-o">.</span><span class="tok-n">start</span>
-<span class="tok-n">res1</span><span class="tok-o">.</span><span class="tok-n">start</span>
-</code></pre>
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-k">val</span> <span class="tok-n">started</span> <span class="tok-k">=</span> <span class="tok-n">initiallyStopped</span><span class="tok-o">.</span><span class="tok-n">start</span><span class="tok-o">()</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="tok-n">started</span><span class="tok-k">:</span> <span class="tok-kt">Service</span><span class="tok-o">[</span><span class="tok-kt">Started</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-nc">Service</span><span class="tok-k">@</span><span class="tok-mi">337688</span><span class="tok-n">d3</span>
+
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-k">val</span> <span class="tok-n">stopped</span> <span class="tok-k">=</span> <span class="tok-n">started</span><span class="tok-o">.</span><span class="tok-n">stop</span><span class="tok-o">()</span>            <i class="conum" data-value="3"></i><b>(3)</b>
+<span class="tok-n">stopped</span><span class="tok-k">:</span> <span class="tok-kt">Service</span><span class="tok-o">[</span><span class="tok-kt">Stopped</span><span class="tok-o">]</span> <span class="tok-k">=</span> <span class="tok-nc">Service</span><span class="tok-k">@</span><span class="tok-mi">337688</span><span class="tok-n">d3</span>
+
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-n">stopped</span><span class="tok-o">.</span><span class="tok-n">stop</span><span class="tok-o">()</span>                          <i class="conum" data-value="4"></i><b>(4)</b>
+<span class="tok-o">&lt;</span><span class="tok-n">console</span><span class="tok-k">&gt;:</span><span class="tok-mi">16</span><span class="tok-k">:</span> <span class="tok-kt">error:</span> <span class="tok-kt">inferred</span> <span class="tok-k">type</span> <span class="tok-kt">arguments</span> <span class="tok-o">[</span><span class="tok-kt">Stopped</span><span class="tok-o">]</span> <span class="tok-k">do</span> <span class="tok-n">not</span> <span class="tok-n">conform</span> <span class="tok-n">to</span> <span class="tok-n">method</span> <span class="tok-n">stop</span><span class="tok--Symbol">&#39;s</span>
+                     <span class="tok-k">type</span> <span class="tok-kt">parameter</span> <span class="tok-kt">bounds</span> <span class="tok-o">[</span><span class="tok-kt">T</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">Stopped</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Started</span><span class="tok-o">]</span>
+              <span class="tok-n">stopped</span><span class="tok-o">.</span><span class="tok-n">stop</span><span class="tok-o">()</span>
+                      <span class="tok-o">^</span>
+
+<span class="tok-n">scala</span><span class="tok-o">&gt;</span> <span class="tok-n">started</span><span class="tok-o">.</span><span class="tok-n">start</span><span class="tok-o">()</span>                         <i class="conum" data-value="5"></i><b>(5)</b>
+<span class="tok-o">&lt;</span><span class="tok-n">console</span><span class="tok-k">&gt;:</span><span class="tok-mi">15</span><span class="tok-k">:</span> <span class="tok-kt">error:</span> <span class="tok-kt">inferred</span> <span class="tok-k">type</span> <span class="tok-kt">arguments</span> <span class="tok-o">[</span><span class="tok-kt">Started</span><span class="tok-o">]</span> <span class="tok-k">do</span> <span class="tok-n">not</span> <span class="tok-n">conform</span> <span class="tok-n">to</span> <span class="tok-n">method</span> <span class="tok-n">start</span><span class="tok--Symbol">&#39;s</span>
+                     <span class="tok-k">type</span> <span class="tok-kt">parameter</span> <span class="tok-kt">bounds</span> <span class="tok-o">[</span><span class="tok-kt">T</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">Started</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Stopped</span><span class="tok-o">]</span>
+              <span class="tok-n">started</span><span class="tok-o">.</span><span class="tok-n">start</span><span class="tok-o">()</span></code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Now we&#8217;re starting to get into the more interesting Types! :-)</p>
-</div>
-<div class="paragraph">
-<p>Phantom Types are a mean of staticly validating your sources, during compile time.
-It&#8217;s used in many libraries, to prevent you from using some API, with an object in "not the right state".</p>
-</div>
-<div class="paragraph">
-<p>To set the stage for our Phantom Type usage let&#8217;s first define a <code>ServiceHandle</code> class,
-and <code>trait`s to represent the state it is in. We want to prevent users of our API from calling `stop()</code> on an already
-<code>Stopped</code> instance, as well as prevent them from calling <code>start()</code> on an already <code>Running</code> instance.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// the traits are expected to be only used with our ServiceHandle,</span>
-<span class="tok-c1">// which we nicely express using Self Type Annotations.</span>
-<span class="tok-k">trait</span> <span class="tok-nc">Stopped</span> <span class="tok-o">{</span> <span class="tok-k">this:</span> <span class="tok-kt">ServiceHandle</span> <span class="tok-o">=&gt;</span> <span class="tok-o">}</span>
-<span class="tok-k">trait</span> <span class="tok-nc">Running</span> <span class="tok-o">{</span> <span class="tok-k">this:</span> <span class="tok-kt">ServiceHandle</span> <span class="tok-o">=&gt;</span> <span class="tok-o">}</span>
-</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now that we have our Types prepared, let&#8217;s look at how the implementation will look like:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">class</span> <span class="tok-nc">ServiceHandle</span> <span class="tok-k">private</span> <span class="tok-o">(</span><span class="tok-n">id</span><span class="tok-k">:</span> <span class="tok-kt">Id</span><span class="tok-o">)</span>
-<span class="tok-k">object</span> <span class="tok-nc">ServiceHandle</span> <span class="tok-o">{</span>
-  <span class="tok-k">def</span> <span class="tok-n">create</span><span class="tok-o">(</span><span class="tok-n">id</span><span class="tok-k">:</span> <span class="tok-kt">Id</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">ServiceHandle</span><span class="tok-o">(</span><span class="tok-n">id</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-nc">Stopped</span>
-<span class="tok-o">}</span>
-</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Here, during instanciation of the class, we mix in the <code>Stopped</code> trait right away.
-We&#8217;ve used this trick before in this blog post (series), but now it&#8217;s finally time to explain it in detail.</p>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Here we create the initial instance, it starts in <code>Stopped</code> state</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Starting a <code>Stopped</code> service is OK, returned type is <code>Service[Started]</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Stopping a <code>Started</code> service is OK, returned type is <code>Service[Stopped]</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>However stopping an already stopped service (<code>Service[Stopped]</code>) is not valid, and will not compile. Notice the printed type bounds!</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Similarly, starting an already started service (<code>Service[Started]</code>) is not valid, and will not compile. Notice the printed type bounds!</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Turns out that the type of this newly created ServiceHandle is not only <code>ServiceHandle</code> but&#8230;
-<code>ServiceHandle with Stopped</code>. It may seem underwhelming at first that "that&#8217;s it",
-but let&#8217;s move on to the <code>start</code> and <code>stop</code> commands to see why this us so nice interesting.</p>
+<p>As you see, Phantom Types are yet another great facility to make our code even more type-safe (or shall I say "state-safe"!?).</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">def</span> <span class="tok-n">start</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-k">:</span> <span class="tok-kt">ServiceHandle</span> <span class="tok-kt">with</span> <span class="tok-kt">Stopped</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">{</span>
-  <span class="tok-n">s</span><span class="tok-o">.</span><span class="tok-n">start</span><span class="tok-o">()</span>
-  <span class="tok-k">new</span> <span class="tok-nc">ServiceHandle</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-o">.</span><span class="tok-n">id</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-nc">Running</span>
-<span class="tok-o">}</span>
-</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>And we can do the same for stopping a Service. Other useful methods would be,
-<code>Id =&gt; Either[ServiceHandle with Stopped, ServiceHandle with Running]</code> which&#8217;s implementation you can easily imagine.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">def</span> <span class="tok-n">stop</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-k">:</span> <span class="tok-kt">ServiceHandle</span> <span class="tok-kt">with</span> <span class="tok-kt">Running</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">{</span>
-  <span class="tok-n">s</span><span class="tok-o">.</span><span class="tok-n">stop</span><span class="tok-o">()</span>
-  <span class="tok-k">new</span> <span class="tok-nc">ServiceHandle</span><span class="tok-o">(</span><span class="tok-n">s</span><span class="tok-o">.</span><span class="tok-n">id</span><span class="tok-o">)</span> <span class="tok-k">with</span> <span class="tok-nc">Stopped</span>
-<span class="tok-o">}</span>
-</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>TODO MAKE BETTER EXAMPLES</p>
-</div>
-<div class="paragraph">
-<p>Fun Java Fact: A similar end-result - failing during compilation - can also be done in Java, using annotation processors and Annotated types (you should check out Adam Warski&#8217;s example on this if you&#8217;re curious).</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you&#8217;re curious where these things are used in "not very crazy libraries", a great example here is <a href="http://github.com/foursquare/rogue">Foursquare Rogue</a> (the MongoDB query DSL) where it&#8217;s used to assure a query builder is in the right state - for example that <code>limit(3)</code> was called on it.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>

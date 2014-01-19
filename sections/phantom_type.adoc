@@ -1,76 +1,85 @@
 == Phantom Type +++<span style="color:red">&#x2717;</span>+++
 
-WARNING: TODO, needs a lot more love. For example "really phantom types" are not explained at all -- those that we never construct.
+Phantom Types are, very true to it's name (even if it's a weird one), and can be explained as "Types that are not instanciated, ever".
+Instead of using them directly, we use them to even more strictly enforce some logic, using our types.
 
+The example we'll look at is a `Service` class, which has `start` and `stop` methods. Now we want to guarantee that you cannot (the type system won't allow you to) start an already started service, and vice-versa.
+
+Let's start with preparing our "marker traits", which don't contain any logic - we will only use them in order to express the state of an service in it's type:
 
 ```scala
-trait Started
-trait Stopped
-trait StartStopState
-trait Started extends StartStopState
-trait Stopped extends StartStopState
+sealed trait ServiceState
+final class Started extends ServiceState
+final class Stopped extends ServiceState
+```
 
-class Service[State <: StartStopState] {
-  def start[T >: State <: Stopped] = this.asInstanceOf[Service[Started]]
+Note that making the `ServiceState` trait `sealed` assures that no-one can suddenly add another state to our system.
+We also define the leaf types here to be final, so no-one can extend them, and add other states to the system.
+
+[NOTE]
+====
+*The `sealed` keyword*
+
+`sealed` makes sure that all classes that extend a class or trait are defined in the same compilation unit. For example, if you define `sealed trait State` and a few state implementations in the file _State.scala_ it'll work, however you cannot extends `State` from another file (like _MyStates.scala_).
+
+Note that this applies directly to the Type the keyword was applied to, not to it's subtypes.
+So you cannot extend State from other files, but if you prepare a type like `trait UserDefinedState extends State` 
+users will still be able to define more sub-types of `UserDefinedState`, even from other files.
+If you want to prevent this from happening, you should make your sub-types `final`, like we do in this example.
+====
+
+Having those prepared, let's finally dive in into using them as Phantom Types.
+First let's define a class Service, which takes `State` type parameter - notice here that we _don't use any value of type S_ in this class_!
+It's just there, unused, like a ghost, or _Phantom_ - which is where it's name comes from.
+
+```scala
+class Service[State <: ServiceState] private () {
+  def start[T >: State <: Stopped]() = this.asInstanceOf[Service[Started]]
+  def stop[T >: State <: Started]() = this.asInstanceOf[Service[Stopped]]
 }
-val x = new Serice[Stopped]()
-val x = new Service[Stopped]()
-x.start
-res1.start
-```
-
-Now we're starting to get into the more interesting Types! :-)
-
-Phantom Types are a mean of staticly validating your sources, during compile time.
-It's used in many libraries, to prevent you from using some API, with an object in "not the right state".
-
-To set the stage for our Phantom Type usage let's first define a `ServiceHandle` class,
-and `trait`s to represent the state it is in. We want to prevent users of our API from calling `stop()` on an already
-`Stopped` instance, as well as prevent them from calling `start()` on an already `Running` instance.
-
-```scala
-// the traits are expected to be only used with our ServiceHandle,
-// which we nicely express using Self Type Annotations.
-trait Stopped { this: ServiceHandle => }
-trait Running { this: ServiceHandle => }
-```
-
-Now that we have our Types prepared, let's look at how the implementation will look like:
-
-```scala
-class ServiceHandle private (id: Id)
-object ServiceHandle {
-  def create(id: Id) = new ServiceHandle(id) with Stopped
+object Service {
+  def create() = new Service[Stopped]
 }
 ```
 
-Here, during instanciation of the class, we mix in the `Stopped` trait right away.
-We've used this trick before in this blog post (series), but now it's finally time to explain it in detail.
+So in the companion object we create a new instance of the Service, at first it is `Stopped`.
+The Stopped state conforms to the type bounds of the type parameter (`<: ServiceState`) so it's all good.
 
-Turns out that the type of this newly created ServiceHandle is not only `ServiceHandle` but...
-`ServiceHandle with Stopped`. It may seem underwhelming at first that "that's it",
-but let's move on to the `start` and `stop` commands to see why this us so nice interesting.
+The interesting things happen when we want to start / stop an existing Service. The Type bounds defined on the start method for example,
+are only valid for one value of `T`, which is `Stopped`. The transistion to the opposite state is a no-op in our example, we return the same instance,
+and explicitly cast it into the required state. Since nothing is actualy using this type, you won't bump into class cast exceptions during this conversion.
 
-```scala
-def start(s: ServiceHandle with Stopped) = {
-  s.start()
-  new ServiceHandle(s.id) with Running
-}
-```
+Let's now investigate the above code using the REPL, which will act as a nice finisher for this section.
 
-And we can do the same for stopping a Service. Other useful methods would be,
-`Id => Either[ServiceHandle with Stopped, ServiceHandle with Running]` which's implementation you can easily imagine.
+[source,scala]
+----
+scala> val initiallyStopped = Service.create() <1>
+initiallyStopped: Service[Stopped] = Service@337688d3
 
-```scala
-def stop(s: ServiceHandle with Running) = {
-  s.stop()
-  new ServiceHandle(s.id) with Stopped
-}
-```
+scala> val started = initiallyStopped.start()  <2>
+started: Service[Started] = Service@337688d3
 
-TODO MAKE BETTER EXAMPLES
+scala> val stopped = started.stop()            <3>
+stopped: Service[Stopped] = Service@337688d3
 
+scala> stopped.stop()                          <4>
+<console>:16: error: inferred type arguments [Stopped] do not conform to method stop's 
+                     type parameter bounds [T >: Stopped <: Started]
+              stopped.stop()
+                      ^
 
+scala> started.start()                         <5>
+<console>:15: error: inferred type arguments [Started] do not conform to method start's 
+                     type parameter bounds [T >: Started <: Stopped]
+              started.start()
+----
+<1> Here we create the initial instance, it starts in `Stopped` state
+<2> Starting a `Stopped` service is OK, returned type is `Service[Started]`
+<3> Stopping a `Started` service is OK, returned type is `Service[Stopped]`
+<4> However stopping an already stopped service (`Service[Stopped]`) is not valid, and will not compile. Notice the printed type bounds!
+<5> Similarly, starting an already started service (`Service[Started]`) is not valid, and will not compile. Notice the printed type bounds!
 
-Fun Java Fact: A similar end-result - failing during compilation - can also be done in Java, using annotation processors and Annotated types (you should check out Adam Warski's example on this if you're curious).
+As you see, Phantom Types are yet another great facility to make our code even more type-safe (or shall I say "state-safe"!?).
+
+TIP: If you're curious where these things are used in "not very crazy libraries", a great example here is http://github.com/foursquare/rogue[Foursquare Rogue] (the MongoDB query DSL) where it's used to assure a query builder is in the right state - for example that `limit(3)` was called on it.
 
