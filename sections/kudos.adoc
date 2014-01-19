@@ -16,6 +16,7 @@ Obviously this vademecum required quite a bit of reseach and double-checking, so
 * One of the first blogs about Phantom Types in Scala: http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html
 * Rogue (where I occasionally PullRequest too) is a great example of using Phantom Types: http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/
 * *James Iry* and his blog post about http://james-iry.blogspot.co.uk/2010/10/phantom-types-in-haskell-and-scala.html[Phantom Types in Haskell and Scala]
+* One of the earliest blog posts in the Scala community (I think) about Phantom Types by *Rafael Ferreira* http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html[Type Safe Builder Pattern in Scala]
 * Great StackOverflow answer by **Kriss Nuttycombe** about Type Lambdas: http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits
 * Foursquare blog about use of Phantom Types in their Rogue Library http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/
 * The :kind pull request to `scala`, by Adriaan Moors https://github.com/scala/scala/pull/2340
