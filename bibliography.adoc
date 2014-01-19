@@ -1,3 +1,8 @@
+== Bibliography
+
+WARNING: I'm trying to move all links to bibliography style.
+
 [bibliography]
 - [[[enumeration-docs]]] http://www.scala-lang.org/api/current/index.html#scala.Enumeration
 - [[[enum-sip]]] https://docs.google.com/document/d/1mIKml4sJzezL_-iDJMmcAKmavHb9axjYJos_7UMlWJ8/edit
+
