@@ -11,17 +11,25 @@ First explain the good ol' Enumeration <<enumeration>>:
 ```scala
 object Main extends App {
 
-  object WeekDay extends Enumeration {
-    type WeekDay = Value
-    val Mon, Tue, Wed, Thu, Fri, Sat, Sun = Value
+  object WeekDay extends Enumeration {             <1>
+    type WeekDay = Value                           <2>
+    val Mon, Tue, Wed, Thu, Fri, Sat, Sun = Value  <3>
   }
-  import WeekDay._
+  import WeekDay._                                 <4>
 
   def isWorkingDay(d: WeekDay) = ! (d == Sat || d == Sun)
 
-  WeekDay.values filter isWorkingDay foreach println
+  WeekDay.values filter isWorkingDay foreach println <5>
 }
 ```
+<1> First we declare an object that will hold our enumeration values, it has to extend Enumeration.
+<2> Here we define an <<type-alias,Type Alias>> for Enumerations internal `Value` type, since we make the name match
+    the object's name, we'll be able to refer to it consistently via "WeekDay" (yes, this is pretty much a hack)
+<3> Here we use "multi assignment", so every val on the left-hand side gets assigned a different instance of Value. You could have written this as 7 val's.
+<4> This import causes two things, first we can refer to `Mon` without prefixing it with `WeekDay`, but it also brings the `type WeekDay` into scope, so we can use it in the method definition bellow
+<5> Lastly, we get some Enumeration methods. These are not really magic, most action happend when we create new Value instances
+
+TODO NEEDS MORE TEXT?
 
 === @enum
 
@@ -40,3 +48,4 @@ class Day {
   def goodDay: Boolean
 }
 ```
+
