@@ -1,23 +1,3 @@
-=== Reference and further reading
-
-Obviously this vademecum required quite a bit of reseach and double-checking, so here are all the links I've found helpful (and you might too).
-
-* Twitter's Scala School: http://twitter.github.io/scala_school quite a bit of Scala concepts. Which helped me a lot in nicely explaining Variance (nicest explanation I found, since "ever").
-* Very old, but still valid explanation of Universal Types: http://www.scala-lang.org/old/node/128
-* Existential Types by D.R. MacIver: http://www.drmaciver.com/2008/03/existential-types-in-scala/
-* Scala Doc: http://www.scala-lang.org/api/current/index.html
-* Great presentation about introducing `@specialized` to Scala 2.8, by Dragos: http://days2010.scala-lang.org/node/138/151/15-7-E%20-%20Specialization%20-%20Dragos.pdf[Scala Days 2010 - Specialization]
-* http://en.wikipedia.org/wiki/Diamond_problem#The_diamond_problem[Wikipedia on the Diamond Problem]
-* **Martin Odersky**'s and **Iulian Dragos**'s whitepaper about specialization http://infoscience.epfl.ch/record/150134[Compiling generics through user-directed type specialization]
-* http://blog.jooq.org/2013/06/28/the-dangers-of-correlating-subtype-polymorphism-with-generic-polymorphism/[The dangers of correlating subtype polymorphism with generic polymorphism] blog post
-* Safari Books online about Type Linearization: http://blog.safaribooksonline.com/2013/05/30/traits-how-scala-tames-multiple-inheritance/
-* One of the first blogs about Phantom Types in Scala: http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html
-* *James Iry* and his blog post about http://james-iry.blogspot.co.uk/2010/10/phantom-types-in-haskell-and-scala.html[Phantom Types in Haskell and Scala]
-* One of the earliest blog posts in the Scala community (I think) about Phantom Types by *Rafael Ferreira* http://blog.rafaelferreira.net/2008/07/type-safe-builder-pattern-in-scala.html[Type Safe Builder Pattern in Scala]
-* Great StackOverflow answer by **Kriss Nuttycombe** about Type Lambdas: http://stackoverflow.com/questions/8736164/what-are-type-lambdas-in-scala-and-what-are-their-benefits
-* Foursquare blog about use of Phantom Types in their Rogue Library http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/[Going Rogue part 2 - phantom types], by *Jason Liszka*
-* The :kind pull request to `scala`, by Adriaan Moors https://github.com/scala/scala/pull/2340
-
 === Thanks and kudos
 
 I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):
