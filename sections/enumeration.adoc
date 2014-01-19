@@ -1,0 +1,42 @@
+== Enumeration +++<span style="color:red">&#x2717;</span>+++
+
+Scala does not have a build in "enum" like Java does. 
+Instead we use a few tricks (embedded in Enumeration) to write something pretty similar.
+
+=== Enumeration
+WARNING: TODO write me :-)
+
+First explain the good ol' Enumeration <<enumeration>>:
+
+```scala
+object Main extends App {
+
+  object WeekDay extends Enumeration {
+    type WeekDay = Value
+    val Mon, Tue, Wed, Thu, Fri, Sat, Sun = Value
+  }
+  import WeekDay._
+
+  def isWorkingDay(d: WeekDay) = ! (d == Sat || d == Sun)
+
+  WeekDay.values filter isWorkingDay foreach println
+}
+```
+
+=== @enum
+
+Together with annotation macros, we may be getting the `@enum` annotation, which is descibed somewhat in the related Scala Improvement Process document: <<enum-sip>>.
+
+WARNING: TODO write me
+
+```scala
+@enum
+class Day {
+  Monday    { def goodDay = false }
+  Tuesday   { def goodDay = false }
+  Wednesday { def goodDay = false }
+  Thursday  { def goodDay = false }
+  Friday    { def goodDay = true  }
+  def goodDay: Boolean
+}
+```

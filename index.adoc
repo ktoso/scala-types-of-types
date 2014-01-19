@@ -32,6 +32,7 @@ include::sections/abstract_type_member.adoc[]
 include::sections/self_recursive_type.adoc[]
 include::sections/type_constructor.adoc[]
 include::sections/case_class.adoc[]
+include::sections/enumeration.adoc[]
 include::sections/value_class.adoc[]
 include::sections/type_class.adoc[]
 include::sections/universal_trait.adoc[]
@@ -46,6 +47,8 @@ include::sections/specialized_types.adoc[]
 include::sections/delayed_init.adoc[]
 include::sections/dynamic.adoc[]
 
+// todo: move to bibliography everywhere
+include::bibliography.adoc[]
 include::sections/kudos.adoc[]
 
 ++++
