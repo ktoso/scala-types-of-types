@@ -1,6 +1,6 @@
 == Phantom Type
 
-Phantom Types are, very true to it's name (even if it's a weird one), and can be explained as "Types that are not instanciated, ever".
+Phantom Types are very true to it's name even if it's a weird one, and can be explained as "Types that are not instantiate, ever".
 Instead of using them directly, we use them to even more strictly enforce some logic, using our types.
 
 The example we'll look at is a `Service` class, which has `start` and `stop` methods. Now we want to guarantee that you cannot (the type system won't allow you to) start an already started service, and vice-versa.
