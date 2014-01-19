@@ -31,9 +31,9 @@
 <li><a href="#refined-types-refinements">8. Refined Types (refinements)</a></li>
 <li><a href="#type-alias">9. Type Alias</a></li>
 <li><a href="#abstract-type-member">10. Abstract Type Member</a></li>
-<li><a href="#self-recursive-type-span-style-color-red-span">11. Self-Recursive Type <span style="color:red">&#x2717;</span></a></li>
-<li><a href="#type-constructor">12. Type Constructor</a></li>
-<li><a href="#higher-order-kind">13. Higher-Order Kind</a></li>
+<li><a href="#self-recursive-type">11. Self-Recursive Type</a></li>
+<li><a href="#type-constructor-span-style-color-red-span">12. Type Constructor <span style="color:red">&#x2717;</span></a></li>
+<li><a href="#higher-order-kind-span-style-color-red-span">13. Higher-Order Kind <span style="color:red">&#x2717;</span></a></li>
 <li><a href="#case-class">14. Case Class</a></li>
 <li><a href="#value-class">15. Value Class</a></li>
 <li><a href="#type-class-span-style-color-red-span">16. Type Class <span style="color:red">&#x2717;</span></a></li>
@@ -49,7 +49,7 @@
 <li>
 <ul class="sectlevel2">
 <li><a href="#specialized">25.1. @specialized</a></li>
-<li><a href="#miniboxing">25.2. Miniboxing</a></li>
+<li><a href="#miniboxing-span-style-color-red-span">25.2. Miniboxing <span style="color:red">&#x2717;</span></a></li>
 </ul>
 </li>
 <li><a href="#delayed-init">26. Delayed Init</a></li>
@@ -707,7 +707,7 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="sect1">
-<h2 id="self-recursive-type-span-style-color-red-span"><a class="anchor" href="#self-recursive-type-span-style-color-red-span"></a>11. Self-Recursive Type <span style="color:red">&#x2717;</span></h2>
+<h2 id="self-recursive-type"><a class="anchor" href="#self-recursive-type"></a>11. Self-Recursive Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>While this not being a Scala specific type, it still sometimes raises a few eyebrows. One example of a self-recursive type many of us are (perhaps unknowingly) familiar with, is Java&#8217;s <code>Enum&lt;E&gt;</code>, if you&#8217;re curious about it, check out the <a href="http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Enum.java">Enum sources from Java</a>. But now back to Scala and first let&#8217;s see what we&#8217;re actually talking about.</p>
@@ -793,7 +793,7 @@ You could get the same type-safety using more fancy tricks, like path dependent 
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-constructor"><a class="anchor" href="#type-constructor"></a>12. Type Constructor</h2>
+<h2 id="type-constructor-span-style-color-red-span"><a class="anchor" href="#type-constructor-span-style-color-red-span"></a>12. Type Constructor <span style="color:red">&#x2717;</span></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Type Constructors act pretty much like functions, but on the type level.
@@ -843,7 +843,7 @@ We refer to them as <strong>first-order kinds</strong> (<code>* -&gt; *</code>).
 </div>
 </div>
 <div class="sect1">
-<h2 id="higher-order-kind"><a class="anchor" href="#higher-order-kind"></a>13. Higher-Order Kind</h2>
+<h2 id="higher-order-kind-span-style-color-red-span"><a class="anchor" href="#higher-order-kind-span-style-color-red-span"></a>13. Higher-Order Kind <span style="color:red">&#x2717;</span></h2>
 <div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
@@ -1701,7 +1701,7 @@ A prime example why we want to avoid boxing is also memory efficiency. Imagine a
 </div>
 </div>
 <div class="sect2">
-<h3 id="miniboxing"><a class="anchor" href="#miniboxing"></a>25.2. Miniboxing</h3>
+<h3 id="miniboxing-span-style-color-red-span"><a class="anchor" href="#miniboxing-span-style-color-red-span"></a>25.2. Miniboxing <span style="color:red">&#x2717;</span></h3>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -2180,7 +2180,7 @@ $(document).ready(function() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2013-12-22 00:20:24 CET
+Last updated 2013-12-21 23:20:24 GMT
 </div>
 </div>
 </body>
