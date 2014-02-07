@@ -15,7 +15,14 @@ trait SimplestContainer {
 
 Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about <<path-dependent-type, Path Dependent Types>>, as well as in the below example.
 
-todo; Then, this is how we would implement this trait:
+It is important to notice that while in the naming contains the word "abstract", it does not behave exactly like an abstract field - so you can still create a new instance of `SimplestContainer` without "implementing" the type member `A`:
+
+```scala
+new SimplestContainer // valid, but A is "anything"
+```
+
+You might be wondering what type `A` was bound to, since we didn't provide any information about it anywhere.
+Turns out `type A` is actualy just a shorthand for `type A >: Nothing <: Any`, which means "anything".
 
 ```scala
 object IntContainer extends SimplestContainer {
@@ -25,6 +32,39 @@ object IntContainer extends SimplestContainer {
 }
 ```
 
-So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as its type is known.
+So we "provide the type" using a <<type-alias, Type Alias>>, and now we can implement the value method which returns an `Int`.
+
+The more interesting uses of Abstract Type Members start when we apply constraints to them. For example imagine you want to have a container that can only store `Number` instances. Such constraint can be annotated on a type member right where we defined it first:
+
+```scala
+trait OnlyNumbersContainer {
+  type A >: Number
+  def value: A
+}
+```
+
+Or we can add constraints later on in the class hierarchy, for example by mixing in a trait that states "only Numbers":
+
+```scala
+trait SimpleContainer {
+  type A
+  def value: A
+}
+
+trait OnlyNumbers {
+  type A >: Number
+}
+
+val ints = new SimpleContainer with OnlyNumbers {
+  def value = 12
+}
+
+// bellow won't compile
+val _ = new SimpleContainer with OnlyNumbers {
+  def value = "" // error: type mismatch; found: String(""); required: this.A
+}
+```
+
+So, as you can see we can use Abstract Type members, in similar situations like we use Type Parameters, but without the pain of having to pass them around explicitly all the time - the passing around happens because it is a field. The price paid here though is that we bind those types by-name.
 
 

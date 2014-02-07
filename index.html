@@ -705,7 +705,17 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 <p>Which for Java folks may seem very similar to the <code>Container&lt;A&gt;</code> syntax at first, but it&#8217;s a bit more powerful as we&#8217;ll see in the section about <a href="#path-dependent-type">Path Dependent Types</a>, as well as in the below example.</p>
 </div>
 <div class="paragraph">
-<p>todo; Then, this is how we would implement this trait:</p>
+<p>It is important to notice that while in the naming contains the word "abstract", it does not behave exactly like an abstract field - so you can still create a new instance of <code>SimplestContainer</code> without "implementing" the type member <code>A</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">new</span> <span class="tok-nc">SimplestContainer</span> <span class="tok-c1">// valid, but A is &quot;anything&quot;</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You might be wondering what type <code>A</code> was bound to, since we didn&#8217;t provide any information about it anywhere.
+Turns out <code>type A</code> is actualy just a shorthand for <code>type A &gt;: Nothing &lt;: Any</code>, which means "anything".</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -718,7 +728,47 @@ It&#8217;s most basic function is allowing us to define generic classes (templat
 </div>
 </div>
 <div class="paragraph">
-<p>So we "provide the type" using a Type Alias on line 2 here, and now we can implement the value method, as its type is known.</p>
+<p>So we "provide the type" using a <a href="#type-alias">Type Alias</a>, and now we can implement the value method which returns an <code>Int</code>.</p>
+</div>
+<div class="paragraph">
+<p>The more interesting uses of Abstract Type Members start when we apply constraints to them. For example imagine you want to have a container that can only store <code>Number</code> instances. Such constraint can be annotated on a type member right where we defined it first:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">OnlyNumbersContainer</span> <span class="tok-o">{</span>
+  <span class="tok-k">type</span> <span class="tok-kt">A</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">Number</span>
+  <span class="tok-k">def</span> <span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">A</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or we can add constraints later on in the class hierarchy, for example by mixing in a trait that states "only Numbers":</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">SimpleContainer</span> <span class="tok-o">{</span>
+  <span class="tok-k">type</span> <span class="tok-kt">A</span>
+  <span class="tok-k">def</span> <span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">A</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">trait</span> <span class="tok-nc">OnlyNumbers</span> <span class="tok-o">{</span>
+  <span class="tok-k">type</span> <span class="tok-kt">A</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">Number</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">val</span> <span class="tok-n">ints</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">SimpleContainer</span> <span class="tok-k">with</span> <span class="tok-nc">OnlyNumbers</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">value</span> <span class="tok-k">=</span> <span class="tok-mi">12</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c1">// bellow won&#39;t compile</span>
+<span class="tok-k">val</span> <span class="tok-k">_</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">SimpleContainer</span> <span class="tok-k">with</span> <span class="tok-nc">OnlyNumbers</span> <span class="tok-o">{</span>
+  <span class="tok-k">def</span> <span class="tok-n">value</span> <span class="tok-k">=</span> <span class="tok-s">&quot;&quot;</span> <span class="tok-c1">// error: type mismatch; found: String(&quot;&quot;); required: this.A</span>
+<span class="tok-o">}</span>
+</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, as you can see we can use Abstract Type members, in similar situations like we use Type Parameters, but without the pain of having to pass them around explicitly all the time - the passing around happens because it is a field. The price paid here though is that we bind those types by-name.</p>
 </div>
 </div>
 </div>
