@@ -1,21 +1,19 @@
-== Enumeration +++<span style="color:red">&#x2717;</span>+++
+== Enumeration
 
 Scala does not have a build in "enum" like Java does. 
 Instead we use a few tricks (embedded in Enumeration) to write something pretty similar.
 
 === Enumeration
-WARNING: TODO write me :-)
-
-First explain the good ol' Enumeration <<enumeration>>:
+The current (2.10.x) way of implementing an enum-like structure is by using the `Enumeration` class that comes with Scala:
 
 ```scala
 object Main extends App {
 
-  object WeekDay extends Enumeration {             <1>
-    type WeekDay = Value                           <2>
-    val Mon, Tue, Wed, Thu, Fri, Sat, Sun = Value  <3>
+  object WeekDay extends Enumeration {               <1>
+    type WeekDay = Value                             <2>
+    val Mon, Tue, Wed, Thu, Fri, Sat, Sun = Value    <3>
   }
-  import WeekDay._                                 <4>
+  import WeekDay._                                   <4>
 
   def isWorkingDay(d: WeekDay) = ! (d == Sat || d == Sun)
 
@@ -29,13 +27,14 @@ object Main extends App {
 <4> This import causes two things, first we can refer to `Mon` without prefixing it with `WeekDay`, but it also brings the `type WeekDay` into scope, so we can use it in the method definition bellow
 <5> Lastly, we get some Enumeration methods. These are not really magic, most action happend when we create new Value instances
 
-TODO NEEDS MORE TEXT?
+As you can see, it's actually not a built-in and is implemented by smartly using the Scala type system to make it look like an enum.
+For some uses this may be enough but it's not as rich as the Java enum, where adding values and behavior to each case is possible.
 
 === @enum
 
-Together with annotation macros, we may be getting the `@enum` annotation, which is descibed somewhat in the related Scala Improvement Process document: <<enum-sip>>.
+WARNING: The `@enum` annotation is currently only a proposal, and is being discussed on scala-internals in the thread: https://groups.google.com/forum/#!topic/scala-internals/8RWkccSRBxQ%5B101-125-false%5D[enumeration must die].
 
-WARNING: TODO write me
+Together with annotation macros which are coming in the future, we may be getting the `@enum` annotation, which is descibed somewhat in the related Scala Improvement Process document: <<enum-sip>>.
 
 ```scala
 @enum

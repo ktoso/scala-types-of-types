@@ -36,10 +36,10 @@
 <li><a href="#type-constructor-span-style-color-red-span">13. Type Constructor <span style="color:red">&#x2717;</span></a></li>
 <li><a href="#higher-order-kind-span-style-color-red-span">14. Higher-Order Kind <span style="color:red">&#x2717;</span></a></li>
 <li><a href="#case-class">15. Case Class</a></li>
-<li><a href="#enumeration-span-style-color-red-span">16. Enumeration <span style="color:red">&#x2717;</span></a></li>
+<li><a href="#enumeration">16. Enumeration</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#enumeration">16.1. Enumeration</a></li>
+<li><a href="#enumeration-2">16.1. Enumeration</a></li>
 <li><a href="#enum">16.2. @enum</a></li>
 </ul>
 </li>
@@ -1039,38 +1039,26 @@ This means that by defining a case class we automatically get these benefits:</p
 </div>
 </div>
 <div class="sect1">
-<h2 id="enumeration-span-style-color-red-span"><a class="anchor" href="#enumeration-span-style-color-red-span"></a>16. Enumeration <span style="color:red">&#x2717;</span></h2>
+<h2 id="enumeration"><a class="anchor" href="#enumeration"></a>16. Enumeration</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Scala does not have a build in "enum" like Java does.
 Instead we use a few tricks (embedded in Enumeration) to write something pretty similar.</p>
 </div>
 <div class="sect2">
-<h3 id="enumeration"><a class="anchor" href="#enumeration"></a>16.1. Enumeration</h3>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-TODO write me :-)
-</td>
-</tr>
-</table>
-</div>
+<h3 id="enumeration-2"><a class="anchor" href="#enumeration-2"></a>16.1. Enumeration</h3>
 <div class="paragraph">
-<p>First explain the good ol' Enumeration <a href="#enumeration">Enumeration</a>:</p>
+<p>The current (2.10.x) way of implementing an enum-like structure is by using the <code>Enumeration</code> class that comes with Scala:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">object</span> <span class="tok-nc">Main</span> <span class="tok-k">extends</span> <span class="tok-nc">App</span> <span class="tok-o">{</span>
 
-  <span class="tok-k">object</span> <span class="tok-nc">WeekDay</span> <span class="tok-k">extends</span> <span class="tok-nc">Enumeration</span> <span class="tok-o">{</span>             <i class="conum" data-value="1"></i><b>(1)</b>
-    <span class="tok-k">type</span> <span class="tok-kt">WeekDay</span> <span class="tok-o">=</span> <span class="tok-nc">Value</span>                           <i class="conum" data-value="2"></i><b>(2)</b>
-    <span class="tok-k">val</span> <span class="tok-nc">Mon</span><span class="tok-o">,</span> <span class="tok-nc">Tue</span><span class="tok-o">,</span> <span class="tok-nc">Wed</span><span class="tok-o">,</span> <span class="tok-nc">Thu</span><span class="tok-o">,</span> <span class="tok-nc">Fri</span><span class="tok-o">,</span> <span class="tok-nc">Sat</span><span class="tok-o">,</span> <span class="tok-nc">Sun</span> <span class="tok-k">=</span> <span class="tok-nc">Value</span>  <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="tok-k">object</span> <span class="tok-nc">WeekDay</span> <span class="tok-k">extends</span> <span class="tok-nc">Enumeration</span> <span class="tok-o">{</span>               <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="tok-k">type</span> <span class="tok-kt">WeekDay</span> <span class="tok-o">=</span> <span class="tok-nc">Value</span>                             <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="tok-k">val</span> <span class="tok-nc">Mon</span><span class="tok-o">,</span> <span class="tok-nc">Tue</span><span class="tok-o">,</span> <span class="tok-nc">Wed</span><span class="tok-o">,</span> <span class="tok-nc">Thu</span><span class="tok-o">,</span> <span class="tok-nc">Fri</span><span class="tok-o">,</span> <span class="tok-nc">Sat</span><span class="tok-o">,</span> <span class="tok-nc">Sun</span> <span class="tok-k">=</span> <span class="tok-nc">Value</span>    <i class="conum" data-value="3"></i><b>(3)</b>
   <span class="tok-o">}</span>
-  <span class="tok-k">import</span> <span class="tok-nn">WeekDay._</span>                                 <i class="conum" data-value="4"></i><b>(4)</b>
+  <span class="tok-k">import</span> <span class="tok-nn">WeekDay._</span>                                   <i class="conum" data-value="4"></i><b>(4)</b>
 
   <span class="tok-k">def</span> <span class="tok-n">isWorkingDay</span><span class="tok-o">(</span><span class="tok-n">d</span><span class="tok-k">:</span> <span class="tok-kt">WeekDay</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-o">!</span> <span class="tok-o">(</span><span class="tok-n">d</span> <span class="tok-o">==</span> <span class="tok-nc">Sat</span> <span class="tok-o">||</span> <span class="tok-n">d</span> <span class="tok-o">==</span> <span class="tok-nc">Sun</span><span class="tok-o">)</span>
 
@@ -1104,14 +1092,12 @@ the object&#8217;s name, we&#8217;ll be able to refer to it consistently via "We
 </table>
 </div>
 <div class="paragraph">
-<p>TODO NEEDS MORE TEXT?</p>
+<p>As you can see, it&#8217;s actually not a built-in and is implemented by smartly using the Scala type system to make it look like an enum.
+For some uses this may be enough but it&#8217;s not as rich as the Java enum, where adding values and behavior to each case is possible.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="enum"><a class="anchor" href="#enum"></a>16.2. @enum</h3>
-<div class="paragraph">
-<p>Together with annotation macros, we may be getting the <code>@enum</code> annotation, which is descibed somewhat in the related Scala Improvement Process document: <a href="#enum-sip">[enum-sip]</a>.</p>
-</div>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -1119,10 +1105,13 @@ the object&#8217;s name, we&#8217;ll be able to refer to it consistently via "We
 <i class="icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-TODO write me
+The <code>@enum</code> annotation is currently only a proposal, and is being discussed on scala-internals in the thread: <a href="https://groups.google.com/forum/#!topic/scala-internals/8RWkccSRBxQ%5B101-125-false%5D">enumeration must die</a>.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Together with annotation macros which are coming in the future, we may be getting the <code>@enum</code> annotation, which is descibed somewhat in the related Scala Improvement Process document: <a href="#enum-sip">[enum-sip]</a>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
