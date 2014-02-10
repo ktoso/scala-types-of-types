@@ -1,0 +1,11 @@
+== Patronus Type
+
+INFO: Discovered by Eugene, on this blog post:
+
+While not being a specific "type of type", the Patronus Type is a very interesting application of Scala's trait linearization as well as constraints applied to Abstract Type Members.
+
+The example shown by Eugene goes like this:
+
+```scala
+
+```
