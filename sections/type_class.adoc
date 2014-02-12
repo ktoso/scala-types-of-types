@@ -1,15 +1,42 @@
 == Type Class +++<span style="color:red">&#x2717;</span>+++
 
+Type Classes belong to the most powerful patterns available to use in Scala, and can be summed up (if you like fancy wording) as "ad-hoc polimorphism" which should be understandable once we get to the end of this section.
+
+The typical problem Type Classes solve for us is providing extensible APIs without explicitly binding two classes together.
+An example of such a strict binding, we would be able to avoid using Type Classes, is for example extending the Java `Comparable` interface,
+in order to make our custom data type sortable:
+
 ```scala
-trait Writes[In, Out] {
-  def write(it: In): Out
+// no type classes yet
+trait Writeable[Out] {
+  def write: Out
 }
 
-implicit val jsonWriter = new Writes[Person, Json] {
-  def write(p: Person) = Json.toJson(p)
-}
-
-implicit class Writeable[A] {
-  def write[B](implicit writes: Writes[A, B])
+case class Num(a: Int, b: Int) extends Writeable[Json] {
+  def write = Json.toJson(this)
 }
 ```
+
+Using this style, of just extending and implementing an interface, we have bound our `Num` to `Comparable` and also, we had to provide the implementation for `write`, "right there, right now", which makes it harder for others to provide a different `compareTo` implementation - they would have to subclass `Num`! Another pain point here is that we cannot extend two times from the same trait, providing different serialization targets (you can't both extend `Writeable[Json]` and `Writeable[Protobuf]`).
+
+All these problems can be addressed by using a Type Class based aproach instead of directly extending `Writeable[Out]`. Let's give it a shot, and explain in detail how this is actually working:
+
+```scala
+trait Writes[In, Out] {                                               <1>
+  def write(in: In): Out 
+}
+
+trait Writeable[Self] {                                               <2>
+  def write[Out]()(implicit writes: Writes[Self, Out]): Out = 
+    writes write this
+}
+
+implicit val jsonNum = CanWrite[Num, Json] {                          <3>
+  def (n1: Num, n2: Num) = n1.a < n1.
+}
+
+case class Num(a: Int) extends Writeable[Num]
+```
+<1> First we define out Type Class, it's API is similar to the previous `Writeable` trait we, but instead of mixing it into a class that will be written, we will keep it separate, and in oder to know what it's defined _for_ we use the `Self` <<Type Parameter, type-parameter>>
+<2> Next we change our `Writeable` trait to be parameterized with `Self` and the target serialization type is moved onto the signature of `write`. It also now requires an implicit `Writes[Self, Out]` implementation, which handles the serializing - that's how our Type Class.
+<3> This is the actual implementation of the Type Class, notice that we mark the instance as `implicit`, so it's available for the `write()(implicit Writes[_, _])` method
