@@ -29,7 +29,7 @@
 </ul>
 </li>
 <li><a href="#refined-types-refinements">8. Refined Types (refinements)</a></li>
-<li><a href="#package-object-span-style-color-red-span">9. Package Object  <span style="color:red">&#x2717;</span></a></li>
+<li><a href="#package-object">9. Package Object</a></li>
 <li><a href="#type-alias">10. Type Alias</a></li>
 <li><a href="#abstract-type-member">11. Abstract Type Member</a></li>
 <li><a href="#self-recursive-type">12. Self-Recursive Type</a></li>
@@ -650,10 +650,50 @@ Also it&#8217;s rather easy to resolve the simpler cases of linearization by jus
 </div>
 </div>
 <div class="sect1">
-<h2 id="package-object-span-style-color-red-span"><a class="anchor" href="#package-object-span-style-color-red-span"></a>9. Package Object  <span style="color:red">&#x2717;</span></h2>
+<h2 id="package-object"><a class="anchor" href="#package-object"></a>9. Package Object</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Todo explain those</p>
+<p>Package Objects have been added to Scala in 2.8 <a href="#package-object">Package Object</a> and do not really extend the type system as such,
+but they provide an pretty useful pattern for "importing a bunch of stuff together" as well as being one of the places
+the compiler will look for implicit values.</p>
+</div>
+<div class="paragraph">
+<p>Declaring a package object is as simple as using the keywords <code>package</code> and <code>object</code> in conjunction, such as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="asciidoc language-asciidoc">// src/main/scala/com/garden/apples/package.scala
+
+package com.garden
+
+package object apples extends RedApples with GreenApples {
+  val redApples = List(red1, red2)
+  val greenApples = List(green1, green2)
+}
+
+trait RedApples {
+  val red1, red2 = "red"
+}
+
+trait GreenApples {
+  val green1, green2 = "green"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s a custom to put package object&#8217;s in a file called <code>package.scala</code> into the package they&#8217;re the object for. Investigate the above example&#8217;s
+source path and package to see what that means.</p>
+</div>
+<div class="paragraph">
+<p>On the usage side, you get the real gains, because when you import "the package", you import any state that is defined in the package side along with it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">import</span> <span class="tok-nn">com.garden.apples._</span>
+
+<span class="tok-n">redApples</span> <span class="tok-n">foreach</span> <span class="tok-n">println</span>
+</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -2324,7 +2364,10 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 <p><a id="patronus-type"></a>[patronus-type] Eugene Yakota&#8217;s <a href="http://eed3si9n.com/constraining-class-linearization-in-Scala">constraining class linearization in scala</a>, where he discovers "patronus type" pattern</p>
 </li>
 <li>
-<p><a id="the-flying-sandwich-part"></a>[the-flying-sandwich-part] Eugene Yakota&#8217;s tips for Scala patterns and development <a href="http://eed3si9n.com/node/139">Scala: The flying sandwich parts</a>
+<p><a id="the-flying-sandwich-part"></a>[the-flying-sandwich-part] Eugene Yakota&#8217;s tips for Scala patterns and development <a href="http://eed3si9n.com/node/139">Scala: The flying sandwich parts</a></p>
+</li>
+<li>
+<p><a id="package-object"></a>[package-object] Martin Odersky, Lex Spoon - <a href="http://www.scala-lang.org/docu/files/packageobjects/packageobjects.html">Package Objects</a> site (2010)
 === Thanks and kudos</p>
 </li>
 </ul>

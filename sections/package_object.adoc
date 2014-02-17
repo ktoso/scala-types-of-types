@@ -1,3 +1,37 @@
-== Package Object  +++<span style="color:red">&#x2717;</span>+++
-Todo explain those 
+== Package Object
+Package Objects have been added to Scala in 2.8 <<package-object>> and do not really extend the type system as such,
+but they provide an pretty useful pattern for "importing a bunch of stuff together" as well as being one of the places
+the compiler will look for implicit values.
+
+Declaring a package object is as simple as using the keywords `package` and `object` in conjunction, such as:
+
+```
+// src/main/scala/com/garden/apples/package.scala
+
+package com.garden
+
+package object apples extends RedApples with GreenApples {
+  val redApples = List(red1, red2)
+  val greenApples = List(green1, green2)
+}
+
+trait RedApples {
+  val red1, red2 = "red"
+}
+
+trait GreenApples {
+  val green1, green2 = "green"
+}
+```
+
+It's a custom to put package object's in a file called `package.scala` into the package they're the object for. Investigate the above example's 
+source path and package to see what that means.
+
+On the usage side, you get the real gains, because when you import "the package", you import any state that is defined in the package side along with it:
+
+```scala
+import com.garden.apples._
+
+redApples foreach println
+```
 
