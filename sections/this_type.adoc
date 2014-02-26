@@ -1,0 +1,13 @@
+== this.type
+This seamingly not very useful Type is surprisingly useful when combined with complicated types you might need to pass around,
+and might even be unaware of what the exact type of your `this` will be in the place you're exposing it.
+
+Let's look at an example of two totally separate traits, `Openable` and `Closable`. They are not related with each other.
+
+```scala
+// imagine they do something ;-)
+trait Openable { def open(): Openable = this }
+trait Closable { def close(): Closable = this }
+```
+
+Now you might want to write a method, that leverages the fact that something, is the type o
