@@ -127,7 +127,7 @@ object MagicBox extends Dynamic {
 }
 ```
 
-Using this <strong>Dynamic</strong> "<strong>MagicBox</strong>" we can store items at arbitrary "fields" (well, they do seem like fields, even though they are not ;-)). An example run might look like:
+Using this `Dynamic` "*MagicBox*" we can store items at arbitrary "fields" (well, they do seem like fields, even though they are not ;-)). An example run might look like:
 
 ```scala
 scala> MagicBox.banana = "banana"
@@ -141,6 +141,5 @@ java.util.NoSuchElementException: key not found: unknown
 ```
 
 By the way... are you curious how Dynamic https://github.com/scala/scala/blob/master/src/library/scala/Dynamic.scala[(source code)] is implemented? The fun part here is that the trait Dynamic, does absolutely nothing by itself - it's "empty", just a marker interface. Obviously all the heavylifting (*call-site-rewriting*) is done by the compiler here.
-
 
 
