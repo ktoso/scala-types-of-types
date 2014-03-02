@@ -25,3 +25,4 @@ Obviously this vademecum required quite a bit of reseach and double-checking, so
 - [[[patronus-type]]] Eugene Yakota's http://eed3si9n.com/constraining-class-linearization-in-Scala[constraining class linearization in scala], where he discovers "patronus type" pattern
 - [[[the-flying-sandwich-part]]] Eugene Yakota's tips for Scala patterns and development http://eed3si9n.com/node/139[Scala: The flying sandwich parts]
 - [[[package-object]]] Martin Odersky, Lex Spoon - http://www.scala-lang.org/docu/files/packageobjects/packageobjects.html[Package Objects] site (2010)
+- [[[union-types-miles]]] Union Types explained by Miles Sabin http://www.chuusai.com/2011/06/09/scala-union-types-curry-howard/[Miles Sabin on Union Types]

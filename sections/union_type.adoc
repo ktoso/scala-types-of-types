@@ -1,0 +1,18 @@
+== Union Type
+
+Union types are the the opposit of Compound Types (in parameter types of methods for example). They can be best understood when you think of them as an union of two sets, which are some types. An example of an union type would be "Int or String" - so we've just created an union of Int and String types.
+
+In practice, what we want to achieve here, is to allow a method to compile, only if it is one or the other type, yet not have to write two method declarations for them.
+
+Miles Sabin explains this technique in depth on his blog (LINK IN BIBLIO, TODO)...
+
+TODO FINISH ME
+
+```scala
+type |∨|[T, U] = { type λ[X] = ¬¬[X] <:< (T ∨ U) }
+
+def size[T : (Int |∨| String)#λ](t : T) = t match {
+    case i : Int => i
+    case s : String => s.length
+}>>}}>>}
+```
