@@ -1,12 +1,16 @@
 == Union Type +++<span style="color:red">&#x2717;</span>+++
 
-Union types are exactly as the name implies, unions of two or more types. They can be best understood when you think of them as an union of two sets, which are some types. An example of an union type would be "Int or String" - so we've just created an union of Int and String types.
+WARNING: This is incomplete and work in progress, refer to Miles' blog (linked bellow) for full details though :-)
 
-In practice, what we want to achieve here, is to allow a method to compile, only if it is one or the other type, yet not have to write two method declarations for them.
+Let's start discussing this Type by remembering set theory, and viewing the already known construction `A with B` as "Intersection Type":
 
-Miles Sabin explains this technique in depth on his blog (LINK IN BIBLIO, TODO)...
+// TODO IMG
 
-TODO FINISH ME
+Why? Well, the only objects that conform to this type are those who have the `type A` **and** `type B`, so in set theory, this would be an intersection. On the other hand, let's think what an Union Type is then:
+
+// TODO IMG
+
+It's an union of these two sets, so set wise it's an `type A` **or** `type B`. Our task at hand is to introduce such type using Scala's type system. While not being a first-class construct in Scala (it's not built in) they are pretty easy to implement and use ourselfs. *Miles Sabin* explains this technique in depth in http://www.chuusai.com/2011/06/09/scala-union-types-curry-howard/[the blog post 'Unboxed union types in Scala via the Curry-Howard isomorphism'] if you're curious for an in-deptht explanation.
 
 ```scala
 type |∨|[T, U] = { type λ[X] = ¬¬[X] <:< (T ∨ U) }

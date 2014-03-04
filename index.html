@@ -1999,17 +1999,26 @@ TODO, there&#8217;s a project from withing EPFL to make specialization more effi
 <div class="sect1">
 <h2 id="union-type-span-style-color-red-span"><a class="anchor" href="#union-type-span-style-color-red-span"></a>27. Union Type <span style="color:red">&#x2717;</span></h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Union types are exactly as the name implies, unions of two or more types. They can be best understood when you think of them as an union of two sets, which are some types. An example of an union type would be "Int or String" - so we&#8217;ve just created an union of Int and String types.</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+This is incomplete and work in progress, refer to Miles' blog (linked bellow) for full details though :-)
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>In practice, what we want to achieve here, is to allow a method to compile, only if it is one or the other type, yet not have to write two method declarations for them.</p>
+<p>Let&#8217;s start discussing this Type by remembering set theory, and viewing the already known construction <code>A with B</code> as "Intersection Type":</p>
 </div>
 <div class="paragraph">
-<p>Miles Sabin explains this technique in depth on his blog (LINK IN BIBLIO, TODO)&#8230;</p>
+<p>Why? Well, the only objects that conform to this type are those who have the <code>type A</code> <strong>and</strong> <code>type B</code>, so in set theory, this would be an intersection. On the other hand, let&#8217;s think what an Union Type is then:</p>
 </div>
 <div class="paragraph">
-<p>TODO FINISH ME</p>
+<p>It&#8217;s an union of these two sets, so set wise it&#8217;s an <code>type A</code> <strong>or</strong> <code>type B</code>. Our task at hand is to introduce such type using Scala&#8217;s type system. While not being a first-class construct in Scala (it&#8217;s not built in) they are pretty easy to implement and use ourselfs. <strong>Miles Sabin</strong> explains this technique in depth in <a href="http://www.chuusai.com/2011/06/09/scala-union-types-curry-howard/">the blog post <em>Unboxed union types in Scala via the Curry-Howard isomorphism</em></a> if you&#8217;re curious for an in-deptht explanation.</p>
 </div>
 <div class="listingblock">
 <div class="content">
