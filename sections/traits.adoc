@@ -31,7 +31,7 @@ directly multiple inheritance:
 
 === Type Linearization vs. The Diamond Problem
 
-image::http://ktoso.github.io/scala-types-of-types/assets/img/220px-Diamond_inheritance.svg.png
+image::assets/img/220px-Diamond_inheritance.svg.png[Diamond Inheritance, align="center"]
 
 For the "diamond problem" to appear, it's enough if we have one overriding implementation in `B` or/and `C`. This introduces an ambiguity when calling the common method in `D`, did we inherit the version of the method from `C` or from `B`? In Scala's case the case with only one overriding method is very simple - the override wins. But let's work through the more complex case:
 
