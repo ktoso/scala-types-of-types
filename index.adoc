@@ -19,7 +19,7 @@ endif::awestruct[]
 :language: asciidoc
 
 include::sections/intro.adoc[]
-include::sections/type_annotation.adoc[]
+include::sections/type_ascription.adoc[]
 include::sections/unified_type_system.adoc[]
 include::sections/bottom_types.adoc[]
 include::sections/type_word.adoc[]

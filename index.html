@@ -17,7 +17,7 @@
 <ul class="sectlevel1">
 <li><a href="#the-different-types-of-types-in-scala">1. The different types of&#8230; Types in Scala</a></li>
 <li><a href="#work-in-progress">2. WORK IN PROGRESS</a></li>
-<li><a href="#type-annotation">3. Type Annotation</a></li>
+<li><a href="#type-ascription">3. Type Ascription</a></li>
 <li><a href="#unified-type-system-any-anyref-anyval">4. Unified Type System - Any, AnyRef, AnyVal</a></li>
 <li><a href="#the-bottom-types-nothing-and-null">5. The Bottom Types - Nothing and Null</a></li>
 <li><a href="#type-of-an-code-object-code">6. Type of an <code>object</code></a></li>
@@ -106,31 +106,31 @@ For example Higher Kinds need a rewrite, there&#8217;s a lot of detail to be add
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-annotation"><a class="anchor" href="#type-annotation"></a>3. Type Annotation</h2>
+<h2 id="type-ascription"><a class="anchor" href="#type-ascription"></a>3. Type Ascription</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Scala has Type Inference, which means that we can skip telling the Type of something each time in the source code,
 and instead we just use `val`s or `def`s without "saying the type explicitly in the source". This being explicit about
-the type of something, is called an Type Annotation.</p>
+the type of something, is called an Type Ascription (sometimes called a "Type Annotation", but this naming convention can easily cause confusion, and is <em>not</em> what is used in Scala&#8217;s spec).</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">Thing</span>
 <span class="tok-k">def</span> <span class="tok-n">getThing</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">Thing</span> <span class="tok-o">{</span> <span class="tok-o">}</span>
 
-<span class="tok-c1">// without Type Annotation, the type is infered to be `Thing`</span>
+<span class="tok-c1">// without Type Ascription, the type is infered to be `Thing`</span>
 <span class="tok-k">val</span> <span class="tok-n">infered</span> <span class="tok-k">=</span> <span class="tok-n">getThing</span>
 
-<span class="tok-c1">// with Type Annotation</span>
+<span class="tok-c1">// with Type Ascription</span>
 <span class="tok-k">val</span> <span class="tok-n">thing</span><span class="tok-k">:</span> <span class="tok-kt">Thing</span> <span class="tok-o">=</span> <span class="tok-n">getThing</span>
 </code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In these situations, leaving out the Type Annotation is OK. Although you may decide to always annotate return types of public methods (<strong>that&#8217;s very good idea!</strong>) in order to make the code more self-documenting.</p>
+<p>In these situations, leaving out the Type Ascription is OK. Although you may decide to always ascribe return types of public methods (<strong>that&#8217;s very good idea!</strong>) in order to make the code more self-documenting.</p>
 </div>
 <div class="paragraph">
-<p>In case of doubt you can refer to the below hint-questions to wether or not, include a Type Annotation.</p>
+<p>In case of doubt you can refer to the below hint-questions to wether or not, include a Type Ascription.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -147,15 +147,15 @@ the type of something, is called an Type Annotation.</p>
 <p>Do you need to return a more general interface than the inferencer would find? <strong>Yes</strong>, otherwise you&#8217;d expose your implementation details for example.</p>
 </li>
 <li>
-<p>Else&#8230; No, don&#8217;t include a Type Annotation.</p>
+<p>Else&#8230; No, don&#8217;t include a Type Ascription.</p>
 </li>
 <li>
-<p>Related hint: Including Type Annotations speeds up compilation, also it&#8217;s generally nice to see the return type of a method.</p>
+<p>Related hint: Including Type Ascriptions speeds up compilation, also it&#8217;s generally nice to see the return type of a method.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>So we put Type Annotations after value names. Having this said, let&#8217;s jump into the next topics, where these types will become
+<p>So we put Type Ascriptions after value names. Having this said, let&#8217;s jump into the next topics, where these types will become
 more and more interesting.</p>
 </div>
 </div>
@@ -521,8 +521,10 @@ directly multiple inheritance:</p>
 </div>
 <div class="sect2">
 <h3 id="type-linearization-vs-the-diamond-problem"><a class="anchor" href="#type-linearization-vs-the-diamond-problem"></a>7.2. Type Linearization vs. The Diamond Problem</h3>
-<div class="paragraph">
-<p>image::http://ktoso.github.io/scala-types-of-types/assets/img/220px-Diamond_inheritance.svg.png</p>
+<div class="imageblock" style="text-align: center">
+<div class="content">
+<img src="assets/img/220px-Diamond_inheritance.svg.png" alt="Diamond Inheritance">
+</div>
 </div>
 <div class="paragraph">
 <p>For the "diamond problem" to appear, it&#8217;s enough if we have one overriding implementation in <code>B</code> or/and <code>C</code>. This introduces an ambiguity when calling the common method in <code>D</code>, did we inherit the version of the method from <code>C</code> or from <code>B</code>? In Scala&#8217;s case the case with only one overriding method is very simple - the override wins. But let&#8217;s work through the more complex case:</p>
@@ -2397,7 +2399,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 <p><a id="rogue-phantom-types"></a>[rogue-phantom-types] Foursquare blog about use of Phantom Types in their Rogue Library <a href="http://engineering.foursquare.com/2011/01/31/going-rogue-part-2-phantom-types/">Going Rogue part 2 - phantom types</a>, by <strong>Jason Liszka</strong></p>
 </li>
 <li>
-<p><a id="kind-pull-req"></a>[kind-pull-req] The :kind pull request to <code>scala</code>, by Adriaan Moors <a href="https://github.com/scala/scala/pull/2340">https://github.com/scala/scala/pull/2340</a></p>
+<p><a id="kind-pull-req"></a>[kind-pull-req] The :kind pull request to <code>scala</code>, by <strong>Adriaan Moors</strong> <a href="https://github.com/scala/scala/pull/2340">https://github.com/scala/scala/pull/2340</a></p>
 </li>
 <li>
 <p><a id="patronus-type"></a>[patronus-type] Eugene Yakota&#8217;s <a href="http://eed3si9n.com/constraining-class-linearization-in-Scala">constraining class linearization in scala</a>, where he discovers "patronus type" pattern</p>
@@ -2409,7 +2411,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 <p><a id="package-object"></a>[package-object] Martin Odersky, Lex Spoon - <a href="http://www.scala-lang.org/docu/files/packageobjects/packageobjects.html">Package Objects</a> site (2010)</p>
 </li>
 <li>
-<p><a id="union-types-miles"></a>[union-types-miles] Union Types explained by Miles Sabin <a href="http://www.chuusai.com/2011/06/09/scala-union-types-curry-howard/">Miles Sabin on Union Types</a></p>
+<p><a id="union-types-miles"></a>[union-types-miles] Union Types explained by <strong>Miles Sabin</strong> <a href="http://www.chuusai.com/2011/06/09/scala-union-types-curry-howard/">Miles Sabin on Union Types</a></p>
 </li>
 <li>
 <p><a id="vampire-type"></a>[vampire-type] <a href="http://meta.plasm.us/posts/2013/07/12/vampire-methods-for-structural-types/">Vampire Methods for Structural Types</a></p>
@@ -2422,7 +2424,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 <div class="ulist bibliography">
 <ul class="bibliography">
 <li>
-<p><a id="types-of-types-lambda-days"></a>[types-of-types-lambda-days] Quick intro and overview of this article, presented by Konrad Malawski on <a href="http://lambdadays.org">Lambda Days Kraków 2014</a> <a href="https://vimeo.com/87986458">video</a> and <a href="http://www.slideshare.net/ktoso/scala-types-of-types-lambda-days">slides</a></p>
+<p><a id="types-of-types-lambda-days"></a>[types-of-types-lambda-days] Quick intro and overview of this article, presented by <strong>Konrad Malawski</strong> on <a href="http://lambdadays.org">Lambda Days Kraków 2014</a> <a href="https://vimeo.com/87986458">video</a> and <a href="http://www.slideshare.net/ktoso/scala-types-of-types-lambda-days">slides</a></p>
 </li>
 </ul>
 </div>
@@ -2518,7 +2520,7 @@ $(document).ready(function() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-03-02 01:11:54 CET
+Last updated 2014-04-24 02:06:32 CEST
 </div>
 </div>
 </body>
