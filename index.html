@@ -33,6 +33,11 @@
 <li><a href="#type-alias">10. Type Alias</a></li>
 <li><a href="#abstract-type-member">11. Abstract Type Member</a></li>
 <li><a href="#self-recursive-type">12. Self-Recursive Type</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#f-bounded-type">12.1. F-Bounded Type</a></li>
+</ul>
+</li>
 <li><a href="#type-constructor-span-style-color-red-span">13. Type Constructor <span style="color:red">&#x2717;</span></a></li>
 <li><a href="#higher-order-kind-span-style-color-red-span">14. Higher-Order Kind <span style="color:red">&#x2717;</span></a></li>
 <li><a href="#case-class">15. Case Class</a></li>
@@ -818,7 +823,24 @@ Turns out <code>type A</code> is actualy just a shorthand for <code>type A &gt;:
 <h2 id="self-recursive-type"><a class="anchor" href="#self-recursive-type"></a>12. Self-Recursive Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p>Self-recursive Types are referred to as <strong>F-Bounded Types</strong> in most literature, so you may find many articles or blog posts refering to "F-bounded". Actually, this is just another name for "self-recursive" and stands for situations where <em>the subtype constraint itself is parametrized by one of the binders occurring on the left-hand side</em>. Since the wording self-recursive is more intuitive, let&#8217;s stick to it for the rest of the section (while the subsection title being aimed for people who try to google what "F-bounded" means).</p>
+</div>
+<div class="sect2">
+<h3 id="f-bounded-type"><a class="anchor" href="#f-bounded-type"></a>12.1. F-Bounded Type</h3>
+<div class="paragraph">
 <p>While this not being a Scala specific type, it still sometimes raises a few eyebrows. One example of a self-recursive type many of us are (perhaps unknowingly) familiar with, is Java&#8217;s <code>Enum&lt;E&gt;</code>, if you&#8217;re curious about it, check out the <a href="http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Enum.java">Enum sources from Java</a>. But now back to Scala and first let&#8217;s see what we&#8217;re actually talking about.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For this section we will not dive deep very deep into this type. If you&#8217;re curious for a more in-depth use-case in Scala, you may look into Kris Nuttycombe&#8217;s <a href="http://logji.blogspot.se/2012/11/f-bounded-type-polymorphism-give-up-now.html">F-Bounded Type Polymorphism Considered Tricky</a>.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Imagine you have some <code>Fruit</code> trait, and both an <code>Apple</code> and an <code>Orange</code> extend it. The Fruit trait also has an "compareTo" method, and here the problem comes up: imagine you&#8217;d want to say "<em>I can&#8217;t compare oranges with apples, they&#8217;re totally different things!</em>". First let&#8217;s look at how we loose this compile-time safety with the naive implementation:</p>
@@ -897,6 +919,7 @@ You could get the same type-safety using more fancy tricks, like path dependent 
 </td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 </div>
