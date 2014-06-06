@@ -10,7 +10,7 @@ val thing: Int =
     throw new Exception("Whoops!") // : Nothing
 ```
 
-As you can see in the comments, the type of the if block is `Int` (easy), the type of the else block is `Nothing` (interresting). The inferencer was able to infer that the `thing` value, will only ever be of type `Int`. This is because of the **Bottom Type** property of Nothing.
+As you can see in the comments, the type of the if block is `Int` (easy), the type of the else block is `Nothing` (interesting). The inferencer was able to infer that the `thing` value, will only ever be of type `Int`. This is because of the **Bottom Type** property of Nothing.
 
 NOTE:  A very nice intuition about how bottom types work is: _"`Nothing` extends everything."_
 

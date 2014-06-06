@@ -1,7 +1,7 @@
 == Self Type Annotation
 
 **Self Types** are used in order to "require" that, if another class uses this trait,
-it should also provide implementation of whatever it is that you're requireing.
+it should also provide implementation of whatever it is that you're requiring.
 
 Let's look at an example where a service requires some Module which provides other services.
 We can state this using the following Self Type Annotation:
