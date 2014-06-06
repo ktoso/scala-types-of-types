@@ -3,7 +3,7 @@
 Scala `object`s are implemented via classes (obviously - as it's the basic building block on the JVM),
 but you'll notice that we cannot get its type the same way as we would with an simple class...
 
-I surprisingly often, would get the question on how to pass an object into a method. Just saying `obj: ExampleObj` won't work
+I would surprisingly often get the question on how to pass an object into a method. Just saying `obj: ExampleObj` won't work
 because that's already referring to the instance, so there's a member called `type` which should be used in such cases.
 
 How it might look like in your code is explained by the below example:

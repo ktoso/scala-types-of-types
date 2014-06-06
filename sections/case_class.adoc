@@ -38,7 +38,7 @@ a == Point(0, 0)                      <5>
 Not only that, but a case class is ready to be used with _pattern matching_, using either the "usual" or "extractor" syntax:
 
 ``` scala
-Crile(2.5) match {
+Circle(2.5) match {
   case Circle(r) => println("Radius = " + r)
 }
 

@@ -100,7 +100,7 @@ Not it's time for the more "unusual" methods. apply methods we're pretty easy to
 OhMy.name // compilation error
 ```
 
-Hey! Why didn't this work with <strong>applyDynamic</strong>? Yeah, you figured it out already I guess. Such methods (without `()`) are treated *special*, as they would usualy represent fields for example. `applyDynamic` won't trigger on such calls.
+Hey! Why didn't this work with <strong>applyDynamic</strong>? Yeah, you figured it out already I guess. Such methods (without `()`) are treated *special*, as they would usually represent fields for example. `applyDynamic` won't trigger on such calls.
 
 Let's look at our first `selectDynamic` call:
 

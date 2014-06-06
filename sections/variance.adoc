@@ -26,7 +26,7 @@ you're working with collections you're being faced with the question "is it cova
 
 NOTE: Most __immutable__ collections are __covariant__, and most __mutable__ collections are __invariant__.
 
-There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we'll use a `List[+A]` as our example, and functions. When talking about `List` in Scala, we usualy mean `scala.collection.immutable.List[+A]`, which is immutable as well as covariant, let's look how this relates to building lists containing items of different types.
+There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we'll use a `List[+A]` as our example, and functions. When talking about `List` in Scala, we usually mean `scala.collection.immutable.List[+A]`, which is immutable as well as covariant, let's look how this relates to building lists containing items of different types.
 
 ```scala
 class Fruit
