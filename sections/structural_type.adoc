@@ -51,5 +51,5 @@ def on(it: OpenerCloser)(fun: OpenerCloser => Unit) = {
 }
 ```
 
-So using this type alias, we've made the `def` much cleaner. I'd highly recommend type aliasing bigger structural types. And one last warning, always check if you really need to reach for structural typing, and cannot do it in some other way, considering the negative performance impact.
+By using this type alias we've made the `def` much cleaner. I'd highly recommend type aliasing bigger structural types. And one last warning, always check if you really need to reach for structural typing, and cannot do it in some other way, considering the negative performance impact.
 

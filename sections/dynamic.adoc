@@ -6,7 +6,7 @@ I've had a hard time trying to decide if I should put this type into this vademe
 
 Imagine a class `JsonObject` which contains arbitrary JSON data. Let's have methods, matching the keys of this JSON object, which would return an `Option[JValue]`, where a JValue can be another `JObject`, `JArray` or `JString` / `JNumber`. The usage would look like the example below.
 
-*But before that, remember to enable this language feature in the given file (or REPL) via importing it.*
+*But before that, remember to enable this language feature in the given file (or REPL) by importing it.*
 There are a few features (like the experimental macros for example) that need to be explicitly imported in a file to be enabled. If you want to know more about these features, take a look at the [`scala.language`](http://www.scala-lang.org/api/current/index.html#scala.language$) object or read the Scala Improvement Process 18 document ([SIP-18](https://docs.google.com/document/d/1nlkvpoIRkx7at1qJEZafJwthZ3GeIklTFhqmXMvTX9Q/edit)).
 
 ```scala

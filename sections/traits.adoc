@@ -91,7 +91,7 @@ So when calling the `common` method, it's now very simple to decide which versio
 and try to resolve the method by going from the right in the resulting linearized type. In the case of `D1`, the "rightmost" trait providing an implementation of `common` is `C`, so it's overriding the implementation provided by `B`. The result of calling `common` inside `D1` would be `"c"`.
 
 You can wrap your head around this method by trying it out on the `D2` class - it should linearize with `B` after `C`, thus yielding a `"b"` if you'd run the code.
-Also it's rather easy to resolve the simpler cases of linearization by just thinking "rightmost wins", but this is quite an simplification, which while helpful, does not give the full picture about the algorithm.
+Also it's rather easy to resolve the simpler cases of linearization by just thinking "rightmost wins", but this is quite a simplification which, while helpful, does not give the full picture about the algorithm.
 
 It is worth mentioning that using this technique we also know *"who is my `super`?"*. It's as easy as "looking left" in the linearized type, from wherever class you want to check who your superclass is. So for example in our case (`D1`), the superclass of `C` is `B`.
 
