@@ -55,32 +55,31 @@
 <li><a href="#structural-type">21. Structural Type</a></li>
 <li><a href="#path-dependent-type">22. Path Dependent Type</a></li>
 <li><a href="#type-projection">23. Type Projection</a></li>
-<li><a href="#existential-types">24. Existential Types</a></li>
-<li><a href="#specialized-types">25. Specialized Types</a></li>
+<li><a href="#specialized-types">24. Specialized Types</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#specialized">25.1. @specialized</a></li>
-<li><a href="#miniboxing-span-style-color-red-span">25.2. Miniboxing <span style="color:red">&#x2717;</span></a></li>
+<li><a href="#specialized">24.1. @specialized</a></li>
+<li><a href="#miniboxing-span-style-color-red-span">24.2. Miniboxing <span style="color:red">&#x2717;</span></a></li>
 </ul>
 </li>
-<li><a href="#type-lambda-span-style-color-red-span">26. Type Lambda <span style="color:red">&#x2717;</span></a></li>
-<li><a href="#union-type-span-style-color-red-span">27. Union Type <span style="color:red">&#x2717;</span></a></li>
-<li><a href="#delayed-init">28. Delayed Init</a></li>
-<li><a href="#dynamic-type">29. Dynamic Type</a></li>
+<li><a href="#type-lambda-span-style-color-red-span">25. Type Lambda <span style="color:red">&#x2717;</span></a></li>
+<li><a href="#union-type-span-style-color-red-span">26. Union Type <span style="color:red">&#x2717;</span></a></li>
+<li><a href="#delayed-init">27. Delayed Init</a></li>
+<li><a href="#dynamic-type">28. Dynamic Type</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#applydynamic">29.1. applyDynamic</a></li>
-<li><a href="#applydynamicnamed">29.2. applyDynamicNamed</a></li>
-<li><a href="#selectdynamic">29.3. selectDynamic</a></li>
-<li><a href="#updatedynamic">29.4. updateDynamic</a></li>
+<li><a href="#applydynamic">28.1. applyDynamic</a></li>
+<li><a href="#applydynamicnamed">28.2. applyDynamicNamed</a></li>
+<li><a href="#selectdynamic">28.3. selectDynamic</a></li>
+<li><a href="#updatedynamic">28.4. updateDynamic</a></li>
 </ul>
 </li>
-<li><a href="#bibliography-and-kudos">30. Bibliography and Kudos</a></li>
+<li><a href="#bibliography-and-kudos">29. Bibliography and Kudos</a></li>
 <li>
 <ul class="sectlevel2">
-<li><a href="#reference-and-further-reading">30.1. Reference and further reading</a></li>
-<li><a href="#thanks-and-kudos">30.2. Thanks and kudos</a></li>
-<li><a href="#give-back-some-kudos">30.3. Give back some kudos!</a></li>
+<li><a href="#reference-and-further-reading">29.1. Reference and further reading</a></li>
+<li><a href="#thanks-and-kudos">29.2. Thanks and kudos</a></li>
+<li><a href="#give-back-some-kudos">29.3. Give back some kudos!</a></li>
 </ul>
 </li>
 </ul>
@@ -116,7 +115,7 @@ For example Higher Kinds need a rewrite, there&#8217;s a lot of detail to be add
 <div class="paragraph">
 <p>Scala has Type Inference, which means that we can skip telling the Type of something each time in the source code,
 and instead we just use `val`s or `def`s without "saying the type explicitly in the source". This being explicit about
-the type of something, is called an Type Ascription (sometimes called a "Type Annotation", but this naming convention can easily cause confusion, and is <em>not</em> what is used in Scala&#8217;s spec).</p>
+the type of something, is called a Type Ascription (sometimes called a "Type Annotation", but this naming convention can easily cause confusion, and is <em>not</em> what is used in Scala&#8217;s spec).</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -143,7 +142,7 @@ the type of something, is called an Type Ascription (sometimes called a "Type An
 <p>Is it a parameter? <strong>Yes</strong>, you have to.</p>
 </li>
 <li>
-<p>Is it a public methods return value? <strong>Yes</strong>, for self-documenting code and control over exported types.</p>
+<p>Is it a public method&#8217;s return value? <strong>Yes</strong>, for self-documenting code and control over exported types.</p>
 </li>
 <li>
 <p>Is it a recursive or overloaded methods return value? <strong>Yes</strong>, you have to.</p>
@@ -249,7 +248,7 @@ more and more interesting.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>As you can see in the comments, the type of the if block is <code>Int</code> (easy), the type of the else block is <code>Nothing</code> (interresting). The inferencer was able to infer that the <code>thing</code> value, will only ever be of type <code>Int</code>. This is because of the <strong>Bottom Type</strong> property of Nothing.</p>
+<p>As you can see in the comments, the type of the if block is <code>Int</code> (easy), the type of the else block is <code>Nothing</code> (interesting). The inferencer was able to infer that the <code>thing</code> value, will only ever be of type <code>Int</code>. This is because of the <strong>Bottom Type</strong> property of Nothing.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -359,7 +358,7 @@ TypeRef(TypeSymbol(final abstract class Int extends AnyVal))</code></pre>
 but you&#8217;ll notice that we cannot get its type the same way as we would with an simple class&#8230;</p>
 </div>
 <div class="paragraph">
-<p>I surprisingly often, would get the question on how to pass an object into a method. Just saying <code>obj: ExampleObj</code> won&#8217;t work
+<p>I would surprisingly often get the question on how to pass an object into a method. Just saying <code>obj: ExampleObj</code> won&#8217;t work
 because that&#8217;s already referring to the instance, so there&#8217;s a member called <code>type</code> which should be used in such cases.</p>
 </div>
 <div class="paragraph">
@@ -445,7 +444,7 @@ Most <em>immutable</em> collections are <em>covariant</em>, and most <em>mutable
 </table>
 </div>
 <div class="paragraph">
-<p>There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we&#8217;ll use a <code>List[+A]</code> as our example, and functions. When talking about <code>List</code> in Scala, we usualy mean <code>scala.collection.immutable.List[+A]</code>, which is immutable as well as covariant, let&#8217;s look how this relates to building lists containing items of different types.</p>
+<p>There are (at least) two nice and very intuitive examples of this in Scala. One being "any collection", where we&#8217;ll use a <code>List[+A]</code> as our example, and functions. When talking about <code>List</code> in Scala, we usually mean <code>scala.collection.immutable.List[+A]</code>, which is immutable as well as covariant, let&#8217;s look how this relates to building lists containing items of different types.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -549,12 +548,12 @@ directly multiple inheritance:</p>
 <p>class <code>D</code> extends both <code>B</code> and <code>C</code>,</p>
 </li>
 <li>
-<p>which version of the <code>common</code> method does class <code>D</code> inherit? The overriden impementation from <code>C</code>, or theone from <code>B</code>?</p>
+<p>which version of the <code>common</code> method does class <code>D</code> inherit? The overriden impementation from <code>C</code>, or the one from <code>B</code>?</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>This amgiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem by so called <strong>Type Linearization</strong>.
+<p>This ambiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem by so called <strong>Type Linearization</strong>.
 In other words, given a diamond class hierarchy, we are <strong>always</strong> (and <strong>deterministically</strong>) able to determine what will be called when inside D we call <code>common</code>.
 Let&#8217;s put this into code and then talk about linearization:</p>
 </div>
@@ -625,7 +624,7 @@ and try to resolve the method by going from the right in the resulting linearize
 </div>
 <div class="paragraph">
 <p>You can wrap your head around this method by trying it out on the <code>D2</code> class - it should linearize with <code>B</code> after <code>C</code>, thus yielding a <code>"b"</code> if you&#8217;d run the code.
-Also it&#8217;s rather easy to resolve the simpler cases of linearization by just thinking "rightmost wins", but this is quite an simplification, which while helpful, does not give the full picture about the algorithm.</p>
+Also it&#8217;s rather easy to resolve the simpler cases of linearization by just thinking "rightmost wins", but this is quite a simplification which, while helpful, does not give the full picture about the algorithm.</p>
 </div>
 <div class="paragraph">
 <p>It is worth mentioning that using this technique we also know <strong>"who is my <code>super</code>?"</strong>. It&#8217;s as easy as "looking left" in the linearized type, from wherever class you want to check who your superclass is. So for example in our case (<code>D1</code>), the superclass of <code>C</code> is <code>B</code>.</p>
@@ -1093,7 +1092,7 @@ This means that by defining a case class we automatically get these benefits:</p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-nc">Crile</span><span class="tok-o">(</span><span class="tok-mf">2.5</span><span class="tok-o">)</span> <span class="tok-k">match</span> <span class="tok-o">{</span>
+<pre class="pygments highlight"><code class="scala language-scala"><span class="tok-nc">Circle</span><span class="tok-o">(</span><span class="tok-mf">2.5</span><span class="tok-o">)</span> <span class="tok-k">match</span> <span class="tok-o">{</span>
   <span class="tok-k">case</span> <span class="tok-nc">Circle</span><span class="tok-o">(</span><span class="tok-n">r</span><span class="tok-o">)</span> <span class="tok-k">=&gt;</span> <span class="tok-n">println</span><span class="tok-o">(</span><span class="tok-s">&quot;Radius = &quot;</span> <span class="tok-o">+</span> <span class="tok-n">r</span><span class="tok-o">)</span>
 <span class="tok-o">}</span>
 
@@ -1221,7 +1220,7 @@ The <code>@enum</code> annotation is currently only a proposal, and is being dis
 </div>
 </div>
 <div class="paragraph">
-<p>We&#8217;ll be using Case (Value) Classes in all our examples here, but it&#8217;s not technically required to do so (although very convinient). You could implement a Value Class using a normal class with one <code>val</code> parameter instead, but using case classes is usualy the best way to go. Why only one parameter you might ask&#8201;&#8212;&#8201;this is because we&#8217;ll try to avoid wrapping the value, and this only makes sense for single values, otherwise we&#8217;d have to keep a Tuple around somewhere, which gets fuzzy very quickly and we&#8217;d loose the performance of not-wrapping anyway. So remember - value classes work only for 1 value, although no-one said that that parameter must be a primitive (!), it can be a normal class, like <code>Fruit</code> or <code>Person</code>, we&#8217;ll still be able to avoid wrapping it in the Value Class at some times.</p>
+<p>We&#8217;ll be using Case (Value) Classes in all our examples here, but it&#8217;s not technically required to do so (although very convinient). You could implement a Value Class using a normal class with one <code>val</code> parameter instead, but using case classes is usually the best way to go. Why only one parameter you might ask&#8201;&#8212;&#8201;this is because we&#8217;ll try to avoid wrapping the value, and this only makes sense for single values, otherwise we&#8217;d have to keep a Tuple around somewhere, which gets fuzzy very quickly and we&#8217;d loose the performance of not-wrapping anyway. So remember - value classes work only for 1 value, although no-one said that that parameter must be a primitive (!), it can be a normal class, like <code>Fruit</code> or <code>Person</code>, we&#8217;ll still be able to avoid wrapping it in the Value Class at some times.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1316,7 +1315,7 @@ All you need to do to define a Value Class is to have <strong>a class with only 
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Here we access the <code>value</code> of the Value Class (name of the field does not matter). Notice that the runtime operates on raw doubles here, and thus, does not have to call an <code>value</code> method, like it would have usualy if we&#8217;d use a plain case class.</td>
+<td>Here we access the <code>value</code> of the Value Class (name of the field does not matter). Notice that the runtime operates on raw doubles here, and thus, does not have to call an <code>value</code> method, like it would have usually if we&#8217;d use a plain case class.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -1370,7 +1369,7 @@ in order to make our custom data type sortable:</p>
     <span class="tok-n">writes</span> <span class="tok-n">write</span> <span class="tok-k">this</span>
 <span class="tok-o">}</span>
 
-<span class="tok-k">implicit</span> <span class="tok-k">val</span> <span class="tok-n">jsonNum</span> <span class="tok-k">=</span> <span class="tok-nc">CanWrite</span><span class="tok-o">[</span><span class="tok-kt">Num</span>, <span class="tok-kt">Json</span><span class="tok-o">]</span> <span class="tok-o">{</span>                          <i class="conum" data-value="3"></i><b>(3)</b>
+<span class="tok-k">implicit</span> <span class="tok-k">val</span> <span class="tok-n">jsonNum</span> <span class="tok-k">=</span> <span class="tok-nc">Writes</span><span class="tok-o">[</span><span class="tok-kt">Num</span>, <span class="tok-kt">Json</span><span class="tok-o">]</span> <span class="tok-o">{</span>                            <i class="conum" data-value="3"></i><b>(3)</b>
   <span class="tok-k">def</span> <span class="tok-o">(</span><span class="tok-n">n1</span><span class="tok-k">:</span> <span class="tok-kt">Num</span><span class="tok-o">,</span> <span class="tok-n">n2</span><span class="tok-k">:</span> <span class="tok-kt">Num</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-n">n1</span><span class="tok-o">.</span><span class="tok-n">a</span> <span class="tok-o">&lt;</span> <span class="tok-n">n1</span><span class="tok-o">.</span>
 <span class="tok-o">}</span>
 
@@ -1419,7 +1418,7 @@ TODO IMPLEMENT DOCS :-)
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Self Types</strong> are used in order to "require" that, if another class uses this trait,
-it should also provide implementation of whatever it is that you&#8217;re requireing.</p>
+it should also provide implementation of whatever it is that you&#8217;re requiring.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s look at an example where a service requires some Module which provides other services.
@@ -1443,7 +1442,7 @@ We can state this using the following Self Type Annotation:</p>
 <p>The second line can be read as "I&#8217;m a Module". It might seem yield the exactly same But how does this differ from extending <code>Module</code> right away?</p>
 </div>
 <div class="paragraph">
-<p>which means that someone will have to give us this Module at instanciation time:</p>
+<p>which means that someone will have to give us this Module at instantiation time:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1454,7 +1453,7 @@ We can state this using the following Self Type Annotation:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If you were to try to instanciate it without mixing in the required trait it would fail like this:</p>
+<p>If you were to try to instantiate it without mixing in the required trait it would fail like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1467,7 +1466,7 @@ We can state this using the following Self Type Annotation:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>You should also keep in mind, that it&#8217;s OK, to specify more than one trait when using the self-type syntax.
+<p>You should also keep in mind that it&#8217;s OK to specify more than one trait when using the self-type syntax.
 And while we&#8217;re at it, let&#8217;s discuss why it is called self-type (except for the "yeah, it makes sense" factor). Turns out a popular style (and possibility) to write it looks like this:</p>
 </div>
 <div class="listingblock">
@@ -1637,7 +1636,7 @@ If you&#8217;re curious where these things are used in "not very crazy libraries
 about the structure of a given object (hence the name). When checking whether a type matches using structual typing, we need to change our question to:"<strong>does it have a method with this signature?</strong>".</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s look at a very popular use-case in action, to see why it is so powerful. Imagine that you have many classes of things that can be <strong>closed</strong>. In Java-land one would usualy implement the <code>java.io.Closeable</code> interface in order to make it possible to write some common <code>Closeable</code> utility classes (in fact, <strong>Google Guava</strong> provides such a utility class). Now imagine that someone also implemented a <code>MyOwnCloseable</code> class but didn&#8217;t extend <code>java.io.Closeable</code>. Your <code>Closeables</code> library would not work here due to the static typing. You would not be able to pass instances of <code>MyOwnCloseable</code> into it. Let&#8217;s solve this problem using Structural Typing:</p>
+<p>Let&#8217;s look at a very popular use-case in action, to see why it is so powerful. Imagine that you have many classes of things that can be <strong>closed</strong>. In Java-land one would usually implement the <code>java.io.Closeable</code> interface in order to make it possible to write some common <code>Closeable</code> utility classes (in fact, <strong>Google Guava</strong> provides such a utility class). Now imagine that someone also implemented a <code>MyOwnCloseable</code> class but didn&#8217;t extend <code>java.io.Closeable</code>. Your <code>Closeables</code> library would not work here due to the static typing. You would not be able to pass instances of <code>MyOwnCloseable</code> into it. Let&#8217;s solve this problem using Structural Typing:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1691,7 +1690,7 @@ about the structure of a given object (hence the name). When checking whether a 
 </div>
 </div>
 <div class="paragraph">
-<p>So using this type alias, we&#8217;ve made the <code>def</code> much cleaner. I&#8217;d highly recommend type aliasing bigger structural types. And one last warning, always check if you really need to reach for structural typing, and cannot do it in some other way, considering the negative performance impact.</p>
+<p>By using this type alias we&#8217;ve made the <code>def</code> much cleaner. I&#8217;d highly recommend type aliasing bigger structural types. And one last warning, always check if you really need to reach for structural typing, and cannot do it in some other way, considering the negative performance impact.</p>
 </div>
 </div>
 </div>
@@ -1764,7 +1763,7 @@ that this container should only contain children of this parent - and not "any p
 <h2 id="type-projection"><a class="anchor" href="#type-projection"></a>23. Type Projection</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Type Projections are similar to Path Dependent Types, in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes, splitting them with a <code>#</code> sign (hash sign, pound sign). Let&#8217;s start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):</p>
+<p>Type Projections are similar to Path Dependent Types in the way that they allow you to refer to a type of an inner class. In terms of syntax, you path your way into the structure of inner classes splitting them with a <code>#</code> sign. Let&#8217;s start out by showing the first and main difference between these path dependent types (the "." syntax) vs. type projections (the "#" syntax):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1782,13 +1781,9 @@ that this container should only contain children of this parent - and not "any p
 </div>
 </div>
 <div class="paragraph">
-<p>Another nice intuition about path dependent vs. projections is that Type Projections can be used for "type level programming" ;-)</p>
+<p>Another nice intuition about path dependent vs. projections is that Type Projections can be used for "type level programming" ;-)
+== Existential Types</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="existential-types"><a class="anchor" href="#existential-types"></a>24. Existential Types</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Existential Types are something that deeply relates to Type Erasure, which JVM languages "have to live with".</p>
 </div>
@@ -1833,10 +1828,10 @@ only for these Types our Monad has any meaning. We can do this via Type Bounds o
 </div>
 </div>
 <div class="sect1">
-<h2 id="specialized-types"><a class="anchor" href="#specialized-types"></a>25. Specialized Types</h2>
+<h2 id="specialized-types"><a class="anchor" href="#specialized-types"></a>24. Specialized Types</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="specialized"><a class="anchor" href="#specialized"></a>25.1. @specialized</h3>
+<h3 id="specialized"><a class="anchor" href="#specialized"></a>24.1. @specialized</h3>
 <div class="paragraph">
 <p>Type specialization is actualy more of an performance technique than plain "type system stuff", but nevertheless it&#8217;s something very important and worth keeping in mind if you want to write well performing collections. For our example we&#8217;ll be implementing a very useful collection called <code>Parcel[A]</code>, which can hold a value of a given type&#8201;&#8212;&#8201;how useful indeed!</p>
 </div>
@@ -1954,7 +1949,7 @@ public class Parcel extends java.lang.Object implements scala.Product,scala.Seri
 <p>As you can see, the compiler has prepared additional specialized methods for us, such as <code>value$mcI$sp()</code> returning an <code>int</code> and the same style of method for <code>long</code>. One other method worth mentioning here is <code>specInstance$</code> which returns <code>true</code> if the used implementation is a specialized class.</p>
 </div>
 <div class="paragraph">
-<p>If you&#8217;re curious, currently these classes are specialized in Scala (list may be incomplete): Function0, Function1, Function2, Tuple1, Tuple2, Product1, Product2, AbstractFunction0, AbstractFunction1, AbstractFunction2. Due to how costy it it to specialize beyond 2 parameters, it&#8217;s a trend to not specialize for more params, although certainly possible.</p>
+<p>If you&#8217;re curious, currently these classes are specialized in Scala (list may be incomplete): Function0, Function1, Function2, Tuple1, Tuple2, Product1, Product2, AbstractFunction0, AbstractFunction1, AbstractFunction2. Due to how costy it is to specialize beyond 2 parameters, it&#8217;s a trend to not specialize for more params, although certainly possible.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1970,7 +1965,7 @@ A prime example why we want to avoid boxing is also memory efficiency. Imagine a
 </div>
 </div>
 <div class="sect2">
-<h3 id="miniboxing-span-style-color-red-span"><a class="anchor" href="#miniboxing-span-style-color-red-span"></a>25.2. Miniboxing <span style="color:red">&#x2717;</span></h3>
+<h3 id="miniboxing-span-style-color-red-span"><a class="anchor" href="#miniboxing-span-style-color-red-span"></a>24.2. Miniboxing <span style="color:red">&#x2717;</span></h3>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -2002,7 +1997,7 @@ TODO, there&#8217;s a project from withing EPFL to make specialization more effi
 </div>
 </div>
 <div class="sect1">
-<h2 id="type-lambda-span-style-color-red-span"><a class="anchor" href="#type-lambda-span-style-color-red-span"></a>26. Type Lambda <span style="color:red">&#x2717;</span></h2>
+<h2 id="type-lambda-span-style-color-red-span"><a class="anchor" href="#type-lambda-span-style-color-red-span"></a>25. Type Lambda <span style="color:red">&#x2717;</span></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In type lambda&#8217;s we&#8217;ll be using <strong>Path Dependent</strong> as well as <strong>Structural Types</strong>, so if you skipped that sections you may want to go back to it.</p>
@@ -2022,7 +2017,7 @@ TODO, there&#8217;s a project from withing EPFL to make specialization more effi
 </div>
 </div>
 <div class="sect1">
-<h2 id="union-type-span-style-color-red-span"><a class="anchor" href="#union-type-span-style-color-red-span"></a>27. Union Type <span style="color:red">&#x2717;</span></h2>
+<h2 id="union-type-span-style-color-red-span"><a class="anchor" href="#union-type-span-style-color-red-span"></a>26. Union Type <span style="color:red">&#x2717;</span></h2>
 <div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
@@ -2059,7 +2054,7 @@ This is incomplete and work in progress, refer to Miles' blog (linked bellow) fo
 </div>
 </div>
 <div class="sect1">
-<h2 id="delayed-init"><a class="anchor" href="#delayed-init"></a>28. Delayed Init</h2>
+<h2 id="delayed-init"><a class="anchor" href="#delayed-init"></a>27. Delayed Init</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Since we started talking about the "weird" types in Scala, we can&#8217;t let this one go without a dedicated section for it. <code>DelayedInit</code> is actually a "<em>compiler trick</em>" above anything else, and not really tremendously important for the type system itself, but once you understand it, you&#8217;ll know how <code>scala.App</code> actually works, so let&#8217;s dive into our example with <code>App</code>:</p>
@@ -2161,7 +2156,7 @@ This is incomplete and work in progress, refer to Miles' blog (linked bellow) fo
 </div>
 </div>
 <div class="sect1">
-<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>29. Dynamic Type</h2>
+<h2 id="dynamic-type"><a class="anchor" href="#dynamic-type"></a>28. Dynamic Type</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>I&#8217;ve had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?</p>
@@ -2173,7 +2168,7 @@ This is incomplete and work in progress, refer to Miles' blog (linked bellow) fo
 <p>Imagine a class <code>JsonObject</code> which contains arbitrary JSON data. Let&#8217;s have methods, matching the keys of this JSON object, which would return an <code>Option[JValue]</code>, where a JValue can be another <code>JObject</code>, <code>JArray</code> or <code>JString</code> / <code>JNumber</code>. The usage would look like the example below.</p>
 </div>
 <div class="paragraph">
-<p><strong>But before that, remember to enable this language feature in the given file (or REPL) via importing it.</strong>
+<p><strong>But before that, remember to enable this language feature in the given file (or REPL) by importing it.</strong>
 There are a few features (like the experimental macros for example) that need to be explicitly imported in a file to be enabled. If you want to know more about these features, take a look at the [<code>scala.language</code>](<a href="http://www.scala-lang.org/api/current/index.html#scala.language$">http://www.scala-lang.org/api/current/index.html#scala.language$</a>) object or read the Scala Improvement Process 18 document ([SIP-18](<a href="https://docs.google.com/document/d/1nlkvpoIRkx7at1qJEZafJwthZ3GeIklTFhqmXMvTX9Q/edit)">https://docs.google.com/document/d/1nlkvpoIRkx7at1qJEZafJwthZ3GeIklTFhqmXMvTX9Q/edit)</a>).</p>
 </div>
 <div class="listingblock">
@@ -2230,7 +2225,7 @@ There are a few features (like the experimental macros for example) that need to
 <p>Let&#8217;s take a look (with examples, at each of them. We&#8217;ll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn&#8217;t (back then) compile) and make it work this time ;-)</p>
 </div>
 <div class="sect2">
-<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>29.1. applyDynamic</h3>
+<h3 id="applydynamic"><a class="anchor" href="#applydynamic"></a>28.1. applyDynamic</h3>
 <div class="paragraph">
 <p>Ok, our first magic method looks like this:</p>
 </div>
@@ -2260,7 +2255,7 @@ There are a few features (like the experimental macros for example) that need to
 </div>
 </div>
 <div class="sect2">
-<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>29.2. applyDynamicNamed</h3>
+<h3 id="applydynamicnamed"><a class="anchor" href="#applydynamicnamed"></a>28.2. applyDynamicNamed</h3>
 <div class="paragraph">
 <p>Ok, that was easy. But it didn&#8217;t give us too much control over the names of the parameters.
 Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "ktoso")</code>? Well&#8230; turns out we can!</p>
@@ -2293,7 +2288,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>29.3. selectDynamic</h3>
+<h3 id="selectdynamic"><a class="anchor" href="#selectdynamic"></a>28.3. selectDynamic</h3>
 <div class="paragraph">
 <p>Not it&#8217;s time for the more "unusual" methods. apply methods we&#8217;re pretty easy to understand. It&#8217;s just a method with some arbitrary name. But hey, isn&#8217;t almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let&#8217;s give it a try! &lt;strong&gt;We&#8217;ll use the example with applyDynamic here, and try to act like it has a method without ()&lt;/strong&gt;:</p>
 </div>
@@ -2304,7 +2299,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="paragraph">
-<p>Hey! Why didn&#8217;t this work with &lt;strong&gt;applyDynamic&lt;/strong&gt;? Yeah, you figured it out already I guess. Such methods (without <code>()</code>) are treated <strong>special</strong>, as they would usualy represent fields for example. <code>applyDynamic</code> won&#8217;t trigger on such calls.</p>
+<p>Hey! Why didn&#8217;t this work with &lt;strong&gt;applyDynamic&lt;/strong&gt;? Yeah, you figured it out already I guess. Such methods (without <code>()</code>) are treated <strong>special</strong>, as they would usually represent fields for example. <code>applyDynamic</code> won&#8217;t trigger on such calls.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s look at our first <code>selectDynamic</code> call:</p>
@@ -2323,7 +2318,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>29.4. updateDynamic</h3>
+<h3 id="updatedynamic"><a class="anchor" href="#updatedynamic"></a>28.4. updateDynamic</h3>
 <div class="paragraph">
 <p>What&#8217;s left you ask? Ask yourself the following question then: "Since I can act like a <code>Dynamic</code> object has some value in some field&#8230; What else should I be able to do with it?" My answer to that would be: "set it"! That&#8217;s what <code>updateDynamic</code> is used for. There is one special rule about <code>updateDynamic</code> though - it&#8217;s only valid if you also took care about selectDynamic - that&#8217;s why in the first example the code generated errors about both - select and update. For example if we&#8217;d implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn&#8217;t compile anyway. It makes sense in terms of plain semantics if you think about it.</p>
 </div>
@@ -2364,10 +2359,10 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect1">
-<h2 id="bibliography-and-kudos"><a class="anchor" href="#bibliography-and-kudos"></a>30. Bibliography and Kudos</h2>
+<h2 id="bibliography-and-kudos"><a class="anchor" href="#bibliography-and-kudos"></a>29. Bibliography and Kudos</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="reference-and-further-reading"><a class="anchor" href="#reference-and-further-reading"></a>30.1. Reference and further reading</h3>
+<h3 id="reference-and-further-reading"><a class="anchor" href="#reference-and-further-reading"></a>29.1. Reference and further reading</h3>
 <div class="paragraph">
 <p>Obviously this vademecum required quite a bit of reseach and double-checking, so here are all the links I&#8217;ve found helpful (and you might too).</p>
 </div>
@@ -2453,7 +2448,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="thanks-and-kudos"><a class="anchor" href="#thanks-and-kudos"></a>30.2. Thanks and kudos</h3>
+<h3 id="thanks-and-kudos"><a class="anchor" href="#thanks-and-kudos"></a>29.2. Thanks and kudos</h3>
 <div class="paragraph">
 <p>I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):</p>
 </div>
@@ -2496,7 +2491,7 @@ Wouldn&#8217;t it be nice if we could just write <code>JSON.node(nickname = "kto
 </div>
 </div>
 <div class="sect2">
-<h3 id="give-back-some-kudos"><a class="anchor" href="#give-back-some-kudos"></a>30.3. Give back some kudos!</h3>
+<h3 id="give-back-some-kudos"><a class="anchor" href="#give-back-some-kudos"></a>29.3. Give back some kudos!</h3>
 <div class="paragraph">
 <p>If you liked this page, please share it with your friends using IRC any other chat service, or email, or social networks using these clicky-clicky buttons bellow! :-)</p>
 </div>
