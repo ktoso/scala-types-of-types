@@ -34,11 +34,11 @@ object IntContainer extends SimplestContainer {
 
 So we "provide the type" using a <<type-alias, Type Alias>>, and now we can implement the value method which returns an `Int`.
 
-The more interesting uses of Abstract Type Members start when we apply constraints to them. For example imagine you want to have a container that can only store `Number` instances. Such constraint can be annotated on a type member right where we defined it first:
+The more interesting uses of Abstract Type Members start when we apply constraints to them. For example imagine you want to have a container that can only store anything that is of a `Number` instance. Such constraint can be annotated on a type member right where we defined it first:
 
 ```scala
 trait OnlyNumbersContainer {
-  type A >: Number
+  type A <: Number
   def value: A
 }
 ```
@@ -52,7 +52,7 @@ trait SimpleContainer {
 }
 
 trait OnlyNumbers {
-  type A >: Number
+  type A <: Number
 }
 
 val ints = new SimpleContainer with OnlyNumbers {
