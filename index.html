@@ -385,7 +385,7 @@ The most popular cases where you&#8217;ll have to deal with this is when working
 </div>
 <div class="paragraph">
 <p>A major difference from Java in Scala is, that container types are <strong>not-variant by default</strong>!
-This means that if you have a container defined as <code>Box[A]</code>, and then use it with an <code>Fruit</code> in place
+This means that if you have a container defined as <code>Box[A]</code>, and then use it with a <code>Fruit</code> in place
 of the type parameter <code>A</code>, you will not be able to insert an <code>Apple</code> (which <em>IS-A</em> <code>Fruit</code>) into it.</p>
 </div>
 <div class="paragraph">
@@ -777,12 +777,12 @@ Turns out <code>type A</code> is actualy just a shorthand for <code>type A &gt;:
 <p>So we "provide the type" using a <a href="#type-alias">Type Alias</a>, and now we can implement the value method which returns an <code>Int</code>.</p>
 </div>
 <div class="paragraph">
-<p>The more interesting uses of Abstract Type Members start when we apply constraints to them. For example imagine you want to have a container that can only store <code>Number</code> instances. Such constraint can be annotated on a type member right where we defined it first:</p>
+<p>The more interesting uses of Abstract Type Members start when we apply constraints to them. For example imagine you want to have a container that can only store anything that is of a <code>Number</code> instance. Such constraint can be annotated on a type member right where we defined it first:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-k">trait</span> <span class="tok-nc">OnlyNumbersContainer</span> <span class="tok-o">{</span>
-  <span class="tok-k">type</span> <span class="tok-kt">A</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">Number</span>
+  <span class="tok-k">type</span> <span class="tok-kt">A</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Number</span>
   <span class="tok-k">def</span> <span class="tok-n">value</span><span class="tok-k">:</span> <span class="tok-kt">A</span>
 <span class="tok-o">}</span>
 </code></pre>
@@ -799,7 +799,7 @@ Turns out <code>type A</code> is actualy just a shorthand for <code>type A &gt;:
 <span class="tok-o">}</span>
 
 <span class="tok-k">trait</span> <span class="tok-nc">OnlyNumbers</span> <span class="tok-o">{</span>
-  <span class="tok-k">type</span> <span class="tok-kt">A</span> <span class="tok-k">&gt;:</span> <span class="tok-kt">Number</span>
+  <span class="tok-k">type</span> <span class="tok-kt">A</span> <span class="tok-k">&lt;:</span> <span class="tok-kt">Number</span>
 <span class="tok-o">}</span>
 
 <span class="tok-k">val</span> <span class="tok-n">ints</span> <span class="tok-k">=</span> <span class="tok-k">new</span> <span class="tok-nc">SimpleContainer</span> <span class="tok-k">with</span> <span class="tok-nc">OnlyNumbers</span> <span class="tok-o">{</span>
