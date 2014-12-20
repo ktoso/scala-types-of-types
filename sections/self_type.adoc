@@ -31,10 +31,10 @@ new Service with TestingModule
 If you were to try to instantiate it without mixing in the required trait it would fail like this:
 
 ```scala
-new Service
+new Service {}
 
 // class Service cannot be instantiated because it does not conform to its self-type Service with Module
-//              new Service
+//              new Service {}
 //              ^
 ```
 
