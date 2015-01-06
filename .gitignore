@@ -1,3 +1,5 @@
 _site
 *.iml
 _cache
+.idea
+index.html
