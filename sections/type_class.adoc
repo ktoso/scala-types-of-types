@@ -17,7 +17,7 @@ case class Num(a: Int, b: Int) extends Writeable[Json] {
 }
 ```
 
-Using this style, of just extending and implementing an interface, we have bound our `Num` to `Comparable` and also, we had to provide the implementation for `write`, "right there, right now", which makes it harder for others to provide a different `compareTo` implementation - they would have to subclass `Num`! Another pain point here is that we cannot extend two times from the same trait, providing different serialization targets (you can't both extend `Writeable[Json]` and `Writeable[Protobuf]`).
+Using this style, of just extending and implementing an interface, we have bound our `Num` to `Writeable` and also, we had to provide the implementation for `write`, "right there, right now", which makes it harder for others to provide a different `compareTo` implementation - they would have to subclass `Num`! Another pain point here is that we cannot extend two times from the same trait, providing different serialization targets (you can't both extend `Writeable[Json]` and `Writeable[Protobuf]`).
 
 All these problems can be addressed by using a Type Class based aproach instead of directly extending `Writeable[Out]`. Let's give it a shot, and explain in detail how this is actually working:
 
