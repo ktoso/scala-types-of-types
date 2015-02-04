@@ -3,7 +3,7 @@
 Type Classes belong to the most powerful patterns available to use in Scala, and can be summed up (if you like fancy wording) as "ad-hoc polimorphism" which should be understandable once we get to the end of this section.
 
 The typical problem Type Classes solve for us is providing extensible APIs without explicitly binding two classes together.
-An example of such a strict binding, we would be able to avoid using Type Classes, is for example extending the Java `Comparable` interface,
+An example of such a strict binding, we would be able to avoid using Type Classes, is for example extending a `Writable` interface,
 in order to make our custom data type sortable:
 
 ```scala
@@ -17,9 +17,9 @@ case class Num(a: Int, b: Int) extends Writable[Json] {
 }
 ```
 
-Using this style, of just extending and implementing an interface, we have bound our `Num` to `Writable` and also, we had to provide the implementation for `write`, "right there, right now", which makes it harder for others to provide a different `compareTo` implementation - they would have to subclass `Num`! Another pain point here is that we cannot extend two times from the same trait, providing different serialization targets (you can't both extend `Writable[Json]` and `Writable[Protobuf]`).
+Using this style, of just extending and implementing an interface, we have bound our `Num` to `Writable` and also, we had to provide the implementation for `write`, "right there, right now", which makes it harder for others to provide a different `write` implementation - they would have to subclass `Num`! Another pain point here is that we cannot extend two times from the same trait, providing different serialization targets (you can't both extend `Writable[Json]` and `Writable[Protobuf]`).
 
-All these problems can be addressed by using a Type Class based aproach instead of directly extending `Writable[Out]`. Let's give it a shot, and explain in detail how this is actually working:
+All these problems can be addressed by using a Type Class based approach instead of directly extending `Writable[Out]`. Let's give it a shot, and explain in detail how this is actually working:
 
 ```scala
 trait Writes[In, Out] {                                               <1>
