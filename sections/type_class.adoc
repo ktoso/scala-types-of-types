@@ -4,7 +4,7 @@ Type Classes belong to the most powerful patterns available to use in Scala, and
 
 The typical problem Type Classes solve for us is providing extensible APIs without explicitly binding two classes together.
 An example of such a strict binding, we would be able to avoid using Type Classes, is for example extending a `Writable` interface,
-in order to make our custom data type sortable:
+in order to make our custom data type writable:
 
 ```scala
 // no type classes yet
