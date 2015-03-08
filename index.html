@@ -725,6 +725,21 @@ source path and package to see what that means.</p>
 we&#8217;d make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc),
 but <strong>name them</strong> so it makes sense for the future reader of this class.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="icon-note" title="Note"></i>
+</td>
+<td class="content">
+Note that when you create an alias for a class, you <strong>do not</strong> alias its companion object in tandem. For example,
+assuming you&#8217;ve got <code>case class Person(name: String)</code> and an alias <code>type User = Person</code>, calling <code>User("John")</code> will
+result in an <em>error</em>, as <code>Person("John")</code> (what we could expect to be effectively called here) implicitly invokes
+<code>apply</code> method from <code>Person</code> companion object that is not aliased in this case.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1336,27 +1351,27 @@ All you need to do to define a Value Class is to have <strong>a class with only 
 </div>
 <div class="paragraph">
 <p>The typical problem Type Classes solve for us is providing extensible APIs without explicitly binding two classes together.
-An example of such a strict binding, we would be able to avoid using Type Classes, is for example extending the Java <code>Comparable</code> interface,
-in order to make our custom data type sortable:</p>
+An example of such a strict binding, we would be able to avoid using Type Classes, is for example extending a <code>Writable</code> interface,
+in order to make our custom data type writable:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code class="scala language-scala"><span class="tok-c1">// no type classes yet</span>
-<span class="tok-k">trait</span> <span class="tok-nc">Writeable</span><span class="tok-o">[</span><span class="tok-kt">Out</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+<span class="tok-k">trait</span> <span class="tok-nc">Writable</span><span class="tok-o">[</span><span class="tok-kt">Out</span><span class="tok-o">]</span> <span class="tok-o">{</span>
   <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-k">:</span> <span class="tok-kt">Out</span>
 <span class="tok-o">}</span>
 
-<span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Num</span><span class="tok-o">(</span><span class="tok-n">a</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">,</span> <span class="tok-n">b</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">)</span> <span class="tok-k">extends</span> <span class="tok-nc">Writeable</span><span class="tok-o">[</span><span class="tok-kt">Json</span><span class="tok-o">]</span> <span class="tok-o">{</span>
+<span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Num</span><span class="tok-o">(</span><span class="tok-n">a</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">,</span> <span class="tok-n">b</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">)</span> <span class="tok-k">extends</span> <span class="tok-nc">Writable</span><span class="tok-o">[</span><span class="tok-kt">Json</span><span class="tok-o">]</span> <span class="tok-o">{</span>
   <span class="tok-k">def</span> <span class="tok-n">write</span> <span class="tok-k">=</span> <span class="tok-nc">Json</span><span class="tok-o">.</span><span class="tok-n">toJson</span><span class="tok-o">(</span><span class="tok-k">this</span><span class="tok-o">)</span>
 <span class="tok-o">}</span>
 </code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Using this style, of just extending and implementing an interface, we have bound our <code>Num</code> to <code>Comparable</code> and also, we had to provide the implementation for <code>write</code>, "right there, right now", which makes it harder for others to provide a different <code>compareTo</code> implementation - they would have to subclass <code>Num</code>! Another pain point here is that we cannot extend two times from the same trait, providing different serialization targets (you can&#8217;t both extend <code>Writeable[Json]</code> and <code>Writeable[Protobuf]</code>).</p>
+<p>Using this style, of just extending and implementing an interface, we have bound our <code>Num</code> to <code>Writable</code> and also, we had to provide the implementation for <code>write</code>, "right there, right now", which makes it harder for others to provide a different <code>write</code> implementation - they would have to subclass <code>Num</code>! Another pain point here is that we cannot extend two times from the same trait, providing different serialization targets (you can&#8217;t both extend <code>Writable[Json]</code> and <code>Writable[Protobuf]</code>).</p>
 </div>
 <div class="paragraph">
-<p>All these problems can be addressed by using a Type Class based aproach instead of directly extending <code>Writeable[Out]</code>. Let&#8217;s give it a shot, and explain in detail how this is actually working:</p>
+<p>All these problems can be addressed by using a Type Class based approach instead of directly extending <code>Writable[Out]</code>. Let&#8217;s give it a shot, and explain in detail how this is actually working:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1364,7 +1379,7 @@ in order to make our custom data type sortable:</p>
   <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">(</span><span class="tok-n">in</span><span class="tok-k">:</span> <span class="tok-kt">In</span><span class="tok-o">)</span><span class="tok-k">:</span> <span class="tok-kt">Out</span>
 <span class="tok-o">}</span>
 
-<span class="tok-k">trait</span> <span class="tok-nc">Writeable</span><span class="tok-o">[</span><span class="tok-kt">Self</span><span class="tok-o">]</span> <span class="tok-o">{</span>                                               <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="tok-k">trait</span> <span class="tok-nc">Writable</span><span class="tok-o">[</span><span class="tok-kt">Self</span><span class="tok-o">]</span> <span class="tok-o">{</span>                                               <i class="conum" data-value="2"></i><b>(2)</b>
   <span class="tok-k">def</span> <span class="tok-n">write</span><span class="tok-o">[</span><span class="tok-kt">Out</span><span class="tok-o">]()(</span><span class="tok-k">implicit</span> <span class="tok-n">writes</span><span class="tok-k">:</span> <span class="tok-kt">Writes</span><span class="tok-o">[</span><span class="tok-kt">Self</span>, <span class="tok-kt">Out</span><span class="tok-o">])</span><span class="tok-k">:</span> <span class="tok-kt">Out</span> <span class="tok-o">=</span>
     <span class="tok-n">writes</span> <span class="tok-n">write</span> <span class="tok-k">this</span>
 <span class="tok-o">}</span>
@@ -1373,18 +1388,18 @@ in order to make our custom data type sortable:</p>
   <span class="tok-k">def</span> <span class="tok-o">(</span><span class="tok-n">n1</span><span class="tok-k">:</span> <span class="tok-kt">Num</span><span class="tok-o">,</span> <span class="tok-n">n2</span><span class="tok-k">:</span> <span class="tok-kt">Num</span><span class="tok-o">)</span> <span class="tok-k">=</span> <span class="tok-n">n1</span><span class="tok-o">.</span><span class="tok-n">a</span> <span class="tok-o">&lt;</span> <span class="tok-n">n1</span><span class="tok-o">.</span>
 <span class="tok-o">}</span>
 
-<span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Num</span><span class="tok-o">(</span><span class="tok-n">a</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">)</span> <span class="tok-k">extends</span> <span class="tok-nc">Writeable</span><span class="tok-o">[</span><span class="tok-kt">Num</span><span class="tok-o">]</span></code></pre>
+<span class="tok-k">case</span> <span class="tok-k">class</span> <span class="tok-nc">Num</span><span class="tok-o">(</span><span class="tok-n">a</span><span class="tok-k">:</span> <span class="tok-kt">Int</span><span class="tok-o">)</span> <span class="tok-k">extends</span> <span class="tok-nc">Writable</span><span class="tok-o">[</span><span class="tok-kt">Num</span><span class="tok-o">]</span></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>First we define out Type Class, it&#8217;s API is similar to the previous <code>Writeable</code> trait we, but instead of mixing it into a class that will be written, we will keep it separate, and in oder to know what it&#8217;s defined <em>for</em> we use the <code>Self</code> <a href="#Type Parameter">type-parameter</a></td>
+<td>First we define out Type Class, it&#8217;s API is similar to the previous <code>Writable</code> trait we, but instead of mixing it into a class that will be written, we will keep it separate, and in oder to know what it&#8217;s defined <em>for</em> we use the <code>Self</code> <a href="#Type Parameter">type-parameter</a></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Next we change our <code>Writeable</code> trait to be parameterized with <code>Self</code> and the target serialization type is moved onto the signature of <code>write</code>. It also now requires an implicit <code>Writes[Self, Out]</code> implementation, which handles the serializing - that&#8217;s how our Type Class.</td>
+<td>Next we change our <code>Writable</code> trait to be parameterized with <code>Self</code> and the target serialization type is moved onto the signature of <code>write</code>. It also now requires an implicit <code>Writes[Self, Out]</code> implementation, which handles the serializing - that&#8217;s how our Type Class.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -2538,7 +2553,7 @@ $(document).ready(function() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-04-24 02:06:32 CEST
+Last updated 2015-03-08 16:06:23 CET
 </div>
 </div>
 </body>
