@@ -13,3 +13,8 @@ Using this trick the Map definition now suddenly "makes sense!". If we'd just us
 we'd make the code less readable. Here we can keep using our primitives (maybe we need this for performance etc),
 but **name them** so it makes sense for the future reader of this class.
 
+NOTE: Note that when you create an alias for a class, you *do not* alias its companion object in tandem. For example,
+assuming you've got `case class Person(name: String)` and an alias `type User = Person`, calling `User("John")` will
+result in an _error_, as `Person("John")` (what we could expect to be effectively called here) implicitly invokes
+`apply` method from `Person` companion object that is not aliased in this case.
+
