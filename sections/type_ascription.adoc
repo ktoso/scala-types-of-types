@@ -8,8 +8,8 @@ the type of something, is called a Type Ascription (sometimes called a "Type Ann
 trait Thing
 def getThing = new Thing { }
 
-// without Type Ascription, the type is infered to be `Thing`
-val infered = getThing
+// without Type Ascription, the type is inferred to be `Thing`
+val inferred = getThing
 
 // with Type Ascription
 val thing: Thing = getThing
@@ -17,7 +17,7 @@ val thing: Thing = getThing
 
 In these situations, leaving out the Type Ascription is OK. Although you may decide to always ascribe return types of public methods (*that's very good idea!*) in order to make the code more self-documenting.
 
-In case of doubt you can refer to the below hint-questions to wether or not, include a Type Ascription.
+In case of doubt you can refer to the below hint-questions to whether or not, include a Type Ascription.
 
 * Is it a parameter? **Yes**, you have to.
 * Is it a public method's return value? **Yes**, for self-documenting code and control over exported types.

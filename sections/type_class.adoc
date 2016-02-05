@@ -1,6 +1,6 @@
 == Type Class +++<span style="color:red">&#x2717;</span>+++
 
-Type Classes belong to the most powerful patterns available to use in Scala, and can be summed up (if you like fancy wording) as "ad-hoc polimorphism" which should be understandable once we get to the end of this section.
+Type Classes belong to the most powerful patterns available to use in Scala, and can be summed up (if you like fancy wording) as "ad-hoc polymorphism" which should be understandable once we get to the end of this section.
 
 The typical problem Type Classes solve for us is providing extensible APIs without explicitly binding two classes together.
 An example of such a strict binding, we would be able to avoid using Type Classes, is for example extending a `Writable` interface,

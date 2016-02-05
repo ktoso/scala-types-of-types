@@ -1,9 +1,9 @@
 == Structural Type
 
-Strucural Types are often described as "*type-safe duck typing*", which is quite a good comparison if you want to gain some intuition for it.
+Structural Types are often described as "*type-safe duck typing*", which is quite a good comparison if you want to gain some intuition for it.
 
 So far we've only been thinking about types in terms of "*does it implement interface X?*". With **structural types** we can go a step further and start reasoning
-about the structure of a given object (hence the name). When checking whether a type matches using structual typing, we need to change our question to:"*does it have a method with this signature?*".
+about the structure of a given object (hence the name). When checking whether a type matches using structural typing, we need to change our question to:"*does it have a method with this signature?*".
 
 Let's look at a very popular use-case in action, to see why it is so powerful. Imagine that you have many classes of things that can be *closed*. In Java-land one would usually implement the `java.io.Closeable` interface in order to make it possible to write some common `Closeable` utility classes (in fact, *Google Guava* provides such a utility class). Now imagine that someone also implemented a `MyOwnCloseable` class but didn't extend `java.io.Closeable`. Your `Closeables` library would not work here due to the static typing. You would not be able to pass instances of `MyOwnCloseable` into it. Let's solve this problem using Structural Typing:
 

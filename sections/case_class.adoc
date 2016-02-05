@@ -17,7 +17,7 @@ This means that by defining a case class we automatically get these benefits:
 * the `radius` constructor parameter is a `public val`
 * it's `toString` is composed of the class name and values of the fields it contains (for our Circle it would be implemented as `def toString = s"Circle($radius)"`).
 
-Let's see what we got so far, and expand on this using a "real life" example, this time implementing a `Point` class, because we'll beed more than just one field to show off some interesting features `case class` provides us with:
+Let's see what we got so far, and expand on this using a "real life" example, this time implementing a `Point` class, because we'll need more than just one field to show off some interesting features `case class` provides us with:
 
 ```scala
 case class Point(x: Int, y: Int)      <1>
@@ -32,7 +32,7 @@ a == Point(0, 0)                      <5>
 <1> `x` and `y` are automatically defined as `val` members
 <2> a `Point` companion object is generated for it, with an `apply(x: Int, y: Int)` method which we can use to create instances using this syntax
 <3> the generated `toString` method consists of the classname and case class parameter values
-<4> the `copy(...)` method allows to easily create derrative objects, by changing only selected fields
+<4> the `copy(...)` method allows to easily create derivative objects, by changing only selected fields
 <5> equality of case classes is value based (`equals` and `hashCode` implementations based on the case class parameters are generated)
 
 Not only that, but a case class is ready to be used with _pattern matching_, using either the "usual" or "extractor" syntax:

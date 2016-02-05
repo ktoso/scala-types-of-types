@@ -5,7 +5,7 @@ That's very simple!
 
 You either open up an issue on github, mentioning what you'd like to see added or changed (or maybe discussed in more detail). Or you can pull request with your suggested changes right away!
 
-Please do make sure the project still compiles nicely before submiting though! You can compile the project by running the `make` command. 
+Please do make sure the project still compiles nicely before submitting though! You can compile the project by running the `make` command. 
 For details on the language and tooling used for this document (asciidoctor) please read the next section!
 
 PS: Please do _not_ include `index.html` in your pull requests, it'll be generated again from *.adoc files anyway after your pull request gets accepted. :-)

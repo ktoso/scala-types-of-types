@@ -46,7 +46,7 @@ So in the companion object we create a new instance of the Service, at first it 
 The Stopped state conforms to the type bounds of the type parameter (`<: ServiceState`) so it's all good.
 
 The interesting things happen when we want to start / stop an existing Service. The Type bounds defined on the start method for example,
-are only valid for one value of `T`, which is `Stopped`. The transistion to the opposite state is a no-op in our example, we return the same instance,
+are only valid for one value of `T`, which is `Stopped`. The transition to the opposite state is a no-op in our example, we return the same instance,
 and explicitly cast it into the required state. Since nothing is actualy using this type, you won't bump into class cast exceptions during this conversion.
 
 Let's now investigate the above code using the REPL, which will act as a nice finisher for this section.

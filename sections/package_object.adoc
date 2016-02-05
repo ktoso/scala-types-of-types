@@ -5,7 +5,7 @@ the compiler will look for implicit values.
 
 Declaring a package object is as simple as using the keywords `package` and `object` in conjunction, such as:
 
-```
+```scala
 // src/main/scala/com/garden/apples/package.scala
 
 package com.garden

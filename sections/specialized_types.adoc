@@ -2,7 +2,7 @@
 
 === @specialized
 
-Type specialization is actualy more of an performance technique than plain "type system stuff", but nevertheless it's something very important and worth keeping in mind if you want to write well performing collections. For our example we'll be implementing a very useful collection called `Parcel[A]`, which can hold a value of a given type -- how useful indeed!
+Type specialization is actually more of an performance technique than plain "type system stuff", but nevertheless it's something very important and worth keeping in mind if you want to write well performing collections. For our example we'll be implementing a very useful collection called `Parcel[A]`, which can hold a value of a given type -- how useful indeed!
 
 ```scala
 case class Parcel[A](value: A)
@@ -33,7 +33,7 @@ case class LongParcel(intValue: Long) {
 }
 ```
 
-The implementations inside `IntParcel` and `LongParcel` will efficiently avoid boxing, as they work directly on the primitives, and need not reach into the object realm. Now we just have to manualy select which `*Parcel` we want to use, depending on our use-case.
+The implementations inside `IntParcel` and `LongParcel` will efficiently avoid boxing, as they work directly on the primitives, and need not reach into the object realm. Now we just have to manually select which `*Parcel` we want to use, depending on our use-case.
 
 That's all nice and good but... the code basically has just become far less maintanable, with `N` implementations, for each primitive that we want to support (which could be any of: `int`, `long`, `byte`, `char`, `short`, `float`, `double`, `boolean`, `void`, plus the `Object` case)! That's a lot of boilerplate to maintain.
 
@@ -68,7 +68,7 @@ case class Parcel[@specialized(Int, Long) A](value: A)
 
 Let's also look into the bytecode a little bit this time, by using `:javap Parcel`:
 
-```
+```java
 // Parcel, specialized for Int and Long
 public class Parcel extends java.lang.Object implements scala.Product,scala.Serializable{
     public java.lang.Object value(); // generic version, "catch all"

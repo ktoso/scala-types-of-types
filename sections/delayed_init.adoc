@@ -8,7 +8,7 @@ object Main extends App {
 }
 ```
 
-By looking at this code, and applying our basic Scala knowlage to it we might think "_Ok, so the `println` is actualy in the constructor of the Main class!_". And this would usually be true, but **not in this case**, since we inherited the `DelayedInit` trait - as `App` extends it:
+By looking at this code, and applying our basic Scala knowlage to it we might think "_Ok, so the `println` is actually in the constructor of the Main class!_". And this would usually be true, but **not in this case**, since we inherited the `DelayedInit` trait - as `App` extends it:
 
 ```scala
 trait App extends DelayedInit {
@@ -24,7 +24,7 @@ trait DelayedInit {
 }
 ```
 
-As you can see, it does not contain any implementation - all the work around it is actually performed by the compiler, which will treat all classes and objects inheriting `DelayedInit` in a special way (note: trait's will _not_ be rewriten like this). The special treatment goes like this:
+As you can see, it does not contain any implementation - all the work around it is actually performed by the compiler, which will treat all classes and objects inheriting `DelayedInit` in a special way (note: trait's will _not_ be rewritten like this). The special treatment goes like this:
 
 * imagine your class/object body is a function, doing all these things that are in the class/object body,
 * the compiler creates this function for you, and will pass it into the `delayedInit(x: => Unit)` method (notice the _call-by-name_ in the parameter).
@@ -71,6 +71,6 @@ object Test extends SimpleApp { //
 }
 ```
 
-That's it. Since the rewriting is _not_ applied to traits, the code we see in our `SimpleApp` will not be modified by extending DelayedInit, thanks to this, we can make use of the delayedInit method and accumulate any "class bodies" that we encouter (imagine we're dealing with a deep hierarchy of classes here, then the `delayedInit` would be called multiple times), and then we simply implement the `main` method like you would in plain Java land.
+That's it. Since the rewriting is _not_ applied to traits, the code we see in our `SimpleApp` will not be modified by extending DelayedInit, thanks to this, we can make use of the delayedInit method and accumulate any "class bodies" that we encounter (imagine we're dealing with a deep hierarchy of classes here, then the `delayedInit` would be called multiple times), and then we simply implement the `main` method like you would in plain Java land.
 
 

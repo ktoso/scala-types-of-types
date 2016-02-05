@@ -1,8 +1,8 @@
 == Dynamic Type
 
-I've had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesistate so much?
+I've had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesitate so much?
 
-*Scala allows us to have **Dynamic Types**, right inside of a Staticly/Strictly Typed language!* Which is why I was considering to skip it, and leave a separate place for it's description - as it's basically "hacking around" all the descriptions you've seen above ;-) Let's see it in action though, and how it fits into the Scala Type-ecosystem.
+*Scala allows us to have **Dynamic Types**, right inside of a Statically/Strictly Typed language!* Which is why I was considering to skip it, and leave a separate place for it's description - as it's basically "hacking around" all the descriptions you've seen above ;-) Let's see it in action though, and how it fits into the Scala Type-ecosystem.
 
 Imagine a class `JsonObject` which contains arbitrary JSON data. Let's have methods, matching the keys of this JSON object, which would return an `Option[JValue]`, where a JValue can be another `JObject`, `JArray` or `JString` / `JNumber`. The usage would look like the example below.
 
@@ -60,7 +60,7 @@ object OhMy extends Dynamic {
 OhMy.dynamicMethod("with", "some", 1337)
 ```
 
-So the signature of **applyDynamic** takes the method name and it's arguments. So obviously we'd have to access them by their order. Very nice for building up some strings etc. Our implementation will only print what we want to know about the method being called. Did it really get the values/method name we would exect? The output would be:
+So the signature of **applyDynamic** takes the method name and it's arguments. So obviously we'd have to access them by their order. Very nice for building up some strings etc. Our implementation will only print what we want to know about the method being called. Did it really get the values/method name we would expect? The output would be:
 
 
 ```scala
@@ -91,7 +91,7 @@ Creating a node, for:
 "nickname": "ktoso"
 ```
 
-I can easily imagine some pretty slick <strong>DLSs</strong> being built around this!
+I can easily imagine some pretty slick <strong>DSLs</strong> being built around this!
 
 === selectDynamic
 Not it's time for the more "unusual" methods. apply methods we're pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the example with applyDynamic here, and try to act like it has a method without ()</strong>:
@@ -140,6 +140,6 @@ scala> MagicBox.unknown
 java.util.NoSuchElementException: key not found: unknown
 ```
 
-By the way... are you curious how Dynamic https://github.com/scala/scala/blob/master/src/library/scala/Dynamic.scala[(source code)] is implemented? The fun part here is that the trait Dynamic, does absolutely nothing by itself - it's "empty", just a marker interface. Obviously all the heavylifting (*call-site-rewriting*) is done by the compiler here.
+By the way... are you curious how Dynamic https://github.com/scala/scala/blob/master/src/library/scala/Dynamic.scala[(source code)] is implemented? The fun part here is that the trait Dynamic does absolutely nothing by itself - it's "empty", just a marker interface. Obviously all the heavy lifting (*call-site-rewriting*) is done by the compiler here.
 
 
