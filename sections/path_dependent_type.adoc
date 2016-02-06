@@ -30,7 +30,7 @@ val typeCheckFails: PathDep1 = out2in
 //       val typeCheckFails: PathDep1 = out2in
 ```
 
-The ey to understand here is that "each Outer class has its own Inner class", so it's a different Type - dependent on which path we use to get there.
+The key to understand here is that "each Outer class has its own Inner class", so it's a different Type - dependent on which path we use to get there.
 
 Using this kind of typing is useful, we're able to enforce getting the type from inside of a concrete parameter. An example of a signature using this typing would be:
 

@@ -2,7 +2,7 @@
 
 First, let's take a look as the simplest thing possible about traits:
 how we can basically treat a type with multiple traits mixed in, as if it is implementing these "interfaces with implementation",
-as you might be tempted to call them if comming from Java-land:
+as you might be tempted to call them if coming from Java-land:
 
 ```scala
 class Base { def b = "" }
@@ -26,7 +26,7 @@ b1.b
 
 So far this should have been relatively well known to you. Now let's to into the world of the "diamond problem",
 which people who know C++ might have been expecting. Basically "The Diamond Problem" is a situation during multiple inheritance
-where we're not sure to what we want to refer to. The below image ilustrates the problem, if you would think of traits as if they were
+where we're not sure to what we want to refer to. The below image illustrates the problem, if you would think of traits as if they were
 directly multiple inheritance:
 
 === Type Linearization vs. The Diamond Problem
@@ -39,7 +39,7 @@ For the "diamond problem" to appear, it's enough if we have one overriding imple
 * trait `B` DOES override `common` to return `b`,
 * trait `C` DOES override `common` to return `c`,
 * class `D` extends both `B` and `C`,
-* which version of the `common` method does class `D` inherit? The overriden impementation from `C`, or the one from `B`?
+* which version of the `common` method does class `D` inherit? The overriden implementation from `C`, or the one from `B`?
 
 This ambiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem by so called **Type Linearization**.
 In other words, given a diamond class hierarchy, we are **always** (and **deterministically**) able to determine what will be called when inside D we call `common`.
@@ -77,7 +77,7 @@ Let's apply this algorithm on our diamond example by hand, to verify why `D1 ext
 // start with D1:
 B with C with <D1>
 
-// expand all the types until you rach Any for all of them:
+// expand all the types until you reach Any for all of them:
 (Any with AnyRef with A with B) with (Any with AnyRef with A with C) with <D1>
 
 // remove duplicates by removing "already seen" types, when moving left-to-right:

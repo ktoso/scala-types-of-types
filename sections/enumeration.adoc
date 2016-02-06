@@ -25,7 +25,7 @@ object Main extends App {
     the object's name, we'll be able to refer to it consistently via "WeekDay" (yes, this is pretty much a hack)
 <3> Here we use "multi assignment", so every val on the left-hand side gets assigned a different instance of Value. You could have written this as 7 val's.
 <4> This import causes two things, first we can refer to `Mon` without prefixing it with `WeekDay`, but it also brings the `type WeekDay` into scope, so we can use it in the method definition bellow
-<5> Lastly, we get some Enumeration methods. These are not really magic, most action happend when we create new Value instances
+<5> Lastly, we get some Enumeration methods. These are not really magic, most action happened when we create new Value instances
 
 As you can see, it's actually not a built-in and is implemented by smartly using the Scala type system to make it look like an enum.
 For some uses this may be enough but it's not as rich as the Java enum, where adding values and behavior to each case is possible.

@@ -49,7 +49,7 @@ It's worth mentioning that while **having immutable collections co-variant is __
 val a: Array[Any] = Array[Int](1, 2, 3)
 ```
 
-Such an assigment won't compile, because of Array's invariance. If this assignment would be valid, we'd run into the problem of being able to write such code: `a(0) = "" // ArrayStoreException!` which would fail with the dreaded `ArrayStoreException`.
+Such an assignment won't compile, because of Array's invariance. If this assignment would be valid, we'd run into the problem of being able to write such code: `a(0) = "" // ArrayStoreException!` which would fail with the dreaded `ArrayStoreException`.
 
 TIP: We said that "most" immutable collections are covariant in scala. In case you're curious, one example of an immutable collection which stands out from that, and is invariant, it's `Set[A]`.
 

@@ -10,7 +10,7 @@ Why? Well, the only objects that conform to this type are those who have the `ty
 
 // TODO IMG
 
-It's an union of these two sets, so set wise it's an `type A` **or** `type B`. Our task at hand is to introduce such type using Scala's type system. While not being a first-class construct in Scala (it's not built in) they are pretty easy to implement and use ourselfs. *Miles Sabin* explains this technique in depth in http://www.chuusai.com/2011/06/09/scala-union-types-curry-howard/[the blog post 'Unboxed union types in Scala via the Curry-Howard isomorphism'] if you're curious for an in-deptht explanation.
+It's an union of these two sets, so set wise it's an `type A` **or** `type B`. Our task at hand is to introduce such type using Scala's type system. While not being a first-class construct in Scala (it's not built in) they are pretty easy to implement and use ourselves. *Miles Sabin* explains this technique in depth in http://www.chuusai.com/2011/06/09/scala-union-types-curry-howard/[the blog post 'Unboxed union types in Scala via the Curry-Howard isomorphism'] if you're curious for an in-depth explanation.
 
 ```scala
 type |∨|[T, U] = { type λ[X] = ¬¬[X] <:< (T ∨ U) }

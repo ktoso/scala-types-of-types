@@ -78,6 +78,6 @@ Types visualized:
 Int  -> NotNull -> AnyVal -> [Any]
 Null            -> AnyRef -> [Any]
 
-infered type: Any
+inferred type: Any
 ```
 

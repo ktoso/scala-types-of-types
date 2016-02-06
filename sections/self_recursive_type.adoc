@@ -1,6 +1,6 @@
 == Self-Recursive Type
 
-Self-recursive Types are referred to as **F-Bounded Types** in most literature, so you may find many articles or blog posts refering to "F-bounded". Actually, this is just another name for "self-recursive" and stands for situations where _the subtype constraint itself is parametrized by one of the binders occurring on the left-hand side_. Since the wording self-recursive is more intuitive, let's stick to it for the rest of the section (while the subsection title being aimed for people who try to google what "F-bounded" means).
+Self-recursive Types are referred to as **F-Bounded Types** in most literature, so you may find many articles or blog posts referring to "F-bounded". Actually, this is just another name for "self-recursive" and stands for situations where _the subtype constraint itself is parametrized by one of the binders occurring on the left-hand side_. Since the wording self-recursive is more intuitive, let's stick to it for the rest of the section (while the subsection title being aimed for people who try to google what "F-bounded" means).
 
 === F-Bounded Type
 
