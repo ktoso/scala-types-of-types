@@ -1,7 +1,7 @@
 == Type of an `object`
 
-Scala `object`s are implemented via classes (obviously - as it's the basic building block on the JVM),
-but you'll notice that we cannot get its type the same way as we would with an simple class...
+Scala `object`'s are implemented via classes (obviously - as it's the basic building block on the JVM),
+but you'll notice that we cannot get it's type the same way as we would with a simple class...
 
 I would surprisingly often get the question on how to pass an object into a method. Just saying `obj: ExampleObj` won't work
 because that's already referring to the instance, so there's a member called `type` which should be used in such cases.

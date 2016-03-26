@@ -1,10 +1,10 @@
 == Value Class
 
-Value classes have been around in Scala for a long time internally, and you've used them already many times because all Number's in Scala use this compiler trick to avoid boxing and unboxing numeric values from `int` to `scala.Int` etc. As a quick reminder, let's recall that `Array[Int]` is an actual JVM `int[]` (or for bytecode happy people, it's the JVM runtime type called: `[I`) which has tons of performance implications, but in one word -- arrays of numbers are fast, arrays of references not as much.
+Value classes have been around in Scala for a long time internally, and you've used them already many times because all Numbers in Scala use this compiler trick to avoid boxing and unboxing numeric values from `int` to `scala.Int` etc. As a quick reminder, let's recall that `Array[Int]` is an actual JVM `int[]` (or for bytecode happy people, it's the JVM runtime type called: `[I`) which has tons of performance implications, but in one word -- arrays of numbers are fast, arrays of references not as much.
 
 Ok, since we now know the compiler has fancy tricks to avoid boxing `ints` into `Ints` when it doesn't have to. Let's see how this feature is exposed for us, end users since Scala 2.10.x. The feature is called "value classes", is fairly simple to apply to your existing classes. Using them is as simple as adding `extends AnyVal` to your class and following a few rules listed bellow. If you're not familiar with `AnyVal`, this might be a good moment for a quick refresher by looking at Section <<unified-type-system-any-anyref-anyval, Unified Type System - Any, AnyRef, AnyVal>>.
 
-For our example let's implement a `Meter` which will serve as wrapper for plain `Int` and be able to convert the number of meters, into the number of type `Foot`. We need this class because no-one understands the imperial unit system ;-) On the downside though, why should we pay the runtime overhead of having an object around an `int` (that's quite a few bytes (!) per instance) if for 95% of the time we'll be using the plain meter value - because it's a project for the european market? Value classes to the rescue!
+For our example let's implement a `Meter` which will serve as wrapper for plain `Int` and be able to convert the number of meters, into the number of type `Foot`. We need this class because no one understands the imperial unit system ;-) On the downside though, why should we pay the runtime overhead of having an object around an `int` (that's quite a few bytes (!) per instance) if for 95% of the time we'll be using the plain meter value - because it's a project for the european market? Value classes to the rescue!
 
 ```scala
 case class Meter(value: Double) extends AnyVal {
@@ -63,7 +63,7 @@ As our goal with Value Classes is to avoid having to allocate the entire value o
 
 TIP: *Extension methods* serve the same purpose as *Implicit conversions* (which are a more general and more powerful utility), yet are better than conversions in one simple way -- they avoid having to allocate the "Wrapper" object, which implicit conversions would otherwise use to provide the "added methods". Extension methods take the route of rewriting the generated methods a little, so that they take the type-to-be-extended as their 1st argument. So for example, if you write `3.toHexString` this method is added to `Int` via an _implicit conversion_, but as the *target* is `class RichInt extends AnyVal`, so a Value Class, the call does _not_ force an allocation of `RichInt`, and instead will be rewriten into `RichInt$.$MODULE$.toHexString$extension(3)`, thus avoiding the allocation of `RichInt`.
 
-Let's now use our newly gained knowlage and investigate what the compiler will actualy do for us in the `Meter` example. Right next to the source code "as we write it", the comments will be explaining what the compiler actualy generates (thus, what happens when we run this code):
+Let's now use our newly gained knowledge and investigate what the compiler will actually do for us in the `Meter` example. Right next to the source code "as we write it", the comments will be explaining what the compiler actualy generates (thus, what happens when we run this code):
 
 [source,scala]
 ----

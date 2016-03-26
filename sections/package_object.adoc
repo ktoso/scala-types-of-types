@@ -24,7 +24,7 @@ trait GreenApples {
 }
 ```
 
-It's a custom to put package object's in a file called `package.scala` into the package they're the object for. Investigate the above example's 
+It's a custom to put package objects in a file called `package.scala` into the package they're the object for. Investigate the above example's 
 source path and package to see what that means.
 
 On the usage side, you get the real gains, because when you import "the package", you import any state that is defined in the package side along with it:

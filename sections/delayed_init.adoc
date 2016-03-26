@@ -8,7 +8,7 @@ object Main extends App {
 }
 ```
 
-By looking at this code, and applying our basic Scala knowlage to it we might think "_Ok, so the `println` is actually in the constructor of the Main class!_". And this would usually be true, but **not in this case**, since we inherited the `DelayedInit` trait - as `App` extends it:
+By looking at this code, and applying our basic Scala knowledge to it we might think "_Ok, so the `println` is actually in the constructor of the Main class!_". And this would usually be true, but **not in this case**, since we inherited the `DelayedInit` trait - as `App` extends it:
 
 ```scala
 trait App extends DelayedInit {

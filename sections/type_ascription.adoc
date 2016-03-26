@@ -21,7 +21,7 @@ In case of doubt you can refer to the below hint-questions to whether or not, in
 
 * Is it a parameter? **Yes**, you have to.
 * Is it a public method's return value? **Yes**, for self-documenting code and control over exported types.
-* Is it a recursive or overloaded methods return value? **Yes**, you have to.
+* Is it a recursive or overloaded method's return value? **Yes**, you have to.
 * Do you need to return a more general interface than the inferencer would find? **Yes**, otherwise you'd expose your implementation details for example.
 * Else... No, don't include a Type Ascription.
 * Related hint: Including Type Ascriptions speeds up compilation, also it's generally nice to see the return type of a method.

@@ -3,7 +3,7 @@
 Variance, in general, can be explained as "type compatible-ness" between types, forming an `extends` relation.
 The most popular cases where you'll have to deal with this is when working with containers or functions (so... surprisingly often!).
 
-A major difference from Java in Scala is, that container types are **not-variant by default**!
+A major difference from Java in Scala is that container types are **not-variant by default**!
 This means that if you have a container defined as `Box[A]`, and then use it with a `Fruit` in place
 of the type parameter `A`, you will not be able to insert an `Apple` (which _IS-A_ `Fruit`) into it.
 

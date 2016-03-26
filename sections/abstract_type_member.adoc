@@ -15,14 +15,14 @@ trait SimplestContainer {
 
 Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about <<path-dependent-type, Path Dependent Types>>, as well as in the below example.
 
-It is important to notice that while in the naming contains the word "abstract", it does not behave exactly like an abstract field - so you can still create a new instance of `SimplestContainer` without "implementing" the type member `A`:
+It is important to notice that while "Abstract Type Member" contains the word "abstract", it does not behave exactly like an abstract field - so you can still create a new instance of `SimplestContainer` without "implementing" the type member `A`:
 
 ```scala
 new SimplestContainer // valid, but A is "anything"
 ```
 
 You might be wondering what type `A` was bound to, since we didn't provide any information about it anywhere.
-Turns out `type A` is actualy just a shorthand for `type A >: Nothing <: Any`, which means "anything".
+Turns out `type A` is actually just a shorthand for `type A >: Nothing <: Any`, which means "anything".
 
 ```scala
 object IntContainer extends SimplestContainer {

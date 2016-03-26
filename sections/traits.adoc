@@ -41,7 +41,7 @@ For the "diamond problem" to appear, it's enough if we have one overriding imple
 * class `D` extends both `B` and `C`,
 * which version of the `common` method does class `D` inherit? The overriden implementation from `C`, or the one from `B`?
 
-This ambiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem by so called **Type Linearization**.
+This ambiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem by so-called **Type Linearization**.
 In other words, given a diamond class hierarchy, we are **always** (and **deterministically**) able to determine what will be called when inside D we call `common`.
 Let's put this into code and then talk about linearization:
 
