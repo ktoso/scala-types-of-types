@@ -13,8 +13,8 @@ final class Started extends ServiceState
 final class Stopped extends ServiceState
 ```
 
-Note that making the `ServiceState` trait `sealed` assures that no-one can suddenly add another state to our system.
-We also define the leaf types here to be final, so no-one can extend them, and add other states to the system.
+Note that making the `ServiceState` trait `sealed` assures that no one can suddenly add another state to our system.
+We also define the leaf types here to be final, so no one can extend them, and add other states to the system.
 
 [NOTE]
 ====
