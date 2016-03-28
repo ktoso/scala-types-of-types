@@ -8,7 +8,7 @@ While this not being a Scala specific type, it still sometimes raises a few eyeb
 
 TIP: For this section we will not dive deep very deep into this type. If you're curious for a more in-depth use-case in Scala, you may look into Kris Nuttycombe's http://logji.blogspot.se/2012/11/f-bounded-type-polymorphism-give-up-now.html[F-Bounded Type Polymorphism Considered Tricky].
 
-Imagine you have some `Fruit` trait, and both an `Apple` and an `Orange` extend it. The Fruit trait also has an "compareTo" method, and here the problem comes up: imagine you'd want to say "_I can't compare oranges with apples, they're totally different things!_". First let's look at how we loose this compile-time safety with the naive implementation:
+Imagine you have some `Fruit` trait, and both an `Apple` and an `Orange` extend it. The Fruit trait also has an "compareTo" method, and here the problem comes up: imagine you'd want to say "_I can't compare oranges with apples, they're totally different things!_". First let's look at how we lose this compile-time safety with the naive implementation:
 
 ```scala
 // naive impl, Fruit is NOT self-recursively parameterised
