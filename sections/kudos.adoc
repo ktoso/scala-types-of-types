@@ -1,6 +1,6 @@
 === Thanks and kudos
 
-I would especialy like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):
+I would especially like to thank all proof-readers and reviewers tha that have helped me with polishing this article and giving valuable feedback many many times (in chronological order :-)):
 
 * Sergio Rodrigez, for the most in depth article review I've ever seen in my life and lots of suggestions,
 * Andrzej Grzesik, fellow http://java.pl[PolishJUG] / http://geecon.org[GeeCON] guy

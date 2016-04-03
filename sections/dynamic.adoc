@@ -94,7 +94,7 @@ Creating a node, for:
 I can easily imagine some pretty slick <strong>DSLs</strong> being built around this!
 
 === selectDynamic
-Not it's time for the more "unusual" methods. apply methods we're pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the example with applyDynamic here, and try to act like it has a method without ()</strong>:
+Now it's time for the more "unusual" methods. apply methods we're pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the example with applyDynamic here, and try to act like it has a method without ()</strong>:
 
 ```scala
 OhMy.name // compilation error
