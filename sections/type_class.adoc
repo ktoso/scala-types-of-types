@@ -31,7 +31,7 @@ trait Writable[Self] { this: Self =>                                  <2>
     writes write this
 }
 
-implicit val jsonNum = Writes[Num, Json] {                            <3>
+implicit val jsonNum = new Writes[Num, Json] {                            <3>
   def (n1: Num, n2: Num) = n1.a < n1.
 }
 
