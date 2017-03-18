@@ -2,13 +2,14 @@
 
 === @specialized
 
-Type specialization is actually more of an performance technique than plain "type system stuff", but nevertheless it's something very important and worth keeping in mind if you want to write well performing collections. For our example we'll be implementing a very useful collection called `Parcel[A]`, which can hold a value of a given type -- how useful indeed!
+Type specialization is actually more of a performance technique than plain "type system stuff", but nevertheless it's something very important and worth keeping in mind if you want to write well performing collections. For our example we'll be implementing a very useful collection called `Parcel[A]`, which can hold a value of a given type -- how useful indeed!
 
 ```scala
 case class Parcel[A](value: A)
 ```
 
-That's our basic implementation. What's the drawbacks here? Well, as `A` can be anything, it will be represented as an Java **object**, even if we'd only ever put `Int` into boxes. So the above class would cause us to box and unbox primitive values, because the container is working on objects:
+That's our basic implementation. What are the drawbacks here? Well, as `A` can be anything, it will be represented as a Java **object**, even if we'd only ever
+ put `Int` into boxes. So the above class would cause us to box and unbox primitive values, because the container is working on objects:
 
 ```scala
 val i: Int = Int.unbox(Parcel.apply(Int.box(1)))
@@ -23,7 +24,7 @@ case class Parcel[A](value: A) {
   def something: A = ???
 }
 
-// specialzation "by hand"
+// specialization "by hand"
 case class IntParcel(intValue: Int) {
   override def something: Int = /* works on low-level Int, no wrapping! */ ???
 }
@@ -43,7 +44,7 @@ Since we're now familiar with the idea of specialization, and that it's not real
 case class Parcel[@specialized A](value: A)
 ```
 
-So we're applying the `@specialized` annotation to the type parameter `A`, thus instructing the compiler to generate all specialized variants of this class - that is: `ByteParcel`, `IntParcel`, `LongParcel`, `FloatParcel`, `DoubleParcel`, `BooleanParcel`, `CharParcel`, `ShortParcel`, `CharParcel` and even `VoidParcel` (not actual names of the implementors, but you get the idea). Applying the "right" version is also taken up by the compiler, so we can write our code without caring if a class is specialized or not, and the compiler will do it's best to use the specialized version (if available):
+So we're applying the `@specialized` annotation to the type parameter `A`, thus instructing the compiler to generate all specialized variants of this class - that is: `ByteParcel`, `IntParcel`, `LongParcel`, `FloatParcel`, `DoubleParcel`, `BooleanParcel`, `CharParcel`, `ShortParcel`, `CharParcel` and even `VoidParcel` (not actual names of the implementors, but you get the idea). Applying the "right" version is also taken up by the compiler, so we can write our code without caring if a class is specialized or not, and the compiler will do its best to use the specialized version (if available):
 
 ```scala
 val pi = Parcel(1)     // will use `int` specialized methods
@@ -58,9 +59,12 @@ val po = Parcel("pi")  // will use `Object` methods
 class Thing[A, B](@specialized a: A, @specialized b: B)
 ```
 
-In the above example we're using the second style of applying specialization - right onto the parameters - the effect is still the same as if we'd specialize `A` and `B` directly. Please notice that the above code would generate `8 * 8 = 64` (_sic!_) implementations, as it has to take care of cases like "A is an `int`, and B is an `int`" as well as "A is a `boolean`, but B is a `long`" -- you can see where this is heading. In fact the number of generated classes is around `2 * 10^(nr_of_type_specializations)`, which easily reaches thousands of classes for already 3 type parameters!
+In the above example we're using the second style of applying specialization - right onto the parameters - the effect is still the same as if we'd specialize
+ `A` and `B` directly. Please notice that the above code would generate `8 * 8 = 64` (_sic!_) implementations, as it has to take care of cases like "A is an
+ `int`, and B is an `int` " as well as "A is a `boolean`, but B is a `long` " -- you can see where this is heading. In fact the number of generated classes
+ is around `(nr_of_type_specializations)^2`, which easily reaches thousands of classes for already 3 type parameters!
 
-There are ways to limit this exponential explosion, for example by limiting the specialization target types. Let's say our `Parcel` will be used mosltly with integers, and never with floating point numbers -- using this we can ask the compiler to only specialize for `Long` and `Int` like this:
+There are ways to limit this exponential explosion, for example by limiting the specialization target types. Let's say our `Parcel` will be used mostly with integers, and never with floating point numbers -- using this we can ask the compiler to only specialize for `Long` and `Int` like this:
 
 ```scala
 case class Parcel[@specialized(Int, Long) A](value: A)
@@ -81,15 +85,17 @@ public class Parcel extends java.lang.Object implements scala.Product,scala.Seri
 
 As you can see, the compiler has prepared additional specialized methods for us, such as `value$mcI$sp()` returning an `int` and the same style of method for `long`. One other method worth mentioning here is `specInstance$` which returns `true` if the used implementation is a specialized class.
 
-If you're curious, currently these classes are specialized in Scala (list may be incomplete): Function0, Function1, Function2, Tuple1, Tuple2, Product1, Product2, AbstractFunction0, AbstractFunction1, AbstractFunction2. Due to how costy it is to specialize beyond 2 parameters, it's a trend to not specialize for more params, although certainly possible.
+If you're curious, currently these classes are specialized in Scala (list may be incomplete): Function0, Function1, Function2, Tuple1, Tuple2, Product1,
+Product2, AbstractFunction0, AbstractFunction1, AbstractFunction2. Due to how costy it is to specialize beyond 2 parameters, it's a trend not to specialize
+ for more params, although certainly possible.
 
-WARNING: A prime example why we want to avoid boxing is also memory efficiency. Imagine a `boolean`, it would be great if it would be stored as one bit, sadly it isn't (not on any JVM I know of), for example on HotSpot an `boolean` is represented as `int`, so it takes *4 bytes* of space. It's cousin `java.lang.Boolean` on the other hand has *8 bytes of object header*, as does any Java object, then it stores the `boolean` inside (another *4 bytes*), and due to the *Java Object Layout alignment rules*, the space taked up by this object will be aligned to *16 bytes* (8 for object header, 4 for the value, 4 bytes of padding). That's yet another reason why we want to avoid boxing so badly.
+WARNING: A prime example why we want to avoid boxing is also memory efficiency. Imagine a `boolean`, it would be great if it would be stored as one bit, sadly it isn't (not on any JVM I know of), for example on HotSpot a `boolean` is represented as `int`, so it takes *4 bytes* of space. Its cousin `java.lang.Boolean` on the other hand has *8 bytes of object header*, as does any Java object, then it stores the `boolean` inside (another *4 bytes*), and due to the *Java Object Layout alignment rules*, the space taked up by this object will be aligned to *16 bytes* (8 for object header, 4 for the value, 4 bytes of padding). That's yet another reason why we want to avoid boxing so badly.
 
 === Miniboxing +++<span style="color:red">&#x2717;</span>+++
 
 WARNING: This is not a Scala feature, but can be used with scalac as a _compiler plugin_.
 
-We've explained in the previous section that specialization is quite powerful, yet at the same time it's a bit of a "compiler bomb", with it's exponential growth potential. Turns out there is already a working proof of concept that takes away this problem. Miniboxing is a compiler plugin achieving the same result as `@specialized` but without generating thousands of classes.
+We've explained in the previous section that specialization is quite powerful, yet at the same time it's a bit of a "compiler bomb", with its exponential growth potential. Turns out there is already a working proof of concept that takes away this problem. Miniboxing is a compiler plugin achieving the same result as `@specialized` but without generating thousands of classes.
 
 WARNING: TODO, there's a project from withing EPFL to make specialization more efficient: http://scala-miniboxing.org[Scala Miniboxing]
 

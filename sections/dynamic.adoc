@@ -2,7 +2,7 @@
 
 I've had a hard time trying to decide if I should put this type into this vademecum of types or not. Lastly, I decided to add it, since it would make this collection of Type descriptions complete. So the question is, why did I hesitate so much?
 
-*Scala allows us to have **Dynamic Types**, right inside of a Statically/Strictly Typed language!* Which is why I was considering to skip it, and leave a separate place for it's description - as it's basically "hacking around" all the descriptions you've seen above ;-) Let's see it in action though, and how it fits into the Scala Type-ecosystem.
+*Scala allows us to have **Dynamic Types**, right inside of a Statically/Strictly Typed language!* Which is why I was considering to skip it, and leave a separate place for its description - as it's basically "hacking around" all the descriptions you've seen above ;-) Let's see it in action though, and how it fits into the Scala Type-ecosystem.
 
 Imagine a class `JsonObject` which contains arbitrary JSON data. Let's have methods, matching the keys of this JSON object, which would return an `Option[JValue]`, where a JValue can be another `JObject`, `JArray` or `JString` / `JNumber`. The usage would look like the example below.
 
@@ -43,7 +43,8 @@ Ok, end of rant and back to the basics. So... How do we use Dynamic? In fact, it
 * **updateDynamic**
 
 
-Let's take a look (with examples, at each of them. We'll start with  the most "typical one", and move on to those which would allow the construct shown above (which didn't (back then) compile) and make it work this time ;-)
+Let's take a look with examples, at each of them. We'll start with  the most "typical one", and move on to those which would allow the construct shown above
+(which didn't compile back then) and make it work this time ;-)
 
 === applyDynamic
 Ok, our first magic method looks like this:
@@ -60,7 +61,7 @@ object OhMy extends Dynamic {
 OhMy.dynamicMethod("with", "some", 1337)
 ```
 
-So the signature of **applyDynamic** takes the method name and it's arguments. So obviously we'd have to access them by their order. Very nice for building up some strings etc. Our implementation will only print what we want to know about the method being called. Did it really get the values/method name we would expect? The output would be:
+So the signature of **applyDynamic** takes the method name and its arguments. So obviously we'd have to access them by their order. Very nice for building up some strings etc. Our implementation will only print what we want to know about the method being called. Did it really get the values/method name we would expect? The output would be:
 
 
 ```scala
@@ -91,16 +92,19 @@ Creating a node, for:
 "nickname": "ktoso"
 ```
 
-I can easily imagine some pretty slick <strong>DSLs</strong> being built around this!
+I can easily imagine some pretty slick *DSLs* being built around this!
 
 === selectDynamic
-Not it's time for the more "unusual" methods. apply methods we're pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't almost everything in scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the example with applyDynamic here, and try to act like it has a method without ()</strong>:
+Now, it's time for the more "unusual" methods. Apply methods were pretty easy to understand. It's just a method with some arbitrary name. But hey, isn't
+almost everything in Scala a method - or we can have a method on an object that would act as a field? Yeah, so let's give it a try! <strong>We'll use the
+example with applyDynamic here, and try to act like it has a method without *()*:
 
 ```scala
 OhMy.name // compilation error
 ```
 
-Hey! Why didn't this work with <strong>applyDynamic</strong>? Yeah, you figured it out already I guess. Such methods (without `()`) are treated *special*, as they would usually represent fields for example. `applyDynamic` won't trigger on such calls.
+Hey! Why didn't this work with *applyDynamic*? Yeah, you figured it out already I guess. Such methods (without `()`) are treated *special*, as they
+would usually represent fields for example. `applyDynamic` won't trigger on such calls.
 
 Let's look at our first `selectDynamic` call:
 
@@ -111,7 +115,9 @@ class Json(s: String) extends Dynamic {
 }
 ```
 
-And this time when we execute `HasStuff.bananas` we'll get "I have bananas!" as expected. Notice that here we return a value instead of printing it. It's because it "acts as a field" this time around. But we could also return things (of arbitrary types) from any other method described here (<strong>applyDynamic</strong> <strong>could return the string instead of printing it</strong>).
+And this time when we execute `HasStuff.bananas` we'll get "I have bananas!" as expected. Notice that here we return a value instead of printing it. It's
+because it "acts as a field" this time around. But we could also return things (of arbitrary types) from any other method described here (`*applyDynamic*`
+*could return the string instead of printing it*).
 
 === updateDynamic
 What's left you ask? Ask yourself the following question then: "Since I can act like a `Dynamic` object has some value in some field... What else should I be able to do with it?" My answer to that would be: "set it"! That's what `updateDynamic` is used for. There is one special rule about `updateDynamic` though - it's only valid if you also took care about selectDynamic - that's why in the first example the code generated errors about both - select and update. For example if we'd implement only updateDynamic, we would get an error that selectDynamic was not implemented and it wouldn't compile anyway. It makes sense in terms of plain semantics if you think about it.

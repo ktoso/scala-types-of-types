@@ -1,11 +1,12 @@
 == Phantom Type
 
-Phantom Types are very true to it's name even if it's a weird one, and can be explained as "Types that are not instantiate, ever".
-Instead of using them directly, we use them to even more strictly enforce some logic, using our types.
+Phantom Types are very true to its name even if it's a weird one, and can be explained as "Types that are not instantiated, ever".
+Instead of using them directly, we use them to enforce some logic more strictly, using our types.
 
 The example we'll look at is a `Service` class, which has `start` and `stop` methods. Now we want to guarantee that you cannot (the type system won't allow you to) start an already started service, and vice-versa.
 
-Let's start with preparing our "marker traits", which don't contain any logic - we will only use them in order to express the state of an service in it's type:
+Let's start with preparing our "marker traits", which don't contain any logic - we will only use them in order to express the state of a service within its
+type:
 
 ```scala
 sealed trait ServiceState
@@ -13,8 +14,8 @@ final class Started extends ServiceState
 final class Stopped extends ServiceState
 ```
 
-Note that making the `ServiceState` trait `sealed` assures that no-one can suddenly add another state to our system.
-We also define the leaf types here to be final, so no-one can extend them, and add other states to the system.
+Note that making the `ServiceState` trait `sealed` assures that no one can suddenly add another state to our system.
+We also define the leaf types here to be final, so no one can extend them, and add other states to the system.
 
 [NOTE]
 ====
@@ -22,15 +23,15 @@ We also define the leaf types here to be final, so no-one can extend them, and a
 
 `sealed` makes sure that all classes that extend a class or trait are defined in the same compilation unit. For example, if you define `sealed trait State` and a few state implementations in the file _State.scala_ it'll work, however you cannot extends `State` from another file (like _MyStates.scala_).
 
-Note that this applies directly to the Type the keyword was applied to, not to it's subtypes.
+Note that this applies directly to the Type the keyword was applied to, not to its subtypes.
 So you cannot extend State from other files, but if you prepare a type like `trait UserDefinedState extends State` 
 users will still be able to define more sub-types of `UserDefinedState`, even from other files.
 If you want to prevent this from happening, you should make your sub-types `final`, like we do in this example.
 ====
 
 Having those prepared, let's finally dive in into using them as Phantom Types.
-First let's define a class Service, which takes `State` type parameter - notice here that we _don't use any value of type S_ in this class_!
-It's just there, unused, like a ghost, or _Phantom_ - which is where it's name comes from.
+First let's define a class Service, which takes `State` type parameter - notice here that we _don't use any value of type ```State``` in this class_!
+It's just there, unused, like a ghost, or _Phantom_ - which is where its name comes from.
 
 ```scala
 class Service[State <: ServiceState] private () {
@@ -47,7 +48,7 @@ The Stopped state conforms to the type bounds of the type parameter (`<: Service
 
 The interesting things happen when we want to start / stop an existing Service. The Type bounds defined on the start method for example,
 are only valid for one value of `T`, which is `Stopped`. The transition to the opposite state is a no-op in our example, we return the same instance,
-and explicitly cast it into the required state. Since nothing is actualy using this type, you won't bump into class cast exceptions during this conversion.
+and explicitly cast it into the required state. Since nothing is actually using this type, you won't bump into class cast exceptions during this conversion.
 
 Let's now investigate the above code using the REPL, which will act as a nice finisher for this section.
 
@@ -81,5 +82,7 @@ scala> started.start()                         <5>
 
 As you see, Phantom Types are yet another great facility to make our code even more type-safe (or shall I say "state-safe"!?).
 
-TIP: If you're curious where these things are used in "not very crazy libraries", a great example here is http://github.com/foursquare/rogue[Foursquare Rogue] (the MongoDB query DSL) where it's used to assure a query builder is in the right state - for example that `limit(3)` was called on it.
+TIP: If you're curious as for evidence of usage in "not very crazy libraries", a great example here is http://github
+.com/foursquare/rogue[Foursquare
+Rogue] (the MongoDB query DSL) where it's used to assure a query builder is in the right state - for example that `limit(3)` was called on it.
 

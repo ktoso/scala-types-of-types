@@ -18,9 +18,12 @@ trait Service {
 }
 ```
 
-The second line can be read as "I'm a Module". It might seem yield the exactly same But how does this differ from extending `Module` right away?
+The second line ```this: Module =>``` can be read as "I'm a Module". It might seem to yield exactly the same trait as extending ```Module``` normally. But how
+does this
+differ exactly from extending `Module`
+right away?
 
-which means that someone will have to give us this Module at instantiation time:
+When using self type, it means that someone will have to give us this Module or a sub-type at instantiation time:
 
 ```scala
 trait TestingModule extends Module { /*...*/ }
@@ -39,7 +42,8 @@ new Service {}
 ```
 
 You should also keep in mind that it's OK to specify more than one trait when using the self-type syntax.
-And while we're at it, let's discuss why it is called self-type (except for the "yeah, it makes sense" factor). Turns out a popular style (and possibility) to write it looks like this:
+And while we're at it, let's discuss why it is called self-type (except for the shamefully nodding "yeah, it makes sense" factor). Turns out a popular style
+(and possibility) to write it looks like this:
 
 ```scala
 class Service {

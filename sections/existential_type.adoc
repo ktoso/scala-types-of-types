@@ -11,7 +11,8 @@ thingy match {
 }
 ```
 
-We don't know the type of `a`, because of runtime type erasure. We know though that List is a type constructor, `* -> *`, so there must have been some type, it could have used to construct a valid `List[T]`. This "some type", is the **existential type**!
+We don't know the type of `a`, because of runtime type erasure. We know though that List is a type constructor, `* -> *`, so there must have been some type
+it would have used to construct a valid `List[T]`. This "some type", is the **existential type**!
 
 Scala provides a shortcut for it:
 

@@ -1,6 +1,6 @@
 == Union Type +++<span style="color:red">&#x2717;</span>+++
 
-WARNING: This is incomplete and work in progress, refer to Miles' blog (linked bellow) for full details though :-)
+WARNING: This is incomplete and work in progress, refer to Miles' blog (linked below) for full details though :-)
 
 Let's start discussing this Type by remembering set theory, and viewing the already known construction `A with B` as "Intersection Type":
 

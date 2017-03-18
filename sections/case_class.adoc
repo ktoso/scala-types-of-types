@@ -12,12 +12,13 @@ Just by this one line, we have already implemented the http://en.wikipedia.org/w
 This means that by defining a case class we automatically get these benefits:
 
 * instances of it are immutable,
-* can be compared using `equals`, and equality is defined by it's fields (NOT object identity like it would be the case with a normal class),
-* it's `hashcode` adheres the `equals` contract, and is based on the values of the class,
-* the `radius` constructor parameter is a `public val`
-* it's `toString` is composed of the class name and values of the fields it contains (for our Circle it would be implemented as `def toString = s"Circle($radius)"`).
+* can be compared using `equals`, and equality is defined by its fields (*as opposed to* simple object identity if it were a normal class),
+* its `hashcode` adheres to the `equals` contract, and is based on the values of the class,
+* the constructor parameters are automatically `public val` without having to be explicit about it (`radius` in example above)
+* its `toString` is composed of the class name and values of the fields it contains (for our Circle it would be implemented as `def toString = s"Circle($radius)"`).
 
-Let's see what we got so far, and expand on this using a "real life" example, this time implementing a `Point` class, because we'll need more than just one field to show off some interesting features `case class` provides us with:
+Let's see what we got so far, and expand on this using a "real life" example, this time implementing a `Point` class, because we'll need more than just one
+field to showcase some interesting features _case class_ provides us with:
 
 ```scala
 case class Point(x: Int, y: Int)      <1>
@@ -31,18 +32,18 @@ a == Point(0, 0)                      <5>
 ```
 <1> `x` and `y` are automatically defined as `val` members
 <2> a `Point` companion object is generated for it, with an `apply(x: Int, y: Int)` method which we can use to create instances using this syntax
-<3> the generated `toString` method consists of the classname and case class parameter values
+<3> the generated `toString` method consists of the class name and case class parameter values
 <4> the `copy(...)` method allows to easily create derivative objects, by changing only selected fields
 <5> equality of case classes is value based (`equals` and `hashCode` implementations based on the case class parameters are generated)
 
-Not only that, but a case class is ready to be used with _pattern matching_, using either the "usual" or "extractor" syntax:
+Not only that, but a case class is ready to be used with _pattern matching_, using either the "usual" or "extractor" syntax (assignment to :
 
 ``` scala
 Circle(2.5) match {
   case Circle(r) => println("Radius = " + r)
 }
 
-val Circle(r)
-val r2 = r + r
+val Circle(r) = Circle(4.0)
+val r2 = r * r // r2 is now 16.0
 ```
 

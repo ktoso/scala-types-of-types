@@ -1,8 +1,9 @@
 === Traits, as in "interfaces with implementation"
 
 First, let's take a look as the simplest thing possible about traits:
-how we can basically treat a type with multiple traits mixed in, as if it is implementing these "interfaces with implementation",
-as you might be tempted to call them if coming from Java-land:
+how we can basically treat a particular type that arises by mixing in multiple traits, as if it were implementing these "interfaces with
+implementation",
+as you might be tempted to call traits if coming from Java-land:
 
 ```scala
 class Base { def b = "" }
@@ -24,16 +25,18 @@ bc.c
 b1.b
 ```
 
-So far this should have been relatively well known to you. Now let's to into the world of the "diamond problem",
-which people who know C++ might have been expecting. Basically "The Diamond Problem" is a situation during multiple inheritance
-where we're not sure to what we want to refer to. The below image illustrates the problem, if you would think of traits as if they were
-directly multiple inheritance:
+So far this should feel rather straightforward to you. Now let's dive into the world of the "diamond problem",
+which should be familiar to the C++ developers reading this. Basically, the "diamond problem" is a situation arising with multiple inheritance
+where we're not sure to what method we refer to. The below image illustrates the problem, if you would think of composing the traits as if it represented
+multiple inheritance usage:
 
 === Type Linearization vs. The Diamond Problem
 
 image::assets/img/220px-Diamond_inheritance.svg.png[Diamond Inheritance, align="center"]
 
-For the "diamond problem" to appear, it's enough if we have one overriding implementation in `B` or/and `C`. This introduces an ambiguity when calling the common method in `D`, did we inherit the version of the method from `C` or from `B`? In Scala's case the case with only one overriding method is very simple - the override wins. But let's work through the more complex case:
+For the "diamond problem" to appear, it's enough if we have one overriding implementation in `B` or/and `C`. This introduces an ambiguity when calling the
+common method in `D`. Did we inherit the version of the method from `C` or from `B`? In Scala, the case with only one overriding method is very simple
+- the override wins. But let's work through the more complex case:
 
 * class `A` defines a method `common` returning `a`,
 * trait `B` DOES override `common` to return `b`,
@@ -41,7 +44,7 @@ For the "diamond problem" to appear, it's enough if we have one overriding imple
 * class `D` extends both `B` and `C`,
 * which version of the `common` method does class `D` inherit? The overriden implementation from `C`, or the one from `B`?
 
-This ambiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem by so called **Type Linearization**.
+This ambiguity is a pain point of every multiple-inheritance-like mechanism. Scala solves this problem with the so called **Type Linearization**.
 In other words, given a diamond class hierarchy, we are **always** (and **deterministically**) able to determine what will be called when inside D we call `common`.
 Let's put this into code and then talk about linearization:
 
@@ -55,7 +58,7 @@ class D1 extends B with C
 class D2 extends C with B
 ```
 
-The results will be as follows:
+Exercising the above types, we obtain the following run-time behaviours:
 
 ```scala
 (new D1).common == "C"
@@ -63,7 +66,7 @@ The results will be as follows:
 (new D2).common == "B"
 ```
 
-The reason for this is that Scala applied the type linearization for us here. The algorithm goes like this:
+The reason for this is that Scala applies the type linearization for us here. The algorithm goes like this:
 
 * start building a list of types, the first element is the type we're linearizing right now,
 * expand each supertype recursively and put all their types into this list (it should be flat, not nested),
@@ -93,6 +96,7 @@ and try to resolve the method by going from the right in the resulting linearize
 You can wrap your head around this method by trying it out on the `D2` class - it should linearize with `B` after `C`, thus yielding a `"b"` if you'd run the code.
 Also it's rather easy to resolve the simpler cases of linearization by just thinking "rightmost wins", but this is quite a simplification which, while helpful, does not give the full picture about the algorithm.
 
-It is worth mentioning that using this technique we also know *"who is my `super`?"*. It's as easy as "looking left" in the linearized type, from wherever class you want to check who your superclass is. So for example in our case (`D1`), the superclass of `C` is `B`.
+It is worth mentioning that using this technique we also answer the question *"who is my `super`?"*. It's as easy as "looking left" in the linearized type,
+from wherever class you want to check who your superclass is. So for example in our case (`D1`), the superclass of `C` is `B`.
 
 

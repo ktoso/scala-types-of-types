@@ -1,6 +1,6 @@
 == Type Lambda +++<span style="color:red">&#x2717;</span>+++
 
-In type lambda's we'll be using *Path Dependent* as well as *Structural Types*, so if you skipped that sections you may want to go back to it.
+In type lambda's we'll be using *Path Dependent* as well as *Structural Types*, so if you skipped those sections you may need to go back to either of them.
 
 Before we look at Type Lambdas, let's take a step back and remind ourselves a bit about functions and currying.
 

@@ -14,7 +14,8 @@ As you can see in the comments, the type of the if block is `Int` (easy), the ty
 
 NOTE:  A very nice intuition about how bottom types work is: _"`Nothing` extends everything."_
 
-Type inference always looks for the "common type" of both branches in an if stamement, so if the other branch here is a Type that extends everything, the infered type will automatically be the Type from the first branch.
+Type inference always looks for the "common type" of both branches in an if statement, so if the other branch here is a Type that extends everything, the
+inferred type will automatically be the Type from the first branch.
 
 ```scala
 Types visualized:
@@ -41,7 +42,7 @@ Types visualized:
         [String] -> AnyRef -> Any
 Null -> [String] -> AnyRef -> Any
 
-infered type: String
+inferred type: String
 ```
 
 Let's think about `Int` and other primitives, which cannot hold null values. To investigate this case let's drop into the REPL and use the `:type` command (which allows to get the type of an expression):
@@ -51,7 +52,9 @@ scala> :type if (false) 23 else null
 Any
 ```
 
-This is different than the case with a String object in one of the branches. Let's look into the types in detail here, as `Null` is a bit less "extends everything" than `Nothing`. Let's see what `Int` extends in detail, by using `:type` again on it:
+This is different from the case where a String object would be used in one of the branches. Let's look into the types in detail here, as `Null` exhibits
+a bit less the property of "extends
+everything" than `Nothing` does. Let's see what `Int` extends in detail, by using `:type` again on it:
 
 ```scala-repl
 scala> :type -v 12
@@ -68,9 +71,12 @@ The verbose option adds a bit more information here, now we know that `Int` is a
 abstract class AnyVal extends Any with NotNull
 ```
 
-I'm bringing this up here because the core functionality of AnyVal is so nicely represented using the Types here. *Notice the `NotNull` trait!*
+I'm bringing this up here because the core functionality of AnyVal is so nicely represented using the types here. *Notice the `NotNull` trait!*
 
-Coming back to the subject why the common Type for our if statement with an `AnyVal` on one code block and a `null` on the other one was Any and not something else. The one sentence way to define it is: `Null extends all AnyRefs` whereas `Nothing extends anything`. As AnyVals (such as numbers), are not in the same tree as AnyRefs, the only common Type between a number and a `null` value is Any - which explains our case.
+Let's come back to the subject of why the common type for our if statement with an `AnyVal` on one code block and a `null` on the other one was Any and not
+something else. A concise explanation is: `Null extends all AnyRefs` whereas `Nothing extends anything`. Since AnyVals (such as numbers) are not in the same
+tree
+ as AnyRefs, the only common type between a number and a `null` value is Any - which explains our case.
 
 ```scala
 Types visualized:
