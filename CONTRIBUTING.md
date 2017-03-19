@@ -14,6 +14,7 @@ What should i have to contribute ?
 =========================
 
 * Ruby >= 1.9.3
+* bundle (install via `gem install bundler`)
 * Make 
 * Asciidoctor (install via `bundle install`) 
 
