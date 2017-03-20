@@ -37,6 +37,8 @@ implicit val jsonNum = Writes[Num, Json] {                            <3>
 
 case class Num(a: Int) extends Writable[Num]
 ```
-<1> First we define out Type Class, it's API is similar to the previous `Writable` trait we, but instead of mixing it into a class that will be written, we will keep it separate, and in oder to know what it's defined _for_ we use the `Self` <<Type Parameter, type-parameter>>
-<2> Next we change our `Writable` trait to be parameterized with `Self` and the target serialization type is moved onto the signature of `write`. It also now requires an implicit `Writes[Self, Out]` implementation, which handles the serializing - that's how our Type Class.
+<1> First we define out Type Class, its API is similar to the previous `Writable` trait we, but instead of mixing it into a class that will be written, we
+will keep it separate, and in order to know what it's defined _for_ we use the `Self` <<Type Parameter, type-parameter>>
+<2> Next we change our `Writable` trait to be parameterized with `Self` and the target serialization type is moved onto the signature of `write`. It also now
+ requires an implicit `Writes[Self, Out]` implementation, which handles the serializing - that's an instance of our Type Class.
 <3> This is the actual implementation of the Type Class, notice that we mark the instance as `implicit`, so it's available for the `write()(implicit Writes[_, _])` method

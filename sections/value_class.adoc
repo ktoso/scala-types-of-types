@@ -1,10 +1,17 @@
 == Value Class
 
-Value classes have been around in Scala for a long time internally, and you've used them already many times because all Number's in Scala use this compiler trick to avoid boxing and unboxing numeric values from `int` to `scala.Int` etc. As a quick reminder, let's recall that `Array[Int]` is an actual JVM `int[]` (or for bytecode happy people, it's the JVM runtime type called: `[I`) which has tons of performance implications, but in one word -- arrays of numbers are fast, arrays of references not as much.
+Value classes have been around in Scala for a long time internally, and you've used them already many times because all Number's in Scala use this compiler
+trick to avoid boxing and unboxing numeric values from `scala.Int` to `java.lang.Integer` etc. As a quick reminder, let's recall that `Array[Int]` is an actual
+JVM
+`int[]` (or for bytecode happy people, it's the JVM runtime type called: `[I`) which has tons of performance implications, but in one word -- arrays of numbers are fast, arrays of references not as much.
 
-Ok, since we now know the compiler has fancy tricks to avoid boxing `ints` into `Ints` when it doesn't have to. Let's see how this feature is exposed for us, end users since Scala 2.10.x. The feature is called "value classes", is fairly simple to apply to your existing classes. Using them is as simple as adding `extends AnyVal` to your class and following a few rules listed bellow. If you're not familiar with `AnyVal`, this might be a good moment for a quick refresher by looking at Section <<unified-type-system-any-anyref-anyval, Unified Type System - Any, AnyRef, AnyVal>>.
+Ok, we now know the compiler has fancy tricks to avoid boxing `ints` into `Integers` when it doesn't have to. Let's see how this feature is exposed to us,
+end users since Scala 2.10.x. The feature is called "value classes", is fairly simple to apply to your existing classes. Using them is as simple as adding `extends AnyVal` to your class and following a few rules listed bellow. If you're not familiar with `AnyVal`, this might be a good moment for a quick refresher by looking at Section <<unified-type-system-any-anyref-anyval, Unified Type System - Any, AnyRef, AnyVal>>.
 
-For our example let's implement a `Meter` which will serve as wrapper for plain `Int` and be able to convert the number of meters, into the number of type `Foot`. We need this class because no-one understands the imperial unit system ;-) On the downside though, why should we pay the runtime overhead of having an object around an `int` (that's quite a few bytes (!) per instance) if for 95% of the time we'll be using the plain meter value - because it's a project for the european market? Value classes to the rescue!
+For our example let's implement a `Meter` which will serve as wrapper for plain `Double` and be able to convert the number of meters, into the number of type
+`Foot`. We need this class because no one understands the imperial unit system ;-) On the downside though, why should we pay the runtime overhead of having
+an object around an `scala.Double` (that's quite a few bytes (!) per instance) if for 95% of the time we'll be using the plain meter value - because it's a
+project for the European market? Value classes to the rescue!
 
 ```scala
 case class Meter(value: Double) extends AnyVal {
@@ -16,11 +23,18 @@ case class Foot(value: Double) extends AnyVal {
 }
 ```
 
-We'll be using Case (Value) Classes in all our examples here, but it's not technically required to do so (although very convinient). You could implement a Value Class using a normal class with one `val` parameter instead, but using case classes is usually the best way to go. Why only one parameter you might ask -- this is because we'll try to avoid wrapping the value, and this only makes sense for single values, otherwise we'd have to keep a Tuple around somewhere, which gets fuzzy very quickly and we'd loose the performance of not-wrapping anyway. So remember - value classes work only for 1 value, although no-one said that that parameter must be a primitive (!), it can be a normal class, like `Fruit` or `Person`, we'll still be able to avoid wrapping it in the Value Class at some times.
+We'll be using Case (Value) Classes in all our examples here, but it's not technically required to do so (although very convenient). You could implement a
+Value Class using a normal class with one `val` parameter instead, but using case classes is usually the best way to go. Why only one parameter you might ask
+ -- this is because we'll try to avoid wrapping the value, and this only makes sense for single values, otherwise we'd have to keep a Tuple around somewhere, which gets fuzzy very quickly and we'd lose the performance of not-wrapping anyway. So remember - value classes work only for 1 value, although no one said that that parameter must be a primitive (!), it can be a normal class, like `Fruit` or `Person`, we'll still be able to avoid wrapping it in the Value Class at some times.
 
-TIP: All you need to do to define a Value Class is to have *a class with only one public val parameter* extending `AnyVal`, and follow a few restrictions around it. That one parameter does _not_ have to be a primitive, it can be anything. The restrictions (or limitations) on the other hand are a longer list, as for example a value class cannot contain any other fields than `def` members and cannot be extended etc. For a full list and more in-depth examples refer to the Scala documentation's http://docs.scala-lang.org/overviews/core/value-classes.html#summary_of_limitations[Value Classes - summary of limitations].
+TIP: All you need to do to define a Value Class is to have *a class with only one public val parameter* extending `AnyVal`, and follow a few restrictions
+around it. That one parameter does _not_ have to be a primitive, it can be anything. The restrictions (or limitations) on the other hand are a longer list,
+as for example a value class cannot contain any fields other than `def` members and the classes themselves cannot be extended, etc. For a full list and more
+in-depth examples
+refer to the Scala documentation's http://docs.scala-lang.org/overviews/core/value-classes.html#summary_of_limitations[Value Classes - summary of limitations].
 
-Ok, so now that we got our `Meter` and `Foot` *Value Case Classes*, let's first examine how the generated bytecode has changes from a normal case class when we added the `extends AnyVal` part, making Meter a value class:
+Ok, so now that we got our `Meter` and `Foot` *Value Case Classes*, let's first examine how the generated bytecode has changed from a normal case class when
+we added the `extends AnyVal` part, making Meter a value class:
 
 ```java
 // case class
@@ -57,17 +71,22 @@ public class Meter$ extends scala.runtime.AbstractFunction1 implements scala.Ser
 }
 ```
 
-There's basically one thing that should catch our attention here, it's that the Meter's companion class when created as a Value Class, has gained a new method - `toFeet$extension(double): Foot`. Before this method was an instance method, of the Meter class, and it did not take any arguments (so it was: `toFeet(): Foot`). The generated method is marked as "extension", and this is actualy exactly the name we give to such methods (.NET developers might see where this is headed already).
+There's basically one thing that should catch our attention here, it's that the Meter's companion class when created as a Value Class, has gained a new
+method - `toFeet$extension(double): Foot`. Before this method was an instance method, of the Meter class, and it did not take any arguments (so it was: `toFeet(): Foot`). The generated method is marked as "extension", and this is actually exactly the name we give to such methods (.NET developers might see where this is headed already).
 
 As our goal with Value Classes is to avoid having to allocate the entire value object, and instead work directly on the wrapped value we have to stop using instance methods -- as they would force us into having an instance of the Wrapper (`Meter`) class. What we can do instead is promoting the instance method, into an *extension method*, which we'll store in the companion object of `Meter`, and instead of using the `value: Double` field of the instance, we'll _pass in_ the `Double` value each time we'll be calling the *extension method*. 
 
-TIP: *Extension methods* serve the same purpose as *Implicit conversions* (which are a more general and more powerful utility), yet are better than conversions in one simple way -- they avoid having to allocate the "Wrapper" object, which implicit conversions would otherwise use to provide the "added methods". Extension methods take the route of rewriting the generated methods a little, so that they take the type-to-be-extended as their 1st argument. So for example, if you write `3.toHexString` this method is added to `Int` via an _implicit conversion_, but as the *target* is `class RichInt extends AnyVal`, so a Value Class, the call does _not_ force an allocation of `RichInt`, and instead will be rewriten into `RichInt$.$MODULE$.toHexString$extension(3)`, thus avoiding the allocation of `RichInt`.
+TIP: *Extension methods* serve the same purpose as *Implicit conversions* (which are a more general and more powerful utility), yet are better than
+conversions in one simple way -- they avoid having to allocate the "Wrapper" object, which implicit conversions would otherwise use to provide the "added
+methods". Extension methods take the route of rewriting the generated methods a little, so that they take the type-to-be-extended as their first argument. So
+ for example, if you write `3.toHexString` this method is added to `Int` via an _implicit conversion_, but as the *target* is `class RichInt extends AnyVal`, so a Value Class, the call does _not_ force an allocation of `RichInt`, and instead will be rewriten into `RichInt$.$MODULE$.toHexString$extension(3)`, thus avoiding the allocation of `RichInt`.
 
-Let's now use our newly gained knowlage and investigate what the compiler will actualy do for us in the `Meter` example. Right next to the source code "as we write it", the comments will be explaining what the compiler actualy generates (thus, what happens when we run this code):
+Now, let's use our newly gained knowledge and investigate what the compiler will actually do for us in the `Meter` example. Right next to the source code "as
+we write it", the comments will be explaining what the compiler actually generates (thus, what happens when we run this code):
 
 [source,scala]
 ----
-// source code                 // what the emited bytecode actualy does
+// source code                 // what the emited bytecode actually does
 
 val m: Meter  = Meter(12.0)    // store 12.0                                      <1>
 val d: Double = m.value * 2    // double multiply (12.0 * 2.0), store             <2>
@@ -76,8 +95,12 @@ val f: Foot   = m.toFeet       // call Meter$.$MODULE$.toFeet$extension(12.0)   
 ----
 <1> One might expect an allocation of a Meter object here, but as we're using a Value Class, only the wrapped value gets stored - that is we're working a plain `double` from here on, during *runtime* (assignment and typechecking still verifies "as if" this was a Meter instance)
 <2> Here we access the `value` of the Value Class (name of the field does not matter). Notice that the runtime operates on raw doubles here, and thus, does not have to call an `value` method, like it would have usually if we'd use a plain case class.
-<3> Here we seem to be calling an instance method, defined on `Meter`, but in fact, the compiler has substituted this call with an extension method call, where it passes in the 12.0 value. We get back a Foot instance... oh wait! but `Foot` was also defined as Value Class, so in runtime we'd again get back a plain double! Source-code-wise we don't have to care though - it's nice if we get the performance gain from using a Value Class, but it does not affect our code in line 72 in any way.
+<3> Here we seem to be calling an instance method, defined on `Meter`, but in fact, the compiler has substituted this call with an extension method call,
+where it passes in the 12.0 value. We get back a Foot instance... oh wait! but `Foot` was also defined as Value Class, so in runtime we'd again get back a
+plain double! Source code-wise we don't have to care though - it's nice if we get the performance gain from using a Value Class, but it does not affect the
+semantics of our code in any way.
 
-These are the basics around extension methods and value classes. If you want to read more about the different edge-cases around them, please refer to the http://docs.scala-lang.org/overviews/core/value-classes.html[official documentaion's section about Value Classes] where *Mark Harrah*, explains them very well with tons of examples, so I won't be duplicating his effort here beyond the basic introduction :-)
+These are the basics around extension methods and value classes. If you want to read more about the different edge-cases around them, please refer to the
+http://docs.scala-lang.org/overviews/core/value-classes.html[official documentation's section about Value Classes] where *Mark Harrah*, explains them very well with tons of examples, so I won't be duplicating his effort here beyond the basic introduction :-)
 
 

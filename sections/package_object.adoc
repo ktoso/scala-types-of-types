@@ -1,7 +1,7 @@
 == Package Object
 Package Objects have been added to Scala in 2.8 <<package-object>> and do not really extend the type system as such,
-but they provide an pretty useful pattern for "importing a bunch of stuff together" as well as being one of the places
-the compiler will look for implicit values.
+but they provide a pretty useful pattern for "importing a bunch of stuff together" as well as being one of the places
+the compiler will look for implicit values. Here, we limit our discussion to the first usage, which is aggregating data together.
 
 Declaring a package object is as simple as using the keywords `package` and `object` in conjunction, such as:
 

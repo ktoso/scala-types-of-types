@@ -3,7 +3,8 @@
 Let's now go deeper into the use cases of Type Aliases, which we call Abstract Type Members.
 
 With Abstract Type Members we say "I expect someone to tell me about some type - I'll refer to it by the name MyType".
-It's most basic function is allowing us to define generic classes (templates), but instead of using the `class Clazz[A, B]` syntax, we name them inside the class, like this:
+Its most basic function is allowing us to define generic classes (templates), but instead of using the `class Clazz[A, B]` syntax, we name the
+abstract type member(s) inside the class, like this:
 
 ```scala
 trait SimplestContainer {
@@ -15,14 +16,16 @@ trait SimplestContainer {
 
 Which for Java folks may seem very similar to the `Container<A>` syntax at first, but it's a bit more powerful as we'll see in the section about <<path-dependent-type, Path Dependent Types>>, as well as in the below example.
 
-It is important to notice that while in the naming contains the word "abstract", it does not behave exactly like an abstract field - so you can still create a new instance of `SimplestContainer` without "implementing" the type member `A`:
+It is important to notice that while my comment for ```type A``` contains the word "abstract", it does not behave exactly like an abstract field -
+ so you
+can still create a new instance of `SimplestContainer` without "implementing" the type member `A`:
 
 ```scala
 new SimplestContainer // valid, but A is "anything"
 ```
 
 You might be wondering what type `A` was bound to, since we didn't provide any information about it anywhere.
-Turns out `type A` is actualy just a shorthand for `type A >: Nothing <: Any`, which means "anything".
+As it turns out, `type A` is actually just a shorthand for `type A >: Nothing <: Any`, which means "anything".
 
 ```scala
 object IntContainer extends SimplestContainer {
@@ -34,7 +37,8 @@ object IntContainer extends SimplestContainer {
 
 So we "provide the type" using a <<type-alias, Type Alias>>, and now we can implement the value method which returns an `Int`.
 
-The more interesting uses of Abstract Type Members start when we apply constraints to them. For example imagine you want to have a container that can only store anything that is of a `Number` instance. Such constraint can be annotated on a type member right where we defined it first:
+The more interesting usages of Abstract Type Members start when we apply constraints to them. For example imagine you want to have a container that can only
+store anything that is of a `Number` instance. Such constraint can be annotated on a type member right where we defined it first:
 
 ```scala
 trait OnlyNumbersContainer {
@@ -43,7 +47,7 @@ trait OnlyNumbersContainer {
 }
 ```
 
-Or we can add constraints later on in the class hierarchy, for example by mixing in a trait that states "only Numbers":
+Alternatively we may add constraints later on in the class hierarchy, for example by mixing in a trait that states "only Numbers":
 
 ```scala
 trait SimpleContainer {
@@ -60,12 +64,14 @@ val ints = new SimpleContainer with OnlyNumbers {
   def value = 12
 }
 
-// bellow won't compile
+// below won't compile
 val _ = new SimpleContainer with OnlyNumbers {
   def value = "" // error: type mismatch; found: String(""); required: this.A
 }
 ```
 
-So, as you can see we can use Abstract Type members, in similar situations like we use Type Parameters, but without the pain of having to pass them around explicitly all the time - the passing around happens because it is a field. The price paid here though is that we bind those types by-name.
+So, as you can see we can use Abstract Type members in situations similar to those when we use Type Parameters, but without the pain of having to pass them
+around explicitly all the time - the passing around for type parameter occurs because it is a field. The price paid here however is that we bind those types
+by-name.
 
 

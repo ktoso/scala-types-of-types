@@ -9,7 +9,8 @@ That is, if in normal programming you can have a function that takes a value `a`
 
 Using this example, you can see how similar it is to normal constructors - with the only difference that here we work on types, and not instances of objects. It's worth reminding here that in Scala it is not valid to say something is of type `List`, *unlike in Java* where javac would put the `List<Object>` for you. Scala is more strict here, and won't allow us to use `just a List` in the place of a type, as it's expecting a real type - not a type constructor.
 
-Related to this subject is that with **Scala 2.11.x** we're getting a new power user command in the REPL - the `:kind` command. It allows you to check if a type is higher kind or not. Let's check it our on a simple type constructor, such as `List[+A]` first:
+Related to this subject is that with **Scala 2.11.x** we're getting a new power user command in the REPL - the `:kind` command. It allows you to check if a
+type is higher kind or not. Let's check it out on a simple type constructor, such as `List[+A]` first:
 
 ```scala
 // Welcome to Scala version 2.11.0-M5 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0-ea).
@@ -34,7 +35,7 @@ We refer to them as *first-order kinds* (`* -> *`). It's also worth mentioning t
 WARNING: TODO nothing here yet, coming soon...
 
 *Higher Kinds* on the other hand, allow us to abstract over type constructors, just like type constructors allow
-us to abstract over the type they.
+us to abstract over their type parameter(s).
 
 A classic example here is a `Monad`:
 
