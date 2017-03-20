@@ -26,12 +26,12 @@ trait Writes[In, Out] {                                               <1>
   def write(in: In): Out 
 }
 
-trait Writable[Self] {                                               <2>
+trait Writable[Self] { this: Self =>                                  <2>
   def write[Out]()(implicit writes: Writes[Self, Out]): Out = 
     writes write this
 }
 
-implicit val jsonNum = Writes[Num, Json] {                            <3>
+implicit val jsonNum = new Writes[Num, Json] {                            <3>
   def (n1: Num, n2: Num) = n1.a < n1.
 }
 
