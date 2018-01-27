@@ -8,7 +8,7 @@ as you might be tempted to call traits if coming from Java-land:
 ```scala
 class Base { def b = "" }
 trait Cool { def c = "" }
-trait Awesome { def a ="" }
+trait Awesome { def a = "" }
 
 class BA extends Base with Awesome
 class BC extends Base with Cool
