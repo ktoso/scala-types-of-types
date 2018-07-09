@@ -30,5 +30,6 @@ Obviously this vademecum required quite a bit of reseach and double-checking, so
 
 Presentations:
 [bibliography]
-- [[[types-of-types-lambda-days]]] Quick intro and overview of this article, presented by **Konrad Malawski** on http://lambdadays.org[Lambda Days Kraków 2014] https://vimeo.com/87986458[video] and http://www.slideshare.net/ktoso/scala-types-of-types-lambda-days[slides]
+- [[[types-of-types-lambda-days]]] Quick intro and overview of this article, presented by Konrad Malawski on http://lambdadays.org[Lambda Days Kraków 2014] 
+- Video available: https://vimeo.com/92620078[video] and http://www.slideshare.net/ktoso/scala-types-of-types-lambda-days[slides]
 
