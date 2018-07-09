@@ -4,9 +4,9 @@ I would especialy like to thank all proof-readers and reviewers tha that have he
 
 * Sergio Rodrigez, for the most in depth article review I've ever seen in my life and lots of suggestions,
 * Andrzej Grzesik, fellow http://java.pl[PolishJUG] / http://geecon.org[GeeCON] guy
-* Joshua Sureth, for the awesome comments and examples over lunch after devoxx
-* The awesome guys from http://softwaremill.com[SoftwareMill] for reviews and comments
-* The awesome guys from http://virtuslab.com[VirtusLab] for typo fixes, the makefile and suggestions
+* Josh Sureth, for the awesome comments and examples over lunch after devoxx
+* The awesome people from http://softwaremill.com[SoftwareMill] for reviews and comments
+* The awesome people from http://virtuslab.com[VirtusLab] for typo fixes, the makefile and suggestions
 * The http://www.krakowscala.pl[Kraków Scala User Group]'s members, for proof reading and suggestions
 * All the kind people who pull-requested typo's and small fixes
 * _TODO, there's more people_
