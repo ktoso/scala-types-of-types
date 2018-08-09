@@ -27,12 +27,14 @@ trait Writes[In, Out] {                                               <1>
 }
 
 trait Writable[Self] {                                               <2>
+  this: Self =>
+
   def write[Out]()(implicit writes: Writes[Self, Out]): Out = 
     writes write this
 }
 
 implicit val jsonNum = Writes[Num, Json] {                            <3>
-  def (n1: Num, n2: Num) = n1.a < n1.
+  def write(n: Num) = Json.toJson(n)
 }
 
 case class Num(a: Int) extends Writable[Num]
