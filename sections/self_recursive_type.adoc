@@ -30,7 +30,7 @@ apple compareTo orange // compiles, but we want to make this NOT compile!
 ```
 
 In the naive implementation, since the trait `Fruit` has no clue about the types extending it, it's not possible to restrict the compareTo signature to
- allow only "_the same subclass as_ `this` " in the parameter. Let's now rewrite this example to use a *Self Recursive Type Parameter*:
+ allow only "_the same subclass as_ ``this``" in the parameter. Let's now rewrite this example to use a *Self Recursive Type Parameter*:
 
 ```scala
 trait Fruit[T <: Fruit[T]] {
